@@ -206,6 +206,13 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 .who-skip{margin-top:12px;border:0;background:transparent;color:rgba(255,255,255,.7);font:inherit;font-size:14px;cursor:pointer;text-decoration:underline}
 .tbl td.mute{color:var(--muted)}
 .bet .amt.priv{font-size:18px;letter-spacing:.5px}
+.pp-row{display:grid;grid-template-columns:1fr 1fr auto;gap:6px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.pp-row input{padding:7px 8px;font-size:14px}
+.pp-row .pp-acts{display:flex;gap:4px}
+.pp-row .pp-acts button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:6px;padding:6px 8px;font:inherit;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+.pp-row.hid input{opacity:.5}
+.pp-tag{font-size:10px;font-weight:800;letter-spacing:.5px;background:#101820;color:var(--gold);border-radius:4px;padding:2px 6px}
+.pp-add{display:flex;gap:6px;margin-top:10px}.pp-add input{flex:1}
 .typing{align-self:flex-start;color:var(--muted);font-size:13px}
 </style>
 </head>
@@ -302,8 +309,16 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
     <button class="btn small" id="refreshBtn">Refresh scores</button>
     <button class="btn small" id="exportBtn">Export</button>
     <button class="btn small" id="importBtn">Import</button>
+    <button class="btn small edit-only" id="peopleBtn">People</button>
     <button class="btn small" id="setupBtn">Booker setup</button>
   </div>
+  <section class="setup" id="peoplePanel" hidden>
+    <h2>People</h2>
+    <p>Add someone new, rename, or hide someone who stopped betting (their history stays). Send a new person their invite link so the app opens set to them.</p>
+    <div id="pplList"></div>
+    <div class="pp-add"><input id="ppNew" placeholder="New person’s name" autocomplete="off"><button class="btn small primary" id="ppAdd">Add</button></div>
+    <div class="actions"><button class="btn small" id="ppClose">Close</button></div>
+  </section>
   <section class="setup" id="setup" hidden>
     <h2>Booker setup</h2>
     <p>Only on the phone that books bets (Dad’s). These keys are saved on this device only — never in the app or on GitHub.</p>
@@ -326,16 +341,23 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 <button class="upd" id="updBar" hidden>New version available — tap to update</button>
 
 <script>
-const APP_V='2026.10.17-7';
+const APP_V='2026.10.17-8';
 const KEY='anolik-football-book-v1';
-const BETTORS=['Al','Steve','Dan','J','Mich'];
+// People live in the book file so admins can add or hide them; these are the starting five
+const DEFAULT_PEOPLE=[{id:'Al',name:'Al',admin:true,aka:''},{id:'Steve',name:'Steve',admin:true,aka:'Dad, Pop'},{id:'Dan',name:'Danny',aka:'D, Dan'},{id:'J',name:'John',aka:'J'},{id:'Mich',name:'Michael',aka:'Mike, M'}];
+let people=DEFAULT_PEOPLE.map(x=>({...x})), ALL_IDS=[], BETTORS=[], NAMES={}, UNCLES=[];
 const BOOKS=['Max','Computer'];
-const NAMES={Dan:'Danny',J:'John',Mich:'Michael'};
-const UNCLES=['Dan','J','Mich'];
 const MODEL_TEXT='claude-haiku-5-5', MODEL_IMAGE='claude-sonnet-5-5';
 const nm=p=>NAMES[p]||p;
+function setPeople(list){
+  people=(Array.isArray(list)&&list.length?list:DEFAULT_PEOPLE).map(x=>({...x}));
+  ALL_IDS=people.map(p=>p.id); BETTORS=people.filter(p=>!p.hidden).map(p=>p.id); UNCLES=people.filter(p=>!p.hidden&&!p.admin).map(p=>p.id);
+  NAMES={}; for(const p of people)NAMES[p.id]=p.name||p.id;
+  const fw=document.getElementById('fWho'); if(fw){ const v=fw.value; fw.innerHTML=BETTORS.map(p=>`<option value="${p}">${esc(nm(p))}</option>`).join(''); if(BETTORS.includes(v))fw.value=v; }
+}
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+setPeople(null);
 const money=n=>(n<0?'-':'')+'$'+Math.abs(Math.round(n));
 const signed=n=>(n>0?'+':'')+money(n);
 const ls={get(k,d){ try{ const v=localStorage.getItem(KEY+k); return v==null?d:JSON.parse(v); }catch(e){ return d; } },set(k,v){ try{ localStorage.setItem(KEY+k,JSON.stringify(v)); }catch(e){} }};
@@ -378,6 +400,7 @@ function applyOps(state,ops){
     else if(op.t==='carry'){ state.carry=op.carry; }
     else if(op.t==='line'){ state.lines=(state.lines||[]).filter(l=>l.id!==op.line.id); state.lines.push(op.line); }
     else if(op.t==='unline'){ state.lines=(state.lines||[]).filter(l=>l.id!==op.id); }
+    else if(op.t==='people'){ state.people=op.people; }
   }
   return state;
 }
@@ -399,10 +422,10 @@ async function ghRead(){
 async function ghWrite(ops,msg){
   for(let attempt=0;attempt<3;attempt++){
     const cur=(await ghRead())||{bets:SEED.map(x=>({...x})),carry:{}};
-    const next=applyOps({bets:cur.bets||[],carry:cur.carry||{},lines:cur.lines||[]},ops); next.updated=new Date().toISOString();
+    const next=applyOps({bets:cur.bets||[],carry:cur.carry||{},lines:cur.lines||[],people:cur.people},ops); next.updated=new Date().toISOString();
     const body={message:msg||'Update bets',content:b64e(JSON.stringify(next,null,1))}; if(ghSha)body.sha=ghSha;
     const res=await fetch(`https://api.github.com/repos/${repo()}/contents/bets.json`,{method:'PUT',headers:{...ghHeaders(),'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(res.ok){ const j=await res.json(); ghSha=j.content&&j.content.sha; bets=next.bets.map(norm); carry=next.carry; lines=next.lines||[]; return true; }
+    if(res.ok){ const j=await res.json(); ghSha=j.content&&j.content.sha; bets=next.bets.map(norm); carry=next.carry; lines=next.lines||[]; setPeople(next.people); return true; }
     if(res.status===409||res.status===422)continue;
     if(res.status===401||res.status===403)throw new Error('GitHub token can’t write to '+repo());
     throw new Error('GitHub '+res.status);
@@ -418,16 +441,17 @@ async function commit(ops,msg){
         else if(op.t==='del')await c.doc(op.id).delete();
         else if(op.t==='carry')await db.doc('meta/carry').set({v:op.carry});
         else if(op.t==='line')await db.collection('lines').doc(op.line.id).set(clean(op.line));
-        else if(op.t==='unline')await db.collection('lines').doc(op.id).delete(); }
+        else if(op.t==='unline')await db.collection('lines').doc(op.id).delete();
+        else if(op.t==='people')await db.doc('meta/people').set({v:op.people}); }
       return true;
     }
     if(store==='gh'){ if(!cfg.ghToken){ toast('View only — booking is set up on Dad’s phone'); return false; } setSync('Saving…'); await ghWrite(ops,msg); setSync(); render(); return true; }
-    const st=applyOps({bets,carry,lines},ops); lines=st.lines||[]; if(ops.some(o=>o.t==='carry'))carry=ops.find(o=>o.t==='carry').carry; ls.set('',bets); ls.set('-carry',carry); ls.set('-lines',lines); render(); return true;
+    const st=applyOps({bets,carry,lines,people},ops); lines=st.lines||[]; if(st.people!==people){ setPeople(st.people); ls.set('-people',people); } if(ops.some(o=>o.t==='carry'))carry=ops.find(o=>o.t==='carry').carry; ls.set('',bets); ls.set('-carry',carry); ls.set('-lines',lines); render(); return true;
   }catch(e){ setSync(); toast(e.message||'Could not save'); return false; }
 }
 function clean(o){ const r={}; for(const k in o){ if(o[k]!==undefined)r[k]=o[k]; } return r; }
 function setSync(t){ $('#syncLbl').textContent=t||(store==='db'?'Shared book · live':store==='gh'?`Book: ${repo()}${cfg.ghToken?' · booker':' · view only'}`:'This device only'); }
-async function pull(){ if(store!=='gh')return; try{ const d=await ghRead(); if(d){ bets=(d.bets||[]).map(norm); carry=d.carry||{}; lines=d.lines||[]; } else { bets=SEED.map(x=>({...x})); carry={}; } setSync(); render(); }catch(e){ setSync('Couldn’t load the book from GitHub'); } }
+async function pull(){ if(store!=='gh')return; try{ const d=await ghRead(); if(d){ bets=(d.bets||[]).map(norm); carry=d.carry||{}; lines=d.lines||[]; setPeople(d.people); } else { bets=SEED.map(x=>({...x})); carry={}; } setSync(); render(); }catch(e){ setSync('Couldn’t load the book from GitHub'); } }
 
 /* ================= standings ================= */
 function stat(rows){ const o=rows.map(outcomeOf); const w=o.filter(x=>x==='W').length, l=o.filter(x=>x==='L').length, p=o.filter(x=>x==='P').length; return {w,l,p,rec:`${w}–${l}`+(p?`–${p}`:''),n:rows.reduce((s,b)=>s+net(b),0)}; }
@@ -437,10 +461,10 @@ function bal(who,book){ const rows=bets.filter(b=>b.who===who&&(book==='all'||b.
 function outcomeOf(b){ if(b.outcome)return b.outcome; const g=gameFor(b); return grade(b,g); }
 
 // Dollar privacy: admins (booker phones) see every amount; an uncle sees only his own dollars — picks and W-L stay visible to all
-const meId=()=>{ const m=ls.get('-me',''); return UNCLES.includes(m)?m:null; };
+const meId=()=>{ const m=ls.get('-me',''); return m&&ALL_IDS.includes(m)&&!canEdit()?m:null; };
 const canSee=who=>canEdit()||who===meId();
 function render(){
-  renderLines(); renderInbox();
+  renderLines(); renderInbox(); meLabel();
   ls.set('-view',{p:view,b:bookView});
   document.body.classList.toggle('ro',!canEdit()); document.body.classList.toggle('rw',canEdit());
   $('#desk').hidden=!canBook();
@@ -452,7 +476,7 @@ function render(){
   const bookLbl=bookView==='all'?'the books':bookView;
   const cell=(v,ok=true)=>ok?`<td class="n ${v>0?'up':v<0?'down':''}">${v?signed(v):'$0'}</td>`:'<td class="n mute">—</td>';
   if(view==='all'){
-    const s=stat(mine), n=BETTORS.reduce((t,p)=>t+bal(p,bookView),0);
+    const s=stat(mine), n=ALL_IDS.reduce((t,p)=>t+bal(p,bookView),0);
     $('#recWho').textContent='Family record'; $('#rec').textContent=s.rec;
     if(canEdit()){ $('#netWho').textContent=n>0?`${bookView==='all'?'Books owe':bookView+' owes'} the family`:n<0?`Family owes ${bookLbl}`:'Even with '+bookLbl; setNet(n); }
     else if(meId()){ const m=bal(meId(),bookView); $('#netWho').textContent=m>0?`${bookLbl==='the books'?'Books owe':bookLbl+' owes'} you`:m<0?`You owe ${bookLbl}`:'You’re even'; setNet(m); }
@@ -460,7 +484,7 @@ function render(){
     const rows=BETTORS.map(p=>({p,s:stat(bets.filter(b=>b.who===p&&inLg(b))),t:bal(p,'all')})).sort(canEdit()?(a,b)=>b.t-a.t:(a,b)=>(b.s.w-b.s.l)-(a.s.w-a.s.l)||b.s.w-a.s.w);
     $('#groupView').innerHTML=`<table class="tbl"><thead><tr><th>Bettor</th><th class="n">Record</th>${BOOKS.map(k=>`<th class="n">${k}</th>`).join('')}<th class="n">Total</th></tr></thead><tbody>${
       rows.map(({p,s,t})=>`<tr data-p="${p}"><td>${esc(nm(p))}${p===meId()?' <small style="color:var(--muted)">(you)</small>':''}</td><td class="n">${s.rec}</td>${BOOKS.map(k=>cell(bal(p,k),canSee(p))).join('')}${cell(t,canSee(p))}</tr>`).join('')
-    }</tbody>${canEdit()?`<tfoot><tr><td>Book</td><td></td>${BOOKS.map(k=>cell(-BETTORS.reduce((t,p)=>t+bal(p,k),0))).join('')}<td></td></tr></tfoot>`:''}</table>`;
+    }</tbody>${canEdit()?`<tfoot><tr><td>Book</td><td></td>${BOOKS.map(k=>cell(-ALL_IDS.reduce((t,p)=>t+bal(p,k),0))).join('')}<td></td></tr></tfoot>`:''}</table>`;
     $('#carryRow').hidden=true;
   } else {
     const s=stat(mine), n=bal(view,bookView);
@@ -550,14 +574,14 @@ function openRequest(l){
   rqLine=l; rqOpts=lineOptions(l); rqSel=0; if(!rqOpts.length)return; $('#rqPickBox').hidden=false; $('#rqFree').hidden=true;
   $('#rqLine').textContent=`${lgOf(l)!=='NFL'?LEAGUES[lgOf(l)].n+' · ':''}${l.matchup} · ${l.book} · ${l.date&&lgOf(l)!=='NFL'?shortDay(l.date):'Week '+l.week}`;
   $('#rqPick').innerHTML=rqOpts.map((o,i)=>`<button type="button" data-i="${i}" class="${i===0?'on':''}">${esc(o.pick)} ${esc(o.spread)}</button>`).join('');
-  $('#rqWho').innerHTML=UNCLES.map(p=>`<option value="${p}">${esc(nm(p))}</option>`).join(''); const me=ls.get('-me',''); if(UNCLES.includes(me))$('#rqWho').value=me;
+  $('#rqWho').innerHTML=UNCLES.map(p=>`<option value="${p}">${esc(nm(p))}</option>`).join(''); const me=ls.get('-me',''); if(UNCLES.includes(me))$('#rqWho').value=me; else if(ALL_IDS.includes(me)){ $('#rqWho').insertAdjacentHTML('beforeend',`<option value="${me}">${esc(nm(me))}</option>`); $('#rqWho').value=me; }
   $('#reqSheet').hidden=false; rqCalc(); $('#reqSheet').scrollIntoView({behavior:'smooth'});
 }
 function openFreeRequest(){
   rqLine=null; $('#rqPickBox').hidden=true; $('#rqFree').hidden=false; $('#rqLine').textContent='Enter the bet you want. Steve or Al books it once they approve.';
   $('#rqLg').innerHTML=LG.map(l=>`<option value="${l}">${esc(LEAGUES[l].n)}</option>`).join(''); $('#rqLg').value=lgView==='all'?'NFL':lgView;
   $('#rqBook').innerHTML=BOOKS.map(k=>`<option>${k}</option>`).join('');
-  $('#rqWho').innerHTML=UNCLES.map(p=>`<option value="${p}">${esc(nm(p))}</option>`).join(''); const me=ls.get('-me',''); if(UNCLES.includes(me))$('#rqWho').value=me;
+  $('#rqWho').innerHTML=UNCLES.map(p=>`<option value="${p}">${esc(nm(p))}</option>`).join(''); const me=ls.get('-me',''); if(UNCLES.includes(me))$('#rqWho').value=me; else if(ALL_IDS.includes(me)){ $('#rqWho').insertAdjacentHTML('beforeend',`<option value="${me}">${esc(nm(me))}</option>`); $('#rqWho').value=me; }
   $('#rqWk').value=curWeek||dateWeek(); $('#rqDt').value=today(); ['#rqMatch','#rqPk','#rqSp','#rqOd'].forEach(s=>$(s).value='');
   rqSyncLg(); $('#reqSheet').hidden=false; rqCalc(); $('#reqSheet').scrollIntoView({behavior:'smooth'});
 }
@@ -640,7 +664,7 @@ $('#list').addEventListener('click',e=>{
 });
 
 /* ================= manual form ================= */
-$('#fWho').innerHTML=BETTORS.map(p=>`<option value="${p}">${esc(nm(p))}</option>`).join('');
+setPeople(people);
 $('#fBook').innerHTML=BOOKS.map(k=>`<option>${k}</option>`).join('');
 function parseOdds(t){ const s=String(t||'').trim(); let m=s.match(/^(\d+(?:\.\d+)?)\s*[\/:]\s*(\d+(?:\.\d+)?)$/);
   if(m){ const r=+m[1],w=+m[2]; return (r>0&&w>0)?{r,w}:null; }
@@ -803,8 +827,8 @@ function gamesText(){
 }
 function buildPrompt(text,nImg){
   const hist=chat.slice(-10,-1).map(m=>(m.r==='u'?'Steve: ':'Clerk: ')+m.t).join('\n');
-  return `You are the bet-booking clerk for the Anolik family sports betting book (2026–27). Mostly NFL, plus college football (NCAAF), NBA, college basketball (NCAAB), MLB and NHL. Today is ${new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})} (${today()}). Steve (the dad, also "Dad", "Pop") takes bets from his son Al and his brothers Danny, John and Michael and places each with one of two books.
-Bettors — use these ids exactly: "Al"; "Steve" (the one booking; also "me"/"I"/"mine"); "Dan" (Danny, D); "J" (John); "Mich" (Michael, Mike, M).
+  return `You are the bet-booking clerk for the Anolik family sports betting book (2026–27). Mostly NFL, plus college football (NCAAF), NBA, college basketball (NCAAB), MLB and NHL. Today is ${new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})} (${today()}). Steve (the dad, also "Dad", "Pop") takes bets from the family and places each with one of two books.
+Bettors — use these ids exactly: ${people.filter(p=>!p.hidden).map(p=>`"${p.id}" (${[p.name,p.aka].filter(Boolean).join(', ')})`).join('; ')}. "Steve" is the one booking, so "me"/"I"/"mine" means Steve.
 Books (use exactly): "Max" (the bookie) or "Computer" (also "C", "the computer", "the app"). If no book is said, use Max.
 Odds: risk/win like "11/10" (default for spreads and totals when not given); Max-style "105"/"115"/"120" mean risk that much to win 100; moneylines are American odds like "-150" or "+130" — keep them exactly like that.
 Amounts: a bare number like "for 50" means TO WIN $50 (amountIs "win") unless they say risk/bet/lay. "Dime"=1000, "nickel"=500.
@@ -881,6 +905,30 @@ $('#thumbs').addEventListener('click',e=>{ const i=e.target.dataset.ti; if(i!==u
     rec.start(); btn.classList.add('rec'); };
 })();
 
+/* ================= people (admins only) ================= */
+function drawPeople(){
+  $('#pplList').innerHTML=people.map((p,i)=>`<div class="pp-row ${p.hidden?'hid':''}">
+    <input data-pp="${i}" data-f="name" value="${esc(p.name)}" aria-label="Name">
+    <input data-pp="${i}" data-f="aka" value="${esc(p.aka||'')}" placeholder="Nicknames" aria-label="Nicknames for the chat">
+    <div class="pp-acts">${p.admin?'<span class="pp-tag">ADMIN</span>':`<button data-inv="${i}">Invite</button><button data-hide="${i}">${p.hidden?'Show':'Hide'}</button>`}</div></div>`).join('');
+}
+async function savePeople(list,msg){ if(await commit([{t:'people',people:list}],msg)){ setPeople(list); drawPeople(); render(); return true; } return false; }
+$('#peopleBtn').onclick=()=>{ const s=$('#peoplePanel'); s.hidden=!s.hidden; if(!s.hidden){ drawPeople(); s.scrollIntoView({behavior:'smooth'}); } };
+$('#ppClose').onclick=()=>{ $('#peoplePanel').hidden=true; };
+$('#pplList').addEventListener('change',e=>{ const i=e.target.dataset.pp; if(i===undefined)return; const list=people.map(x=>({...x})); const v=e.target.value.trim();
+  if(e.target.dataset.f==='name'&&!v){ drawPeople(); return; } list[+i][e.target.dataset.f]=v; savePeople(list,`Update ${list[+i].name}`); });
+$('#pplList').addEventListener('click',async e=>{
+  const h=e.target.dataset.hide; if(h!==undefined){ const list=people.map(x=>({...x})); list[+h].hidden=!list[+h].hidden; await savePeople(list,`${list[+h].hidden?'Hide':'Show'} ${list[+h].name}`); return; }
+  const v=e.target.dataset.inv; if(v!==undefined){ const p=people[+v]; const link=location.origin+location.pathname+'#me='+encodeURIComponent(p.id);
+    const text=`${p.name}, here’s the Anolik Sports Book — tap to open it set up for you: ${link}`;
+    try{ if(navigator.share){ await navigator.share({text}); return; } }catch(err){ if(err&&err.name==='AbortError')return; }
+    try{ await navigator.clipboard.writeText(text); toast('Invite copied — paste it in a text'); }catch(err){ prompt('Send this invite:',text); } }
+});
+$('#ppAdd').onclick=async()=>{ const name=$('#ppNew').value.trim(); if(!name){ toast('Type a name first'); return; }
+  if(people.some(p=>p.name.toLowerCase()===name.toLowerCase())){ toast(`${name} is already in the book`); return; }
+  let id=name.replace(/[^A-Za-z0-9]/g,'').slice(0,16)||'P'; const base=id; let n=2; while(people.some(p=>p.id===id))id=base+(n++);
+  if(await savePeople([...people.map(x=>({...x})),{id,name,aka:''}],`Add ${name}`)){ $('#ppNew').value=''; toast(`${name} added — tap Invite to send their link`); } };
+
 /* ================= booker setup (keys stay on this device) ================= */
 $('#setupBtn').onclick=()=>{ const s=$('#setup'); s.hidden=!s.hidden; if(!s.hidden){ $('#sRepo').value=repo(); $('#sGh').value=cfg.ghToken||''; $('#sAi').value=cfg.aiKey||''; s.scrollIntoView({behavior:'smooth'}); } };
 $('#sSave').onclick=async()=>{
@@ -926,14 +974,15 @@ const SEED=[
 ];
 curWeek=dateWeek();
 if(repo()){ store='gh'; bets=SEED.map(x=>({...x})); }
-else { bets=(ls.get('',null)||SEED.map(x=>({...x}))).map(norm); carry=ls.get('-carry',{}); lines=ls.get('-lines',[]); }
+else { bets=(ls.get('',null)||SEED.map(x=>({...x}))).map(norm); carry=ls.get('-carry',{}); lines=ls.get('-lines',[]); setPeople(ls.get('-people',null)); }
 // Uncles: "Who's this?" once per phone; the book then opens on their own tab (everyone's bets stay one tap away)
-function meLabel(){ const me=ls.get('-me',''), b=$('#meLbl'); if(canEdit()){ b.hidden=true; return; } b.hidden=false; b.textContent=UNCLES.includes(me)?`${nm(me)} · switch`:'Who are you?'; }
+function meLabel(){ const me=ls.get('-me',''), b=$('#meLbl'); if(canEdit()){ b.hidden=true; return; } b.hidden=false; b.textContent=ALL_IDS.includes(me)?`${nm(me)} · switch`:'Who are you?'; }
 function askWho(){ $('#whoBtns').innerHTML=UNCLES.map(p=>`<button data-me="${p}">${esc(nm(p))}</button>`).join(''); $('#whoOv').hidden=false; }
 $('#whoBtns').addEventListener('click',e=>{ const p=e.target.dataset.me; if(!p)return; ls.set('-me',p); ls.set('-meSkip',0); view=p; $('#whoOv').hidden=true; meLabel(); render(); window.scrollTo({top:0}); });
 $('#whoSkip').onclick=()=>{ ls.set('-meSkip',1); $('#whoOv').hidden=true; meLabel(); };
 $('#meLbl').onclick=askWho;
-if(!canEdit()){ const me=ls.get('-me',''); if(UNCLES.includes(me))view=me; else if(!ls.get('-meSkip',0))askWho(); }
+(function(){ const m=location.hash.match(/^#me=([A-Za-z0-9_-]+)$/); if(!m)return; ls.set('-me',m[1]); ls.set('-meSkip',0); try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} setTimeout(()=>toast(`Welcome, ${nm(m[1])}!`),800); })();
+if(!canEdit()){ const me=ls.get('-me',''); if(me)view=me; else if(!ls.get('-meSkip',0))askWho(); }
 meLabel();
 setSync(); render(); drawLog(); refreshScores();
 if(incomingReq){ addToInbox(incomingReq); setTimeout(()=>window.scrollTo({top:0}),50); }
@@ -942,7 +991,8 @@ window.addEventListener('hashchange',()=>{ const h=location.hash;
   let m=h.match(/^#req=(.+)$/); if(m){ try{ addToInbox(JSON.parse(b64d(decodeURIComponent(m[1])))); window.scrollTo({top:0}); }catch(e){} }
   m=h.match(/^#setup=(.+)$/); if(m){ try{ const s=JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1])))));
     if(s.aiKey)cfg.aiKey=s.aiKey; if(s.ghToken)cfg.ghToken=s.ghToken; if(s.repo)cfg.repo=s.repo; ls.set('-cfg',cfg); if(repo()&&store!=='db')store='gh'; toast('Booker setup saved on this phone ✔'); pull(); }catch(e){} }
-  if(/^#(req|setup)=/.test(h)){ try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} render(); drawLog(); } });
+  m=h.match(/^#me=([A-Za-z0-9_-]+)$/); if(m){ ls.set('-me',m[1]); ls.set('-meSkip',0); if(!canEdit())view=m[1]; meLabel(); toast(`Welcome, ${nm(m[1])}!`); }
+  if(/^#(req|setup|me)=/.test(h)){ try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} render(); drawLog(); } });
 
 (async()=>{ // inside Claude: shared database + Claude booking
   if(!window.claude||!window.claude.use)return;
@@ -951,6 +1001,7 @@ window.addEventListener('hashchange',()=>{ const h=location.hash;
   if(d){ db=d; store='db'; setSync('Shared book · syncing…'); let first=true;
     db.collection('bets').onSnapshot(snap=>{ bets=snap.docs.map(x=>norm({id:x.id,...x.data()})).sort((a,b)=>b.week-a.week||(b.at||0)-(a.at||0)); setSync(); render(); if(first){ first=false; refreshScores(); } },
       ()=>{ setSync('Shared book unavailable'); });
+    db.doc('meta/people').onSnapshot(snap=>{ setPeople(snap.exists&&snap.data().v); render(); },()=>{});
     db.collection('lines').onSnapshot(snap=>{ lines=snap.docs.map(x=>({id:x.id,...x.data()})); render(); },()=>{});
     db.doc('meta/carry').onSnapshot(snap=>{ carry=(snap.exists&&snap.data().v)||{}; render(); },()=>{});
   }
