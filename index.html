@@ -1,3 +1,4 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -322,6 +323,8 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
   <section class="setup" id="setup" hidden>
     <h2>Booker setup</h2>
     <p>Only on the phone that books bets (Dad’s). These keys are saved on this device only — never in the app or on GitHub.</p>
+    <label for="sLink">Easiest: paste your setup link here</label><input id="sLink" placeholder="https://…#setup=…" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <p style="margin:6px 0 0">Or fill in the keys one by one:</p>
     <label for="sRepo">GitHub repo</label><input id="sRepo" placeholder="your-username/MavenBets" autocomplete="off">
     <label for="sGh">GitHub token (lets this phone save bets)</label><input id="sGh" type="password" placeholder="github_pat_…" autocomplete="off">
     <label for="sAi">Anthropic API key (reads dictation &amp; screenshots)</label><input id="sAi" type="password" placeholder="sk-ant-…" autocomplete="off">
@@ -341,7 +344,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 <button class="upd" id="updBar" hidden>New version available — tap to update</button>
 
 <script>
-const APP_V='2026.10.17-9';
+const APP_V='2026.10.17-10';
 const KEY='anolik-football-book-v1';
 // People live in the book file so admins can add or hide them; these are the starting five
 const DEFAULT_PEOPLE=[{id:'Al',name:'Al',admin:true,aka:''},{id:'Steve',name:'Steve',admin:true,aka:'Dad, Pop'},{id:'Dan',name:'Danny',aka:'D, Dan'},{id:'J',name:'John',aka:'J'},{id:'Mich',name:'Michael',aka:'Mike, M'}];
@@ -939,6 +942,12 @@ $('#sSave').onclick=async()=>{
   if(cfg.ghToken){ try{ const r=await fetch(`https://api.github.com/repos/${repo()}`,{headers:ghHeaders()}); const j=await r.json(); msg+=r.ok&&j.permissions&&j.permissions.push?' GitHub ✔':' GitHub token can’t write to '+repo()+'.'; }catch(e){ msg+=' Couldn’t check GitHub.'; } }
   $('#setup').hidden=true; toast(msg); await pull(); render(); drawLog();
 };
+function readSetupLink(txt){ const m=String(txt||'').match(/#setup=([A-Za-z0-9+\/=%_-]+)/); if(!m)return null;
+  try{ return JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1]))))); }catch(e){ return null; } }
+$('#sLink').addEventListener('input',()=>{ const v=$('#sLink').value.trim(); if(!v)return; const s=readSetupLink(v);
+  if(!s){ toast('That isn’t a setup link — copy the whole long link'); return; }
+  if(s.repo)$('#sRepo').value=s.repo; if(s.ghToken)$('#sGh').value=s.ghToken; if(s.aiKey)$('#sAi').value=s.aiKey;
+  $('#sLink').value=''; $('#sSave').click(); });
 $('#sClear').onclick=()=>{ cfg={}; ls.set('-cfg',cfg); $('#setup').hidden=true; toast('Keys removed from this phone'); render(); };
 
 /* ================= export / import ================= */
@@ -1012,3 +1021,5 @@ window.addEventListener('hashchange',()=>{ const h=location.hash;
 </script>
 </body>
 </html>
+
+</body></html>
