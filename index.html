@@ -341,7 +341,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 <button class="upd" id="updBar" hidden>New version available — tap to update</button>
 
 <script>
-const APP_V='2026.10.17-8';
+const APP_V='2026.10.17-9';
 const KEY='anolik-football-book-v1';
 // People live in the book file so admins can add or hide them; these are the starting five
 const DEFAULT_PEOPLE=[{id:'Al',name:'Al',admin:true,aka:''},{id:'Steve',name:'Steve',admin:true,aka:'Dad, Pop'},{id:'Dan',name:'Danny',aka:'D, Dan'},{id:'J',name:'John',aka:'J'},{id:'Mich',name:'Michael',aka:'Mike, M'}];
@@ -799,7 +799,7 @@ function lineHtml(){
 function propHtml(){
   return `<div class="prop"><div style="font-weight:700;margin-bottom:4px">Book ${pending.length} bet${pending.length>1?'s':''}?</div>${pending.map((p,i)=>`
     <div class="row"><select data-pi="${i}" data-f="who">${BETTORS.map(x=>`<option ${x===p.who?'selected':''} value="${x}">${esc(nm(x))}</option>`).join('')}</select>
-    <div class="what"><b>${esc(p.pick)} ${esc(p.spread)}</b> · ${esc(p.matchup)}<br><span style="color:var(--muted)">${p.lg&&p.lg!=='NFL'?p.lg+' '+esc(shortDay(p.date)):'Wk '+p.week} · risk ${money(p.amount)} to win ${money(p.payout)} · odds <input class="oin" data-pi="${i}" data-f="odds" value="${esc(p.odds)}" aria-label="Odds"> · <select data-pi="${i}" data-f="book">${BOOKS.map(k=>`<option ${k===p.book?'selected':''}>${k}</option>`).join('')}</select></span></div>
+    <div class="what"><b>${esc(p.pick)} ${esc(p.spread)}</b>${p.result?` <span class="pp-tag">${{W:'WON',L:'LOST',P:'PUSH'}[p.result]}</span>`:''} · ${esc(p.matchup)}<br><span style="color:var(--muted)">${p.lg&&p.lg!=='NFL'?p.lg+' '+esc(shortDay(p.date)):'Wk '+p.week} · risk ${money(p.amount)} to win ${money(p.payout)} · odds <input class="oin" data-pi="${i}" data-f="odds" value="${esc(p.odds)}" aria-label="Odds"> · <select data-pi="${i}" data-f="book">${BOOKS.map(k=>`<option ${k===p.book?'selected':''}>${k}</option>`).join('')}</select></span></div>
     <button class="x" data-rm="${i}" aria-label="Remove">×</button></div>`).join('')}
     <div class="go"><button class="btn small" id="propNo">Discard</button><button class="btn small primary" id="propYes">Book it</button></div></div>`;
 }
@@ -814,7 +814,7 @@ $('#log').addEventListener('click',async e=>{
     if(await commit(ops,`Post ${n} line${n>1?'s':''}`)){ pendLines=[]; chat.push({r:'b',t:`Posted ${n} line${n>1?'s':''}. Everyone can see them now.`}); saveChat(); toast('Lines posted'); } drawLog(); }
   else if(e.target.id==='propNo'){ pending=[]; chat.push({r:'b',t:'Discarded.'}); saveChat(); drawLog(); }
   else if(e.target.id==='propYes'){ e.target.disabled=true; const n=pending.length; const now=Date.now();
-    const ops=pending.map((p,i)=>({t:'put',bet:{...p,id:newId()+i,outcome:null,at:now+i}}));
+    const ops=pending.map((p,i)=>{ const {result,...q}=p; return {t:'put',bet:{...q,id:newId()+i,outcome:result||null,manual:!!result||undefined,at:now+i}}; });
     const ok=await commit(ops,`Book ${n} bet${n>1?'s':''}: `+pending.map(p=>`${p.who} ${p.pick} ${p.spread}`).join(', '));
     if(ok){ pending=[]; chat.push({r:'b',t:`Booked ${n} bet${n>1?'s':''}. ✔`}); saveChat(); toast(`Booked ${n}`); } drawLog(); }
 });
@@ -837,7 +837,8 @@ Picks: for a side, pick = team or school as said (e.g. "Pittsburgh", "Ohio State
 matchup = "Away @ Home": NFL/NBA/MLB/NHL use nicknames (e.g. "Seahawks @ Broncos", "Celtics @ Knicks"); college uses school names (e.g. "Michigan @ Ohio State"). Use the NFL schedule below when it applies.
 date = the game date "YYYY-MM-DD" for every non-NFL bet or line (today unless they say another day; "tonight" = today, "tomorrow" = the next day). NFL uses week instead.
 Steve may also post LINES — what a book is offering, not a bet (e.g. "Max has Steelers minus 3, total 44", "computer: Bills -6.5 at 115, over/under 47", or a screenshot of a board). Put those in "lines": team = the team the spread number belongs to (usually the favorite, e.g. "Steelers" with spread "-3"), odds = spread odds (default "11/10"), total and totalOdds for the over/under; leave a field "" if not given. One line per game per book. A message can contain bets, lines, or both; never turn a line into a bet unless someone is named as betting it.
-week = NFL week of that game (current NFL week is ${curWeek||dateWeek()}); for other sports leave week 0.
+week = NFL week of that game (current NFL week is ${curWeek||dateWeek()}); for other sports leave week 0. NFL weeks by Sunday date: ${Array.from({length:Math.min(18,(curWeek||dateWeek())+1)},(_,i)=>`wk ${i+1} = Sun ${new Date(new Date('2026-09-13T12:00:00').getTime()+i*6048e5).toLocaleDateString('en-US',{month:'numeric',day:'numeric'})}`).join(', ')} (Thursday/Monday games belong to the same week as that Sunday).
+Catching up on past weeks is normal: when Steve dictates or photographs older bets, give each bet its real week/date. If his sheet or message clearly marks a bet as won, lost or pushed (W, L, P, circled W/L, "won", "lost"), put it in "result" as "W", "L" or "P"; otherwise leave result "".
 ${nImg?'The attached image(s) may be a sportsbook slip, a text message, or a handwritten sheet: extract every bet you can read; skip anything illegible and say so in reply.\n':''}If something essential is missing or ambiguous (who, which game, amount), ask in "reply" and leave that bet out.
 
 ${gamesText()}
@@ -847,7 +848,7 @@ ${hist||'(none)'}
 
 New message from Steve: ${text||'(see attached image)'}
 
-Return ONLY JSON, no prose: {"reply":"one short sentence","bets":[{"who":"","book":"Max","league":"NFL","week":0,"date":"","matchup":"","pick":"","spread":"","amount":0,"amountIs":"win","odds":"11/10"}],"lines":[{"book":"Max","league":"NFL","week":0,"date":"","matchup":"","team":"","spread":"","odds":"11/10","total":"","totalOdds":"11/10"}]}`;
+Return ONLY JSON, no prose: {"reply":"one short sentence","bets":[{"who":"","book":"Max","league":"NFL","week":0,"date":"","matchup":"","pick":"","spread":"","amount":0,"amountIs":"win","odds":"11/10","result":""}],"lines":[{"book":"Max","league":"NFL","week":0,"date":"","matchup":"","team":"","spread":"","odds":"11/10","total":"","totalOdds":"11/10"}]}`;
 }
 async function shrink(file){ // phone screenshots are big: scale to ≤1600px JPEG
   const url=URL.createObjectURL(file); const img=new Image(); await new Promise((ok,no)=>{ img.onload=ok; img.onerror=no; img.src=url; });
@@ -877,7 +878,7 @@ async function send(){
     const list=Array.isArray(out&&out.bets)?out.bets:[];
     pending=pending.concat(list.filter(x=>x&&x.matchup&&+x.amount>0).map(x=>{ const odds=parseOdds(x.odds)?String(x.odds):'11/10'; const {risk,win}=riskWin(+x.amount,odds,x.amountIs==='risk'?'risk':'win');
       const lg=LG.includes(x.league)?x.league:'NFL', date=lg==='NFL'?undefined:(/^\d{4}-\d{2}-\d{2}$/.test(x.date||'')?x.date:today());
-      return {who:BETTORS.includes(x.who)?x.who:'Steve',book:BOOKS.includes(x.book)?x.book:'Max',lg,date,week:lg==='NFL'?(+x.week||curWeek||dateWeek()):dateWeek(date),matchup:String(x.matchup),pick:String(x.pick||''),spread:String(x.spread??''),amount:risk,payout:win,odds}; }));
+      return {who:BETTORS.includes(x.who)?x.who:'Steve',book:BOOKS.includes(x.book)?x.book:'Max',lg,date,week:lg==='NFL'?(+x.week||curWeek||dateWeek()):dateWeek(date),matchup:String(x.matchup),pick:String(x.pick||''),spread:String(x.spread??''),amount:risk,payout:win,odds,result:['W','L','P'].includes(x.result)?x.result:null}; }));
     const ll=Array.isArray(out&&out.lines)?out.lines:[];
     pendLines=pendLines.concat(ll.filter(x=>x&&x.matchup&&(x.spread||x.total||x.team)).map(x=>{ const lg=LG.includes(x.league)?x.league:'NFL', date=lg==='NFL'?undefined:(/^\d{4}-\d{2}-\d{2}$/.test(x.date||'')?x.date:today()); return {book:BOOKS.includes(x.book)?x.book:'Max',lg,date,week:lg==='NFL'?(+x.week||curWeek||dateWeek()):dateWeek(date),matchup:String(x.matchup),team:String(x.team||''),spread:String(x.spread||''),odds:parseOdds(x.odds)?String(x.odds):'11/10',total:String(x.total||''),totalOdds:parseOdds(x.totalOdds)?String(x.totalOdds):'11/10'}; }));
     chat.push({r:'b',t:String(out&&out.reply||(list.length||ll.length?'Here’s what I got:':'I couldn’t find a bet or a line in that.'))});
