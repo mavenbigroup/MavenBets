@@ -214,6 +214,8 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 .pp-row.hid input{opacity:.5}
 .pp-tag{font-size:10px;font-weight:800;letter-spacing:.5px;background:#101820;color:var(--gold);border-radius:4px;padding:2px 6px}
 .pp-add{display:flex;gap:6px;margin-top:10px}.pp-add input{flex:1}
+.rfr{border:1px solid var(--gold);background:transparent;color:var(--gold);border-radius:999px;padding:4px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.sync{align-items:center}
 .typing{align-self:flex-start;color:var(--muted);font-size:13px}
 </style>
 </head>
@@ -230,7 +232,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
     <div class="side"><div class="who" id="netWho">Even</div><div class="rec num" id="net">$0</div></div>
   </div>
   <div class="totals"><span id="totBets">0 bets</span><span id="totPend">0 pending</span><span id="totRisk">$0 at risk</span></div>
-  <div class="sync"><span><span id="syncLbl">This device only</span><button class="melbl" id="meLbl" hidden></button></span><span id="scoreLbl"></span></div>
+  <div class="sync"><span><span id="syncLbl">This device only</span><button class="melbl" id="meLbl" hidden></button></span><span style="display:flex;align-items:center;gap:8px"><span id="scoreLbl"></span><button class="rfr" id="refreshBtn" aria-label="Refresh">&#x21bb; Refresh</button></span></div>
 </div></header>
 
 <main>
@@ -307,7 +309,6 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
   <div id="list"></div>
 
   <div class="foot">
-    <button class="btn small" id="refreshBtn">Refresh scores</button>
     <button class="btn small" id="exportBtn">Export</button>
     <button class="btn small" id="importBtn">Import</button>
     <button class="btn small edit-only" id="peopleBtn">People</button>
@@ -344,7 +345,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 <button class="upd" id="updBar" hidden>New version available — tap to update</button>
 
 <script>
-const APP_V='2026.10.17-10';
+const APP_V='2026.10.17-11';
 const KEY='anolik-football-book-v1';
 // People live in the book file so admins can add or hide them; these are the starting five
 const DEFAULT_PEOPLE=[{id:'Al',name:'Al',admin:true,aka:''},{id:'Steve',name:'Steve',admin:true,aka:'Dad, Pop'},{id:'Dan',name:'Danny',aka:'D, Dan'},{id:'J',name:'John',aka:'J'},{id:'Mich',name:'Michael',aka:'Mike, M'}];
@@ -765,7 +766,7 @@ async function refreshScores(manual){
     if(canEdit()){ const ops=[]; for(const b of bets){ if(b.outcome)continue; const g=gameFor(b), o=grade(b,g); if(o)ops.push({t:'patch',id:b.id,patch:{outcome:o,gameId:g.id,final:`${g.away.abbr} ${g.away.score}–${g.home.abbr} ${g.home.score}`}}); }
       if(ops.length)await commit(ops,`Grade ${ops.length} bet${ops.length>1?'s':''} from ESPN finals`); }
     clearTimeout(scoreTimer); scoreTimer=setTimeout(refreshScores,live?60000:300000);
-    if(manual)toast('Scores updated');
+    if(manual)toast('Up to date ✔');
   }catch(e){ espnOk=false; $('#scoreLbl').textContent='Live scores unavailable here'; if(manual)toast('Couldn’t reach ESPN'); clearTimeout(scoreTimer); scoreTimer=setTimeout(refreshScores,300000); }
   render();
 }
