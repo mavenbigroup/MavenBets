@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101820">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Football Book">
+<title>Anolik Football Book · Maven BI</title>
+<meta name="description" content="NFL bet tracker by Maven BI Group">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4F4F2; --ink:#101820; --muted:#5F6670; --line:#D6D8DC;
+  --card:#FFFFFF; --field:#101820; --field-deep:#1C2530; --chalk:#F7F7F5;
+  --gold:#FFB612; --win:#2E8B57; --loss:#C8102E; --push:#7A818A; --pend:#FFB612;
+  --radius:10px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#0B1017; --ink:#F2F2EE; --muted:#9AA2AD; --line:#2A3340; --card:#161D27; --chalk:#0B1017; --field-deep:#000000;
+}}
+:root[data-theme="dark"]{ --paper:#0B1017; --ink:#F2F2EE; --muted:#9AA2AD; --line:#2A3340; --card:#161D27; --chalk:#0B1017; --field-deep:#000000; }
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.45 Barlow,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit}
+h1,h2,.num{font-family:"Barlow Condensed","Arial Narrow",Impact,sans-serif}
+
+/* Scoreboard header */
+.board{background:#101820;color:#fff;padding:18px 16px 16px;border-bottom:5px solid var(--gold)}
+.board .wrap{max-width:720px;margin:0 auto}
+.board h1{margin:0 0 12px;font-size:28px;font-weight:800;letter-spacing:.5px;line-height:1;color:var(--gold)}
+.board h1 small{font-family:Barlow,sans-serif;font-weight:500;font-size:13px;opacity:.75;margin-left:8px;letter-spacing:0}
+.standings{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:center}
+.side{background:#1C2530;border-radius:var(--radius);padding:10px 12px;border-top:3px solid var(--gold)}
+.side .who{font-weight:600;font-size:14px;opacity:.85}
+.side .rec{font-size:32px;font-weight:800;line-height:1;margin-top:2px}
+.side .net{font-size:14px;margin-top:4px;font-weight:600}
+.side .rec.up{color:var(--gold)}.side .rec.down{color:#FF6B6B}
+.totals{margin-top:10px;font-size:13px;opacity:.8;display:flex;justify-content:space-between}
+
+main{max-width:720px;margin:0 auto;padding:14px 16px 40px}
+
+/* Maven BI brand */
+.brand{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 14px;padding-bottom:10px;border-bottom:1px solid rgba(255,182,18,.25)}
+.brand .mark{display:flex;align-items:center;gap:8px;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:800;font-size:18px;letter-spacing:2px;color:#fff;line-height:1}
+.brand .mark svg{flex:none}
+.brand .mark b{color:var(--gold);font-weight:800;margin-left:4px}
+.brand .tag{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.6);white-space:nowrap}
+.credit{text-align:center;font-size:12px;color:var(--muted);margin-top:18px;letter-spacing:.5px}
+.credit b{color:var(--ink);font-weight:600}
+@media (max-width:360px){.brand .tag{display:none}}
+
+/* Toolbar */
+.toolbar{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.toolbar select{flex:1;min-width:120px}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:9px 14px;font-weight:600;cursor:pointer}
+.btn.primary{background:var(--gold);border-color:var(--gold);color:#101820}
+.btn.small{padding:6px 10px;font-size:14px}
+.btn:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+select,input{width:100%;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:9px 10px}
+
+/* Bet slip form */
+.slip{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:16px;box-shadow:0 1px 0 rgba(0,0,0,.04)}
+.slip h2{margin:0 0 10px;font-size:20px;font-weight:800}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid .full{grid-column:1/-1}
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px;font-weight:500}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{flex:1;border:0;background:transparent;color:var(--ink);padding:9px 0;cursor:pointer;font-weight:600}
+.seg button.on{background:#101820;color:var(--gold)}
+.slip .actions{display:flex;gap:8px;margin-top:12px;justify-content:flex-end}
+.hint{font-size:13px;color:var(--muted);margin:8px 0 0}
+
+/* Week groups */
+.week{margin-bottom:18px}
+.week-head{display:flex;justify-content:space-between;align-items:baseline;padding:0 2px 6px;border-bottom:3px solid var(--gold)}
+.week-head h2{margin:0;font-size:22px;font-weight:800}
+.week-head .sum{font-size:13px;color:var(--muted);font-weight:500}
+.bet{background:var(--card);border:1px solid var(--line);border-top:0;padding:12px;display:grid;grid-template-columns:1fr auto;gap:6px 10px}
+.bet:last-child{border-radius:0 0 var(--radius) var(--radius)}
+.bet .match{font-weight:600;font-size:16px}
+.bet .pick{color:var(--muted);font-size:14px}
+.bet .pick b{color:var(--ink)}
+.bet .amt{font-size:22px;font-weight:800;text-align:right;line-height:1}
+.bet .amt.win{color:var(--win)}.bet .amt.loss{color:var(--loss)}.bet .amt.push{color:var(--push)}
+.bet .tag{font-size:12px;text-align:right;color:var(--muted)}
+.bet .outcome{grid-column:1/-1;display:flex;gap:6px;align-items:center;margin-top:4px}
+.oc{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:6px;padding:5px 10px;font-size:13px;font-weight:600;cursor:pointer}
+.oc.on.W{background:var(--win);border-color:var(--win);color:#fff}
+.oc.on.L{background:var(--loss);border-color:var(--loss);color:#fff}
+.oc.on.P{background:var(--push);border-color:var(--push);color:#fff}
+.oc.on.O{background:var(--pend);border-color:var(--pend);color:#101820}
+.del{margin-left:auto;border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:13px;padding:5px}
+.del:hover{color:var(--loss)}
+
+.empty{text-align:center;color:var(--muted);padding:40px 10px;border:1px dashed var(--line);border-radius:var(--radius)}
+.foot{display:flex;gap:8px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:8px 14px;border-radius:8px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+@media (max-width:400px){.side .rec{font-size:28px}}
+</style>
+</head>
+<body>
+<header class="board"><div class="wrap">
+  <div class="brand">
+    <span class="mark"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="1" y="12" width="4" height="9" rx="1" fill="#FFB612"/><rect x="7" y="7" width="4" height="14" rx="1" fill="#FFB612" opacity=".8"/><rect x="13" y="3" width="4" height="18" rx="1" fill="#FFB612" opacity=".6"/><path d="M2 9 L9 4 L15 6 L21 1" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>MAVEN<b>BI</b></span>
+    <span class="tag">Know | Run | Improve</span>
+  </div>
+  <h1>Anolik Football Book <small id="seasonLbl"></small></h1>
+  <div class="standings">
+    <div class="side"><div class="who">Record</div><div class="rec num" id="recAl">0–0</div></div>
+    <div class="side"><div class="who" id="netWho">Even with Dad</div><div class="rec num" id="netAl">$0</div></div>
+  </div>
+  <div class="totals"><span id="totBets">0 bets</span><span id="totPend">0 pending</span><span id="totRisk">$0 at risk</span></div>
+</div></header>
+
+<main>
+  <div class="toolbar">
+    <select id="weekFilter" aria-label="Filter by week"><option value="all">All weeks</option></select>
+    <button class="btn primary" id="toggleForm">+ New bet</button>
+  </div>
+
+  <section class="slip" id="slip" hidden>
+    <h2 id="slipTitle">New bet</h2>
+    <div class="grid">
+      <div class="full"><label for="fWeek">Week</label><input id="fWeek" type="number" min="1" max="22" inputmode="numeric"></div>
+      <div class="full"><label for="fMatch">Matchup</label><input id="fMatch" placeholder="Eagles @ Cowboys"></div>
+      <div><label for="fPick">Pick</label><input id="fPick" placeholder="Eagles"></div>
+      <div><label for="fSpread">Spread</label><input id="fSpread" placeholder="-3.5 or +7" inputmode="decimal"></div>
+      <div><label for="fAmt">Amount ($)</label><input id="fAmt" type="number" min="0" step="1" inputmode="decimal" placeholder="40"></div>
+      <div><label>Amount is…</label><div class="seg" id="fMode"><button type="button" data-v="win" class="on">To win</button><button type="button" data-v="risk">Risk</button></div></div>
+      <div class="full"><label for="fOdds">Odds (risk / win)</label><input id="fOdds" placeholder="11/10 or 48/40 — blank = even money"></div>
+    </div>
+    <p class="hint" id="calc">Enter an amount to see risk and win.</p>
+    <div class="actions"><button class="btn" id="cancelForm">Cancel</button><button class="btn primary" id="saveBet">Save bet</button></div>
+  </section>
+
+  <div id="list"></div>
+
+  <div class="foot">
+    <button class="btn small" id="exportBtn">Export</button>
+    <button class="btn small" id="importBtn">Import</button>
+    <button class="btn small" id="clearBtn">Clear season</button>
+    <input type="file" id="importFile" accept="application/json" hidden>
+  </div>
+  <p class="credit">Built by <b>Maven BI Group</b> · Phoenix, AZ</p>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY='anolik-football-book-v1';
+let bets=[]; let editId=null; let mode='win';
+const $=s=>document.querySelector(s);
+
+function load(){ try{ const r=localStorage.getItem(KEY); bets=r?JSON.parse(r):[]; }catch(e){ bets=[]; } }
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(bets)); }catch(e){ toast('Could not save to this browser'); } }
+function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),1800); }
+const money=n=>(n<0?'-':'')+'$'+Math.abs(Math.round(n));
+function net(b){ if(b.outcome==='W')return b.payout??b.amount; if(b.outcome==='L')return -b.amount; return 0; }
+
+function render(){
+  // standings
+  {
+    const w=bets.filter(b=>b.outcome==='W').length, l=bets.filter(b=>b.outcome==='L').length, pu=bets.filter(b=>b.outcome==='P').length;
+    const n=bets.reduce((s,b)=>s+net(b),0);
+    $('#recAl').textContent=`${w}–${l}`+(pu?`–${pu}`:'');
+    $('#netWho').textContent=n>0?'Dad owes me':n<0?'I owe Dad':'Even with Dad';
+    const el=$('#netAl'); el.textContent=money(Math.abs(n)); el.className='rec num '+(n>0?'up':n<0?'down':'');
+  }
+  const pend=bets.filter(b=>!b.outcome);
+  $('#totBets').textContent=`${bets.length} bet${bets.length===1?'':'s'}`;
+  $('#totPend').textContent=`${pend.length} pending`;
+  $('#totRisk').textContent=money(pend.reduce((s,b)=>s+b.amount,0))+' at risk';
+
+  // week filter
+  const weeks=[...new Set(bets.map(b=>b.week))].sort((a,b)=>b-a);
+  const wf=$('#weekFilter'); const cur=wf.value;
+  wf.innerHTML='<option value="all">All weeks</option>'+weeks.map(w=>`<option value="${w}">Week ${w}</option>`).join('');
+  wf.value=weeks.includes(+cur)?cur:'all';
+
+  // list
+  const list=$('#list'); list.innerHTML='';
+  const shown=wf.value==='all'?weeks:[+wf.value];
+  if(!bets.length){ list.innerHTML='<div class="empty">No bets yet. Tap “New bet” to log the first one.</div>'; return; }
+  for(const w of shown){
+    const rows=bets.filter(b=>b.week===w);
+    const n=rows.reduce((s,b)=>s+net(b),0), open=rows.filter(b=>!b.outcome).length;
+    const sec=document.createElement('section'); sec.className='week';
+    sec.innerHTML=`<div class="week-head"><h2>Week ${w}</h2><span class="sum">${rows.length} bets · ${open?open+' open · ':''}${money(n)}</span></div>`;
+    for(const b of rows){
+      const d=document.createElement('div'); d.className='bet';
+      const cls=b.outcome==='W'?'win':b.outcome==='L'?'loss':b.outcome==='P'?'push':'';
+      const amtTxt=b.outcome==='W'?'+'+money(b.payout??b.amount):b.outcome==='L'?'-'+money(b.amount):b.outcome==='P'?'$0':money(b.payout??b.amount);
+      d.innerHTML=`
+        <div class="match">${esc(b.matchup)}</div>
+        <div class="amt num ${cls}">${amtTxt}</div>
+        <div class="pick"><b>${esc(b.pick)}</b> ${esc(b.spread)}</div>
+        <div class="tag">${b.outcome==='W'?'Won':b.outcome==='L'?'Lost':b.outcome==='P'?'Push':'To win'} · ${money(b.amount)}/${money(b.payout??b.amount)}</div>
+        <div class="outcome">
+          ${['W','L','P','O'].map(o=>`<button class="oc ${o} ${(b.outcome||'O')===o?'on':''}" data-id="${b.id}" data-o="${o}">${{W:'Win',L:'Loss',P:'Push',O:'Open'}[o]}</button>`).join('')}
+          <button class="del" data-edit="${b.id}">Edit</button><button class="del" data-del="${b.id}">Delete</button>
+        </div>`;
+      sec.appendChild(d);
+    }
+    list.appendChild(sec);
+  }
+}
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// form
+function parseOdds(t){ const m=String(t||'').trim().match(/^(\d+(?:\.\d+)?)\s*[\/:]\s*(\d+(?:\.\d+)?)$/); if(!m)return null; const r=+m[1],w=+m[2]; return (r>0&&w>0)?{r,w}:null; }
+function calcRiskWin(amount,oddsTxt,md){ const o=parseOdds(oddsTxt)||{r:1,w:1}; if(md==='risk')return {risk:amount,win:Math.round(amount*o.w/o.r*100)/100}; return {risk:Math.round(amount*o.r/o.w*100)/100,win:amount}; }
+function setMode(v){ mode=v; document.querySelectorAll('#fMode button').forEach(x=>x.classList.toggle('on',x.dataset.v===v)); showCalc(); }
+function showCalc(){ const a=+$('#fAmt').value, ot=$('#fOdds').value; const c=$('#calc');
+  if(ot.trim()&&!parseOdds(ot)){ c.textContent='Odds should look like 11/10 or 48/40.'; return; }
+  if(!(a>0)){ c.textContent='Enter an amount to see risk and win.'; return; }
+  const {risk,win}=calcRiskWin(a,ot,mode); c.textContent=`Risk ${money(risk)} to win ${money(win)}`; }
+$('#fMode').addEventListener('click',e=>{ if(e.target.dataset.v)setMode(e.target.dataset.v); });
+$('#fAmt').addEventListener('input',showCalc); $('#fOdds').addEventListener('input',showCalc);
+function openForm(b){
+  editId=b?b.id:null;
+  $('#slipTitle').textContent=b?'Edit bet':'New bet';
+  $('#fWeek').value=b?b.week:(bets.length?Math.max(...bets.map(x=>x.week)):currentWeek());
+  $('#fMatch').value=b?b.matchup:''; $('#fPick').value=b?b.pick:''; $('#fSpread').value=b?b.spread:'';
+  $('#fAmt').value=b?(b.payout??b.amount):''; $('#fOdds').value=b?(b.odds||''):''; setMode('win');
+  $('#slip').hidden=false; $('#fMatch').focus();
+}
+function closeForm(){ $('#slip').hidden=true; editId=null; }
+function currentWeek(){ // NFL 2026 kickoff assumed Thu Sep 10; adjust if needed
+  const start=new Date('2026-09-10T00:00:00'); const d=Math.floor((Date.now()-start)/864e5);
+  return Math.min(22,Math.max(1,Math.floor(d/7)+1));
+}
+$('#toggleForm').onclick=()=>$('#slip').hidden?openForm():closeForm();
+$('#cancelForm').onclick=closeForm;
+$('#saveBet').onclick=()=>{
+  const week=+$('#fWeek').value, matchup=$('#fMatch').value.trim(), pick=$('#fPick').value.trim(), spread=$('#fSpread').value.trim(), amount=+$('#fAmt').value;
+  const odds=$('#fOdds').value.trim();
+  if(!week||!matchup||!(amount>0)){ toast('Need a week, matchup, and amount'); return; }
+  if(odds&&!parseOdds(odds)){ toast('Odds should look like 11/10'); return; }
+  const {risk,win}=calcRiskWin(amount,odds,mode);
+  const rec={id:editId||Date.now().toString(36),week,matchup,pick,spread,amount:risk,payout:win,odds,outcome:null};
+  if(editId){ const i=bets.findIndex(b=>b.id===editId); rec.outcome=bets[i].outcome; bets[i]=rec; }
+  else bets.unshift(rec);
+  save(); closeForm(); render(); toast(editId?'Bet updated':'Bet saved');
+};
+$('#list').addEventListener('click',e=>{
+  const t=e.target;
+  if(t.dataset.o){ const b=bets.find(x=>x.id===t.dataset.id); b.outcome=t.dataset.o==='O'?null:t.dataset.o; save(); render(); }
+  else if(t.dataset.edit){ openForm(bets.find(x=>x.id===t.dataset.edit)); window.scrollTo({top:0}); }
+  else if(t.dataset.del){ if(confirm('Delete this bet?')){ bets=bets.filter(x=>x.id!==t.dataset.del); save(); render(); } }
+});
+$('#weekFilter').onchange=render;
+
+// export / import / clear
+$('#exportBtn').onclick=async()=>{
+  const txt=JSON.stringify(bets,null,1);
+  try{ if(navigator.share){ await navigator.share({title:'Football book',text:txt}); return; } }catch(e){}
+  try{ await navigator.clipboard.writeText(txt); toast('Copied to clipboard'); }catch(e){ prompt('Copy this:',txt); }
+};
+$('#importBtn').onclick=()=>{
+  const txt=prompt('Paste exported bets:'); if(!txt)return;
+  try{ const inc=JSON.parse(txt); if(!Array.isArray(inc))throw 0;
+    const ids=new Set(bets.map(b=>b.id)); let n=0; for(const b of inc){ if(!ids.has(b.id)){ bets.push(b); n++; } }
+    bets.sort((a,b)=>b.week-a.week); save(); render(); toast(`Added ${n} bet${n===1?'':'s'}`);
+  }catch(e){ toast('That didn’t look like exported bets'); }
+};
+$('#clearBtn').onclick=()=>{ if(confirm('Clear every bet? This can’t be undone.')){ bets=[]; save(); render(); } };
+
+$('#seasonLbl').textContent='2026 season';
+load();
+// Al's bets to date — graded against final scores; seed outcomes are authoritative
+const SEED_V='11';
+const SEED=[
+ {id:'s1',week:1,matchup:'Falcons @ Steelers',pick:'Pittsburgh',spread:'',amount:44,payout:40,odds:'11/10',outcome:'W'},
+ {id:'s3',week:2,matchup:'Steelers @ Patriots',pick:'Pittsburgh',spread:'+5.5',amount:44,payout:40,odds:'11/10',outcome:'L'},
+ {id:'s2',week:2,matchup:'Panthers @ Falcons',pick:'Carolina',spread:'-2.5',amount:44,payout:40,odds:'11/10',outcome:'W'},
+ {id:'s4',week:3,matchup:'Bengals @ Steelers',pick:'Pittsburgh',spread:'+3',amount:42,payout:40,odds:'42/40',outcome:'W'},
+ {id:'s5',week:3,matchup:'Panthers @ Browns',pick:'Carolina',spread:'-1',amount:48,payout:40,odds:'48/40',outcome:'L'},
+ {id:'s6',week:3,matchup:'Ravens @ Cowboys',pick:'Dallas',spread:'+3.5',amount:46,payout:40,odds:'46/40',outcome:'W'},
+ {id:'s7',week:3,matchup:'Raiders @ Saints',pick:'New Orleans',spread:'-3.5',amount:44,payout:40,odds:'11/10',outcome:'L'},
+ {id:'s8',week:4,matchup:'Steelers @ Browns (TNF)',pick:'Pittsburgh',spread:'-2.5',amount:44,payout:40,odds:'11/10',outcome:'L'},
+ {id:'s9',week:4,matchup:'Steelers @ Browns (TNF)',pick:'Over',spread:'38',amount:44,payout:40,odds:'11/10',outcome:'W'},
+ {id:'s10',week:4,matchup:'Cowboys @ Texans',pick:'Houston',spread:'-3',amount:44,payout:40,odds:'11/10',outcome:'L'},
+ {id:'s11',week:4,matchup:'Jaguars @ Bengals',pick:'Jacksonville',spread:'+2.5',amount:44,payout:40,odds:'11/10',outcome:'W'},
+ {id:'s12',week:5,matchup:'Colts @ Steelers',pick:'Pittsburgh',spread:'-3',amount:44,payout:40,odds:'11/10',outcome:'W'},
+ {id:'s13',week:5,matchup:'Bears @ Packers',pick:'Chicago',spread:'-1',amount:44,payout:40,odds:'11/10',outcome:'L'},
+ {id:'s14',week:5,matchup:'Bills @ Rams (MNF)',pick:'Buffalo',spread:'+3.5',amount:44,payout:40,odds:'11/10',outcome:'W'},
+ {id:'s15',week:6,matchup:'Seahawks @ Broncos (TNF)',pick:'Denver',spread:'+2.5',amount:44,payout:40,odds:'11/10',outcome:'W'},
+ {id:'s16',week:6,matchup:'Seahawks @ Broncos (TNF)',pick:'Under',spread:'40.5',amount:44,payout:40,odds:'11/10',outcome:'W'}
+];
+{ let v; try{ v=localStorage.getItem(KEY+'-seedv'); }catch(e){}
+  if(v!==SEED_V){ for(const sd of SEED){ const i=bets.findIndex(b=>b.id===sd.id); if(i<0)bets.push({...sd}); else bets[i]={...sd,outcome:sd.outcome??bets[i].outcome}; }
+    bets.sort((a,b)=>b.week-a.week); save(); try{ localStorage.setItem(KEY+'-seedv',SEED_V); }catch(e){} } }
+render();
+</script>
+</body>
+</html>
