@@ -1,0 +1,244 @@
+{
+ "bets": [
+  {
+   "who": "Al",
+   "book": "Max",
+   "id": "s1",
+   "week": 1,
+   "matchup": "Falcons @ Steelers",
+   "pick": "Pittsburgh",
+   "spread": "",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": "W"
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "id": "s3",
+   "week": 2,
+   "matchup": "Steelers @ Patriots",
+   "pick": "Pittsburgh",
+   "spread": "+5.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": "L"
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "id": "s2",
+   "week": 2,
+   "matchup": "Panthers @ Falcons",
+   "pick": "Carolina",
+   "spread": "-2.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": "W"
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "id": "s4",
+   "week": 3,
+   "matchup": "Bengals @ Steelers",
+   "pick": "Pittsburgh",
+   "spread": "+3",
+   "amount": 42,
+   "payout": 40,
+   "odds": "42/40",
+   "outcome": "W"
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "id": "s5",
+   "week": 3,
+   "matchup": "Panthers @ Browns",
+   "pick": "Carolina",
+   "spread": "-1",
+   "amount": 48,
+   "payout": 40,
+   "odds": "48/40",
+   "outcome": "L"
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "id": "s6",
+   "week": 3,
+   "matchup": "Ravens @ Cowboys",
+   "pick": "Dallas",
+   "spread": "+3.5",
+   "amount": 46,
+   "payout": 40,
+   "odds": "46/40",
+   "outcome": "W"
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "id": "s7",
+   "week": 3,
+   "matchup": "Raiders @ Saints",
+   "pick": "New Orleans",
+   "spread": "-3.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": "L"
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "id": "s8",
+   "week": 4,
+   "matchup": "Steelers @ Browns (TNF)",
+   "pick": "Pittsburgh",
+   "spread": "-2.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": "L"
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "id": "s9",
+   "week": 4,
+   "matchup": "Steelers @ Browns (TNF)",
+   "pick": "Over",
+   "spread": "38",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": "W"
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "id": "s10",
+   "week": 4,
+   "matchup": "Cowboys @ Texans",
+   "pick": "Houston",
+   "spread": "-3",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": "L"
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "id": "s11",
+   "week": 4,
+   "matchup": "Jaguars @ Bengals",
+   "pick": "Jacksonville",
+   "spread": "+2.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": "W"
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "id": "s12",
+   "week": 5,
+   "matchup": "Colts @ Steelers",
+   "pick": "Pittsburgh",
+   "spread": "-3",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": "W"
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "id": "s13",
+   "week": 5,
+   "matchup": "Bears @ Packers",
+   "pick": "Chicago",
+   "spread": "-1",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": "L"
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "id": "s14",
+   "week": 5,
+   "matchup": "Bills @ Rams (MNF)",
+   "pick": "Buffalo",
+   "spread": "+3.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": "W"
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "id": "s15",
+   "week": 6,
+   "matchup": "Seahawks @ Broncos (TNF)",
+   "pick": "Denver",
+   "spread": "+2.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": "W"
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "id": "s16",
+   "week": 6,
+   "matchup": "Seahawks @ Broncos (TNF)",
+   "pick": "Under",
+   "spread": "40.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": "W"
+  }
+ ],
+ "carry": {},
+ "lines": [],
+ "people": [
+  {
+   "id": "Al",
+   "name": "Al",
+   "admin": true,
+   "aka": ""
+  },
+  {
+   "id": "Steve",
+   "name": "Steve",
+   "admin": true,
+   "aka": "Dad, Pop"
+  },
+  {
+   "id": "Dan",
+   "name": "Danny",
+   "aka": "D, Dan, Uncle D"
+  },
+  {
+   "id": "J",
+   "name": "John",
+   "aka": "J"
+  },
+  {
+   "id": "Mich",
+   "name": "Michael",
+   "aka": "Mike, M"
+  }
+ ],
+ "updated": "2026-10-17T15:56:37.209Z"
+}
