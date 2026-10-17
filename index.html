@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#101820">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="Football Book">
-<title>Anolik Football Book · Maven BI</title>
+<meta name="apple-mobile-web-app-title" content="Sports Book">
+<title>Anolik Sports Book · Maven BI</title>
 <meta name="description" content="Family NFL betting book by Maven BI Group">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
@@ -184,6 +184,12 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 .rq p{margin:0;font-size:14px}.rq .warn{color:var(--loss);font-weight:600;margin-top:4px}
 .rq .actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
 #rqPick button{font-size:14px;padding:9px 4px}
+.lgseg{display:flex;gap:6px;overflow-x:auto;margin:0 0 14px;scrollbar-width:none}.lgseg::-webkit-scrollbar{display:none}
+.lgseg button{flex:none;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 12px;font-weight:600;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.lgseg button.on{background:#101820;border-color:#101820;color:var(--gold)}
+.lgseg button svg{width:14px;height:14px}
+.bet .lgb{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.6px;background:var(--gold);color:#101820;border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:2px}
+.lg .gm .lgt{font-size:10px;font-weight:800;letter-spacing:.6px;background:var(--gold);color:#101820;border-radius:4px;padding:1px 5px;margin-right:6px;vertical-align:1px}
 .typing{align-self:flex-start;color:var(--muted);font-size:13px}
 </style>
 </head>
@@ -193,7 +199,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
     <span class="mark"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="1" y="12" width="4" height="9" rx="1" fill="#FFB612"/><rect x="7" y="7" width="4" height="14" rx="1" fill="#FFB612" opacity=".8"/><rect x="13" y="3" width="4" height="18" rx="1" fill="#FFB612" opacity=".6"/><path d="M2 9 L9 4 L15 6 L21 1" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>MAVEN<b>BI</b></span>
     <span class="tag">Know | Run | Improve</span>
   </div>
-  <h1>Anolik Football Book <small>2026 season</small></h1>
+  <h1>Anolik Sports Book <small>2026 season</small></h1>
   <div class="people" id="people" role="tablist" aria-label="Bettor"></div>
   <div class="standings">
     <div class="side"><div class="who" id="recWho">Record</div><div class="rec num" id="rec">0–0</div></div>
@@ -204,6 +210,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 </div></header>
 
 <main>
+  <div class="lgseg" id="lgSeg" role="tablist" aria-label="Sport" hidden></div>
   <section id="reqInbox" hidden></section>
   <section class="desk" id="desk" hidden>
     <div class="desk-head" id="deskHead"><h2>Bet desk</h2><span>Type, talk, or send a screenshot</span></div>
@@ -247,8 +254,10 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
     <div class="grid">
       <div><label for="fWho">Bettor</label><select id="fWho"></select></div>
       <div><label for="fBook">Book</label><select id="fBook"></select></div>
-      <div><label for="fWeek">Week</label><input id="fWeek" type="number" min="1" max="22" inputmode="numeric"></div>
-      <div><label for="fOdds">Odds (risk/win)</label><input id="fOdds" placeholder="11/10"></div>
+      <div><label for="fLg">Sport</label><select id="fLg"></select></div>
+      <div id="fWeekBox"><label for="fWeek">NFL week</label><input id="fWeek" type="number" min="1" max="22" inputmode="numeric"></div>
+      <div id="fDateBox" hidden><label for="fDate">Game date</label><input id="fDate" type="date"></div>
+      <div><label for="fOdds">Odds</label><input id="fOdds" placeholder="11/10 or -150"></div>
       <div class="full"><label for="fMatch">Matchup</label><input id="fMatch" placeholder="Seahawks @ Broncos"></div>
       <div><label for="fPick">Pick</label><input id="fPick" placeholder="Denver or Under"></div>
       <div><label for="fSpread">Spread / total</label><input id="fSpread" placeholder="+2.5 or 40.5" inputmode="decimal"></div>
@@ -307,7 +316,15 @@ const v0=ls.get('-view',{}); if(v0.p)view=v0.p; if(v0.b)bookView=v0.b;
 function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2400); }
 function net(b){ const o=outcomeOf(b); if(o==='W')return b.payout??b.amount; if(o==='L')return -b.amount; return 0; }
 function norm(b){ if(!b.who)b.who='Al'; if(!BOOKS.includes(b.book))b.book='Max'; return b; }
-function dateWeek(){ const d=Math.floor((Date.now()-new Date('2026-09-08T00:00:00'))/864e5); return Math.min(18,Math.max(1,Math.floor(d/7)+1)); }
+// Settlement week: Tue–Mon blocks from the 2026 NFL opener; every sport settles in the same weekly cycle
+function dateWeek(d){ const t=d?new Date(d+'T12:00:00'):new Date(); return Math.max(1,Math.floor((t-new Date('2026-09-08T00:00:00'))/6048e5)+1); }
+const LEAGUES={NFL:{p:'football/nfl',n:'NFL'},NCAAF:{p:'football/college-football',q:'&groups=80',n:'College FB'},NBA:{p:'basketball/nba',n:'NBA'},NCAAB:{p:'basketball/mens-college-basketball',q:'&groups=50',n:'College BB'},MLB:{p:'baseball/mlb',n:'MLB'},NHL:{p:'hockey/nhl',n:'NHL'}};
+const LG=Object.keys(LEAGUES);
+const lgOf=x=>LG.includes(x&&x.lg)?x.lg:'NFL';
+const dayStr=d=>{ const x=new Date(d); return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0'); };
+const today=()=>dayStr(Date.now());
+const shortDay=s=>s?new Date(s+'T12:00:00').toLocaleDateString([], {weekday:'short',month:'numeric',day:'numeric'}):'';
+let lgView=ls.get('-lg','all');
 const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 function repoFromLocation(){ const m=location.hostname.match(/^([a-z0-9-]+)\.github\.io$/i); if(!m)return ''; const seg=location.pathname.split('/').filter(Boolean)[0]; return seg?`${m[1]}/${seg}`:`${m[1]}/${m[1]}.github.io`; }
 const repo=()=>cfg.repo||repoFromLocation();
@@ -377,7 +394,8 @@ async function pull(){ if(store!=='gh')return; try{ const d=await ghRead(); if(d
 /* ================= standings ================= */
 function stat(rows){ const o=rows.map(outcomeOf); const w=o.filter(x=>x==='W').length, l=o.filter(x=>x==='L').length, p=o.filter(x=>x==='P').length; return {w,l,p,rec:`${w}–${l}`+(p?`–${p}`:''),n:rows.reduce((s,b)=>s+net(b),0)}; }
 const cv=(who,book)=>+carry[who+'|'+book]||0;
-function bal(who,book){ const rows=bets.filter(b=>b.who===who&&(book==='all'||b.book===book)); return stat(rows).n+(book==='all'?BOOKS:[book]).reduce((s,k)=>s+cv(who,k),0); }
+const inLg=b=>lgView==='all'||lgOf(b)===lgView;
+function bal(who,book){ const rows=bets.filter(b=>b.who===who&&(book==='all'||b.book===book)&&inLg(b)); return stat(rows).n+(lgView!=='all'?[]:book==='all'?BOOKS:[book]).reduce((s,k)=>s+cv(who,k),0); }
 function outcomeOf(b){ if(b.outcome)return b.outcome; const g=gameFor(b); return grade(b,g); }
 
 function render(){
@@ -387,7 +405,8 @@ function render(){
   $('#desk').hidden=!canBook();
   $('#people').innerHTML=['all',...BETTORS].map(p=>`<button class="chip ${view===p?'on':''}" role="tab" aria-selected="${view===p}" data-p="${p}">${p==='all'?'Everyone':esc(nm(p))}</button>`).join('');
   $('#bookSeg').innerHTML=['all',...BOOKS].map(k=>`<button class="${bookView===k?'on':''}" data-k="${k}">${k==='all'?'All books':k}</button>`).join('');
-  const inBook=b=>bookView==='all'||b.book===bookView;
+  const inBook=b=>(bookView==='all'||b.book===bookView)&&inLg(b);
+  renderLgSeg();
   const mine=bets.filter(b=>(view==='all'||b.who===view)&&inBook(b));
   const bookLbl=bookView==='all'?'the books':bookView;
   const cell=v=>`<td class="n ${v>0?'up':v<0?'down':''}">${v?signed(v):'$0'}</td>`;
@@ -396,7 +415,7 @@ function render(){
     $('#recWho').textContent='Family record'; $('#rec').textContent=s.rec;
     $('#netWho').textContent=n>0?`${bookView==='all'?'Books owe':bookView+' owes'} the family`:n<0?`Family owes ${bookLbl}`:'Even with '+bookLbl;
     setNet(n);
-    const rows=BETTORS.map(p=>({p,s:stat(bets.filter(b=>b.who===p)),t:bal(p,'all')})).sort((a,b)=>b.t-a.t);
+    const rows=BETTORS.map(p=>({p,s:stat(bets.filter(b=>b.who===p&&inLg(b))),t:bal(p,'all')})).sort((a,b)=>b.t-a.t);
     $('#groupView').innerHTML=`<table class="tbl"><thead><tr><th>Bettor</th><th class="n">Record</th>${BOOKS.map(k=>`<th class="n">${k}</th>`).join('')}<th class="n">Total</th></tr></thead><tbody>${
       rows.map(({p,s,t})=>`<tr data-p="${p}"><td>${esc(nm(p))}</td><td class="n">${s.rec}</td>${BOOKS.map(k=>cell(bal(p,k))).join('')}${cell(t)}</tr>`).join('')
     }</tbody><tfoot><tr><td>Book</td><td></td>${BOOKS.map(k=>cell(-BETTORS.reduce((t,p)=>t+bal(p,k),0))).join('')}<td></td></tr></tfoot></table>`;
@@ -431,9 +450,9 @@ function render(){
       const amt=o==='W'?'+'+money(b.payout??b.amount):o==='L'?'-'+money(b.amount):o==='P'?'$0':money(b.payout??b.amount);
       const g=gameFor(b), sc=g?scoreLine(g):(b.final?'Final · '+b.final:'');
       d.innerHTML=`
-        <div class="match">${view==='all'?`<span class="who">${esc(nm(b.who))}</span>`:''}${esc(b.matchup)}<span class="bk">${esc(b.book)}</span></div>
+        <div class="match">${view==='all'?`<span class="who">${esc(nm(b.who))}</span>`:''}${esc(b.matchup)}${lgOf(b)!=='NFL'?`<span class="lgb">${lgOf(b)}</span>`:''}<span class="bk">${esc(b.book)}</span></div>
         <div class="amt num ${cls}">${amt}</div>
-        <div class="pick"><b>${esc(b.pick)}</b> ${esc(b.spread)}</div>
+        <div class="pick"><b>${esc(b.pick)}</b> ${esc(b.spread)}${b.date&&lgOf(b)!=='NFL'?` · ${esc(shortDay(b.date))}`:''}</div>
         <div class="tag">${o==='W'?'Won':o==='L'?'Lost':o==='P'?'Push':'To win'} · ${money(b.amount)}/${money(b.payout??b.amount)}</div>
         ${sc?`<div class="score ${g&&g.state==='in'?'live':''}">${esc(sc)}</div>`:''}
         <div class="outcome edit-only">
@@ -446,29 +465,29 @@ function render(){
   }
 }
 const mkey=s=>tokens(s).filter(x=>x!=='@'&&x!=='at'&&x!=='vs'&&x!=='tnf'&&x!=='snf'&&x!=='mnf').sort().join(' ');
-const lineId=l=>`${l.week}|${l.book}|${mkey(l.matchup)}`.replace(/[^A-Za-z0-9|_ -]/g,'').replace(/[ |]+/g,'_');
-function lineGame(l){ return gameFor({week:l.week,matchup:l.matchup,pick:l.team||''}); }
+const lineId=l=>`${lgOf(l)==='NFL'?'':lgOf(l)+'|'}${l.week}|${l.book}|${mkey(l.matchup)}`.replace(/[^A-Za-z0-9|_ -]/g,'').replace(/[ |]+/g,'_');
+function lineGame(l){ return gameFor({lg:l.lg,date:l.date,week:l.week,matchup:l.matchup,pick:l.team||''}); }
 function renderLines(){
-  const box=$('#linesView'); if(!lines.length){ box.hidden=true; return; }
-  const weeks=[...new Set(lines.map(l=>l.week))].sort((a,b)=>b-a);
+  const box=$('#linesView'); const lns=lines.filter(inLg); if(!lns.length){ box.hidden=true; return; }
+  const weeks=[...new Set(lns.map(l=>l.week))].sort((a,b)=>b-a);
   const wk=weeks.includes(curWeek)?curWeek:weeks.find(w=>w<=(curWeek||99))||weeks[0];
-  const ls_=lines.filter(l=>l.week===wk), groups={};
-  for(const l of ls_){ const k=mkey(l.matchup); (groups[k]=groups[k]||{matchup:l.matchup,by:{}}).by[l.book]=l; }
-  const rows=Object.values(groups).map(g=>{ const gm=lineGame(Object.values(g.by)[0]); return {...g,gm}; }).sort((a,b)=>String(a.gm?.date||'z').localeCompare(String(b.gm?.date||'z')));
-  const when=g=>!g?'':g.state==='in'?'LIVE '+g.detail:g.state==='post'?'Final':new Date(g.date).toLocaleString([], {weekday:'short',hour:'numeric',minute:'2-digit'});
+  const ls_=lns.filter(l=>l.week===wk), groups={};
+  for(const l of ls_){ const k=lgOf(l)+'|'+(l.date||'')+'|'+mkey(l.matchup); (groups[k]=groups[k]||{matchup:l.matchup,lg:lgOf(l),date:l.date,by:{}}).by[l.book]=l; }
+  const rows=Object.values(groups).map(g=>{ const gm=lineGame(Object.values(g.by)[0]); return {...g,gm}; }).sort((a,b)=>String(a.gm?.date||a.date||'z').localeCompare(String(b.gm?.date||b.date||'z')));
+  const when=(g,r)=>!g?(r&&r.date?shortDay(r.date):''):g.state==='in'?'LIVE '+g.detail:g.state==='post'?'Final':new Date(g.date).toLocaleString([], {weekday:'short',hour:'numeric',minute:'2-digit'});
   const cell=(l,k)=>{ if(!l)return `<div class="lc none"><b>${k}</b>—</div>`;
     const side=l.team?`${esc(l.team)} ${esc(l.spread||'PK')}${l.odds&&l.odds!=='11/10'?` (${esc(l.odds)})`:''}`:'';
     const tot=l.total?`O/U ${esc(l.total)}${l.totalOdds&&l.totalOdds!=='11/10'?` (${esc(l.totalOdds)})`:''}`:'';
     const inner=`<b>${k}</b>${side}${side&&tot?'<br>':''}${tot}`;
     return canEdit()?`<button class="lc" data-lb="${esc(l.id)}" title="Book a bet on this line">${inner}<span class="rmL" data-ld="${esc(l.id)}" role="button" aria-label="Remove line">×</span></button>`:`<button class="lc" data-lr="${esc(l.id)}" title="Request a bet on this line">${inner}</button>`; };
   box.className='lines'; box.hidden=false;
-  box.innerHTML=`<div class="lines-head"><h2>Week ${wk} lines</h2><span>${canEdit()?'Tap a line to book it':'Tap a line to request a bet'}</span></div>`+rows.map(g=>`<div class="lg"><div class="gm"><span>${esc(g.matchup)}</span><small>${esc(when(g.gm))}</small></div><div class="bks">${BOOKS.map(k=>cell(g.by[k],k)).join('')}</div></div>`).join('');
+  box.innerHTML=`<div class="lines-head"><h2>${lgView!=='all'&&lgView!=='NFL'?esc(LEAGUES[lgView].n)+' lines':'Week '+wk+' lines'}</h2><span>${canEdit()?'Tap a line to book it':'Tap a line to request a bet'}</span></div>`+rows.map(g=>`<div class="lg"><div class="gm"><span>${g.lg!=='NFL'?`<span class="lgt">${g.lg}</span>`:''}${esc(g.matchup)}</span><small>${esc(when(g.gm,g))}</small></div><div class="bks">${BOOKS.map(k=>cell(g.by[k],k)).join('')}</div></div>`).join('');
 }
 $('#linesView').addEventListener('click',e=>{
   const d=e.target.dataset.ld; if(d){ e.stopPropagation(); if(confirm('Remove this line?'))commit([{t:'unline',id:d}],'Remove line'); return; }
   const q=e.target.closest('[data-lr]'); if(q){ const l=lines.find(x=>x.id===q.dataset.lr); if(l)openRequest(l); return; }
   const b=e.target.closest('[data-lb]'); if(!b||!canEdit())return; const l=lines.find(x=>x.id===b.dataset.lb); if(!l)return;
-  openForm(null); $('#fBook').value=l.book; $('#fWeek').value=l.week; $('#fMatch').value=l.matchup;
+  openForm(null); $('#fBook').value=l.book; $('#fLg').value=lgOf(l); $('#fDate').value=l.date||''; syncLg(); $('#fWeek').value=l.week; $('#fMatch').value=l.matchup;
   if(l.team){ $('#fPick').value=l.team; $('#fSpread').value=l.spread||''; $('#fOdds').value=l.odds||''; } else if(l.total){ $('#fPick').value='Over'; $('#fSpread').value=l.total; $('#fOdds').value=l.totalOdds||''; }
   showCalc(); $('#slip').scrollIntoView({behavior:'smooth'}); $('#fWho').focus();
 });
@@ -485,7 +504,7 @@ function lineOptions(l){
 }
 function openRequest(l){
   rqLine=l; rqOpts=lineOptions(l); rqSel=0; if(!rqOpts.length)return;
-  $('#rqLine').textContent=`${l.matchup} · ${l.book} · Week ${l.week}`;
+  $('#rqLine').textContent=`${lgOf(l)!=='NFL'?LEAGUES[lgOf(l)].n+' · ':''}${l.matchup} · ${l.book} · ${l.date&&lgOf(l)!=='NFL'?shortDay(l.date):'Week '+l.week}`;
   $('#rqPick').innerHTML=rqOpts.map((o,i)=>`<button type="button" data-i="${i}" class="${i===0?'on':''}">${esc(o.pick)} ${esc(o.spread)}</button>`).join('');
   $('#rqWho').innerHTML=UNCLES.map(p=>`<option value="${p}">${esc(nm(p))}</option>`).join(''); const me=ls.get('-me',''); if(UNCLES.includes(me))$('#rqWho').value=me;
   $('#reqSheet').hidden=false; rqCalc(); $('#reqSheet').scrollIntoView({behavior:'smooth'});
@@ -497,9 +516,9 @@ $('#rqCancel').onclick=()=>{ $('#reqSheet').hidden=true; };
 $('#rqSend').onclick=async()=>{
   const a=+$('#rqAmt').value, who=$('#rqWho').value, o=rqOpts[rqSel], l=rqLine; if(!(a>0)){ toast('Enter how much you want to win'); return; }
   ls.set('-me',who);
-  const req={rid:newId(),who,book:l.book,week:l.week,matchup:l.matchup,pick:o.pick,spread:o.spread,odds:o.odds,win:a,at:Date.now()};
+  const req={rid:newId(),who,book:l.book,lg:lgOf(l),date:l.date,week:l.week,matchup:l.matchup,pick:o.pick,spread:o.spread,odds:o.odds,win:a,at:Date.now()};
   const link=location.origin+location.pathname+'#req='+encodeURIComponent(b64e(JSON.stringify(req)));
-  const text=`Bet request from ${nm(who)}: ${o.pick} ${o.spread} — ${l.matchup} (${l.book}, Wk ${l.week}), to win $${a}. Tap to book: ${link}`;
+  const text=`Bet request from ${nm(who)}: ${o.pick} ${o.spread} — ${lgOf(l)!=='NFL'?lgOf(l)+' ':''}${l.matchup} (${l.book}, ${l.date&&lgOf(l)!=='NFL'?shortDay(l.date):'Wk '+l.week}), to win $${a}. Tap to book: ${link}`;
   $('#reqSheet').hidden=true;
   try{ if(navigator.share){ await navigator.share({text}); toast('Request sent — it counts once Steve or Al books it'); return; } }catch(e){ if(e&&e.name==='AbortError')return; }
   try{ await navigator.clipboard.writeText(text); toast('Copied — paste it in a text to Steve & Al'); }catch(e){ prompt('Text this to Steve & Al:',text); }
@@ -512,19 +531,28 @@ function addToInbox(req){
 function renderInbox(){
   const box=$('#reqInbox'); inbox=inbox.filter(r=>!bets.some(b=>b.id==='r_'+r.rid)); ls.set('-reqs',inbox);
   if(!canEdit()||!inbox.length){ box.hidden=true; return; } box.hidden=false;
-  box.innerHTML=inbox.map((r,i)=>{ const cur=lines.find(l=>l.book===r.book&&l.week===r.week&&mkey(l.matchup)===mkey(r.matchup)); let warn='';
+  box.innerHTML=inbox.map((r,i)=>{ const cur=lines.find(l=>lgOf(l)===lgOf(r)&&l.book===r.book&&l.week===r.week&&mkey(l.matchup)===mkey(r.matchup)); let warn='';
     if(cur){ const now=lineOptions(cur).find(o=>o.pick.toLowerCase()===r.pick.toLowerCase()); if(now&&(now.spread!==r.spread||now.odds!==r.odds))warn=`Line moved: now ${now.pick} ${now.spread} (${now.odds})`; }
     const rk=riskWin(r.win,r.odds,'win').risk;
-    return `<div class="rq"><h3>${esc(nm(r.who))} wants ${esc(r.pick)} ${esc(r.spread)}</h3><p>${esc(r.matchup)} · ${esc(r.book)} · Wk ${r.week} · risk ${money(rk)} to win ${money(r.win)} (${esc(r.odds)})</p>${warn?`<p class="warn">${esc(warn)}</p>`:''}
+    return `<div class="rq"><h3>${esc(nm(r.who))} wants ${esc(r.pick)} ${esc(r.spread)}</h3><p>${lgOf(r)!=='NFL'?lgOf(r)+' · ':''}${esc(r.matchup)} · ${esc(r.book)} · ${r.date&&lgOf(r)!=='NFL'?esc(shortDay(r.date)):'Wk '+r.week} · risk ${money(rk)} to win ${money(r.win)} (${esc(r.odds)})</p>${warn?`<p class="warn">${esc(warn)}</p>`:''}
       <div class="actions"><button class="btn small" data-rqno="${i}">Decline</button><button class="btn small primary" data-rqok="${i}">Book it</button></div></div>`; }).join('');
 }
 $('#reqInbox').addEventListener('click',async e=>{
   const n=e.target.dataset.rqno, k=e.target.dataset.rqok;
   if(n!==undefined){ inbox.splice(+n,1); ls.set('-reqs',inbox); render(); toast('Request declined'); }
   if(k!==undefined){ const r=inbox[+k]; e.target.disabled=true; const {risk,win}=riskWin(r.win,r.odds,'win');
-    const bet={id:'r_'+r.rid,who:r.who,book:r.book,week:r.week,matchup:r.matchup,pick:r.pick,spread:r.spread,amount:risk,payout:win,odds:r.odds,outcome:null,at:Date.now(),requested:true};
+    const bet={id:'r_'+r.rid,who:r.who,book:r.book,lg:lgOf(r),date:r.date,week:r.week,matchup:r.matchup,pick:r.pick,spread:r.spread,amount:risk,payout:win,odds:r.odds,outcome:null,at:Date.now(),requested:true};
     if(await commit([{t:'put',bet}],`Book ${nm(r.who)} request: ${r.pick} ${r.spread}`)){ inbox.splice(+k,1); ls.set('-reqs',inbox); toast(`Booked ${nm(r.who)}`); } render(); }
 });
+const ICON={football:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="10" ry="6" transform="rotate(-35 12 12)"/><path d="M9 15l6-6M10.5 10.5l1 1M12.5 12.5l1 1"/></svg>',basketball:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5.6 5.6c3 3 3 9.8 0 12.8M18.4 5.6c-3 3-3 9.8 0 12.8"/></svg>',baseball:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M7 4.5c2 4 2 11 0 15M17 4.5c-2 4-2 11 0 15"/></svg>',hockey:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3l-4 13h-5a2 2 0 0 0 0 4h6l5-17"/><ellipse cx="18" cy="19" rx="3" ry="1.5"/></svg>'};
+const lgIcon=lg=>ICON[LEAGUES[lg].p.split('/')[0]]||'';
+function renderLgSeg(){ // only shows once a second sport is in use
+  const used=LG.filter(l=>bets.some(b=>lgOf(b)===l)||lines.some(x=>lgOf(x)===l));
+  const seg=$('#lgSeg'); if(used.length<2&&lgView==='all'){ seg.hidden=true; return; }
+  if(lgView!=='all'&&!used.includes(lgView))used.push(lgView);
+  seg.hidden=false; seg.innerHTML=['all',...used].map(l=>`<button class="${lgView===l?'on':''}" data-lg="${l}" role="tab" aria-selected="${lgView===l}">${l==='all'?'All sports':lgIcon(l)+esc(LEAGUES[l].n)}</button>`).join('');
+}
+$('#lgSeg').addEventListener('click',e=>{ const b=e.target.closest('[data-lg]'); if(b){ lgView=b.dataset.lg; ls.set('-lg',lgView); render(); } });
 function setNet(n){ const el=$('#net'); el.textContent=money(Math.abs(n)); el.className='rec num '+(n>0?'up':n<0?'down':''); }
 
 $('#people').addEventListener('click',e=>{ const p=e.target.dataset.p; if(p){ view=p; render(); } });
@@ -542,19 +570,26 @@ $('#list').addEventListener('click',e=>{
 /* ================= manual form ================= */
 $('#fWho').innerHTML=BETTORS.map(p=>`<option value="${p}">${esc(nm(p))}</option>`).join('');
 $('#fBook').innerHTML=BOOKS.map(k=>`<option>${k}</option>`).join('');
-function parseOdds(t){ const m=String(t||'').trim().match(/^(\d+(?:\.\d+)?)\s*[\/:]\s*(\d+(?:\.\d+)?)$/); if(!m)return null; const r=+m[1],w=+m[2]; return (r>0&&w>0)?{r,w}:null; }
+function parseOdds(t){ const s=String(t||'').trim(); let m=s.match(/^(\d+(?:\.\d+)?)\s*[\/:]\s*(\d+(?:\.\d+)?)$/);
+  if(m){ const r=+m[1],w=+m[2]; return (r>0&&w>0)?{r,w}:null; }
+  m=s.match(/^([+-])(\d{3,4})$/); if(m){ const n=+m[2]; return m[1]==='-'?{r:n,w:100}:{r:100,w:n}; }
+  m=s.match(/^(\d{3})$/); if(m&&+m[1]>=100)return {r:+m[1],w:100};
+  return null; }
 function riskWin(amount,oddsTxt,md){ const o=parseOdds(oddsTxt)||{r:11,w:10}; return md==='risk'?{risk:amount,win:Math.round(amount*o.w/o.r*100)/100}:{risk:Math.round(amount*o.r/o.w*100)/100,win:amount}; }
 function setMode(v){ mode=v; document.querySelectorAll('#fMode button').forEach(x=>x.classList.toggle('on',x.dataset.v===v)); showCalc(); }
 function showCalc(){ const a=+$('#fAmt').value, ot=$('#fOdds').value, c=$('#calc');
-  if(ot.trim()&&!parseOdds(ot)){ c.textContent='Odds should look like 11/10 or 48/40.'; return; }
+  if(ot.trim()&&!parseOdds(ot)){ c.textContent='Odds look like 11/10, 48/40, -150 or +130.'; return; }
   if(!(a>0)){ c.textContent='Enter an amount to see risk and win.'; return; }
   const {risk,win}=riskWin(a,ot,mode); c.textContent=`Risk ${money(risk)} to win ${money(win)}`; }
 $('#fMode').addEventListener('click',e=>{ if(e.target.dataset.v)setMode(e.target.dataset.v); });
 $('#fAmt').addEventListener('input',showCalc); $('#fOdds').addEventListener('input',showCalc);
+$('#fLg').innerHTML=LG.map(l=>`<option value="${l}">${esc(LEAGUES[l].n)}</option>`).join('');
+function syncLg(){ const nfl=$('#fLg').value==='NFL'; $('#fWeekBox').hidden=!nfl; $('#fDateBox').hidden=nfl; if(!nfl&&!$('#fDate').value)$('#fDate').value=today(); }
+$('#fLg').onchange=syncLg;
 function openForm(b){
   editId=b?b.id:null; $('#slipTitle').textContent=b?'Edit bet':'New bet';
   $('#fWho').value=b?b.who:(view==='all'?'Steve':view); $('#fBook').value=b?b.book:(bookView==='all'?'Max':bookView);
-  $('#fWeek').value=b?b.week:(curWeek||dateWeek());
+  $('#fLg').value=b?lgOf(b):(lgView==='all'?'NFL':lgView); $('#fDate').value=b&&b.date?b.date:''; $('#fWeek').value=b?b.week:(curWeek||dateWeek()); syncLg();
   $('#fMatch').value=b?b.matchup:''; $('#fPick').value=b?b.pick:''; $('#fSpread').value=b?b.spread:'';
   $('#fAmt').value=b?(b.payout??b.amount):''; $('#fOdds').value=b?(b.odds||''):''; setMode('win');
   $('#slip').hidden=false; $('#fMatch').focus();
@@ -562,33 +597,42 @@ function openForm(b){
 $('#toggleForm').onclick=()=>$('#slip').hidden?openForm():($('#slip').hidden=true);
 $('#cancelForm').onclick=()=>{ $('#slip').hidden=true; editId=null; };
 $('#saveBet').onclick=async()=>{
-  const week=+$('#fWeek').value, matchup=$('#fMatch').value.trim(), amount=+$('#fAmt').value, odds=$('#fOdds').value.trim()||'11/10';
+  const lg=$('#fLg').value, date=lg==='NFL'?'':($('#fDate').value||today()), week=lg==='NFL'?+$('#fWeek').value:dateWeek(date), matchup=$('#fMatch').value.trim(), amount=+$('#fAmt').value, odds=$('#fOdds').value.trim()||'11/10';
   if(!week||!matchup||!(amount>0)){ toast('Need a week, matchup, and amount'); return; }
-  if(!parseOdds(odds)){ toast('Odds should look like 11/10'); return; }
+  if(!parseOdds(odds)){ toast('Odds look like 11/10, -150 or +130'); return; }
   const {risk,win}=riskWin(amount,odds,mode); const old=editId?bets.find(b=>b.id===editId):null;
-  const bet={id:editId||newId(),who:$('#fWho').value,book:$('#fBook').value,week,matchup,pick:$('#fPick').value.trim(),spread:$('#fSpread').value.trim(),amount:risk,payout:win,odds,outcome:old?old.outcome:null,at:old?.at||Date.now()};
+  const bet={id:editId||newId(),who:$('#fWho').value,book:$('#fBook').value,lg,date:date||undefined,week,matchup,pick:$('#fPick').value.trim(),spread:$('#fSpread').value.trim(),amount:risk,payout:win,odds,outcome:old?old.outcome:null,at:old?.at||Date.now()};
   if(await commit([{t:'put',bet}],`${old?'Edit':'Book'} ${bet.who}: ${bet.pick} ${bet.spread}`)){ $('#slip').hidden=true; toast(old?'Bet updated':'Bet saved'); editId=null; }
 };
 
 /* ================= ESPN live scores + reconciliation ================= */
-const ESPN='https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard';
+const espnUrl=(lg,qs)=>`https://site.api.espn.com/apis/site/v2/sports/${LEAGUES[lg].p}/scoreboard?${qs||''}${LEAGUES[lg].q||''}`;
 const NICK={pgh:'steelers',pitt:'steelers',jax:'jaguars',jacks:'jaguars',jack:'jaguars',carol:'panthers',car:'panthers',phil:'eagles',philly:'eagles',wash:'commanders',was:'commanders',clev:'browns',cleve:'browns',cle:'browns',cinn:'bengals',cin:'bengals',balt:'ravens',bal:'ravens',houst:'texans',hou:'texans',indy:'colts',ind:'colts',minn:'vikings',min:'vikings',ariz:'cardinals',arz:'cardinals',ari:'cardinals',buff:'bills',buf:'bills',tenn:'titans',ten:'titans',chic:'bears',chi:'bears',nyg:'giants',nyj:'jets',lar:'rams',lac:'chargers',lv:'raiders',vegas:'raiders',gb:'packers',tb:'buccaneers',bucs:'buccaneers',sf:'49ers',niners:'49ers',ne:'patriots',pats:'patriots',no:'saints',kc:'chiefs',det:'lions',dal:'cowboys',den:'broncos',sea:'seahawks',atl:'falcons',mia:'dolphins'};
-function side(c){ const t=c.team||{}; return {abbr:t.abbreviation||'',nick:(t.name||t.shortDisplayName||'').toLowerCase(),loc:(t.location||'').toLowerCase(),score:+c.score||0}; }
-async function fetchWeek(w){
-  const r=await fetch(w?`${ESPN}?seasontype=2&week=${w}&dates=2026`:ESPN,{cache:'no-store'}); if(!r.ok)throw new Error(r.status); const j=await r.json();
-  if(!w&&j.week&&j.week.number)curWeek=j.week.number;
-  const wk=w||(j.week&&j.week.number);
+function side(c){ const t=c.team||{}, lo=s=>String(s||'').toLowerCase();
+  return {abbr:t.abbreviation||'',nick:lo(t.name||t.shortDisplayName),loc:lo(t.location),full:lo(t.displayName),short:lo(t.shortDisplayName),score:+c.score||0}; }
+async function getJSON(u){ const r=await fetch(u,{cache:'no-store'}); if(!r.ok)throw new Error(r.status); return r.json(); }
+function ingest(lg,j,wk){
   for(const ev of j.events||[]){ const comp=(ev.competitions||[])[0]; if(!comp)continue;
-    const home=comp.competitors.find(c=>c.homeAway==='home'), away=comp.competitors.find(c=>c.homeAway==='away'); const st=(ev.status||comp.status||{}).type||{};
-    games[ev.id]={id:ev.id,week:wk,state:st.state,detail:st.shortDetail||st.detail||'',date:ev.date,home:side(home),away:side(away)}; }
+    const home=comp.competitors.find(c=>c.homeAway==='home'), away=comp.competitors.find(c=>c.homeAway==='away'); if(!home||!away)continue;
+    const st=(ev.status||comp.status||{}).type||{}, day=dayStr(ev.date);
+    games[lg+':'+ev.id]={id:lg+':'+ev.id,lg,week:lg==='NFL'?wk:dateWeek(day),day,state:st.state,detail:st.shortDetail||st.detail||'',date:ev.date,home:side(home),away:side(away)}; }
 }
-function tokens(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9 ]/g,' ').split(/\s+/).filter(Boolean).map(t=>NICK[t]||t); }
-function hits(sd,toks,raw){ return toks.includes(sd.nick)||toks.includes(sd.abbr.toLowerCase())||(sd.loc&&raw.toLowerCase().includes(sd.loc)); }
-function teamIn(g,str){ const toks=tokens(str), h=hits(g.home,toks,str), a=hits(g.away,toks,str); return h&&!a?'home':a&&!h?'away':null; }
+async function fetchNFL(w){ const j=await getJSON(w?espnUrl('NFL',`seasontype=2&week=${w}&dates=2026`):espnUrl('NFL','')); if(!w&&j.week&&j.week.number)curWeek=j.week.number; ingest('NFL',j,w||(j.week&&j.week.number)); }
+async function fetchDay(lg,day){ ingest(lg,await getJSON(espnUrl(lg,'limit=400&dates='+day.replace(/-/g,''))),null); }
+function tokens(s,lg){ return String(s||'').toLowerCase().replace(/[^a-z0-9& ]/g,' ').split(/\s+/).filter(Boolean).map(t=>(!lg||lg==='NFL')&&NICK[t]||t); }
+const wordIn=(raw,w)=>w&&new RegExp('(^|[^a-z0-9])'+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'($|[^a-z0-9])').test(raw);
+function score(sd,toks,raw){ raw=String(raw).toLowerCase(); let s=0;
+  if(toks.includes(sd.nick))s=Math.max(s,sd.nick.length); if(sd.abbr&&toks.includes(sd.abbr.toLowerCase()))s=Math.max(s,sd.abbr.length);
+  for(const w of [sd.full,sd.short,sd.loc])if(w&&wordIn(raw,w))s=Math.max(s,w.length); return s; }
+function teamIn(g,str){ const toks=tokens(str,g.lg), h=score(g.home,toks,str), a=score(g.away,toks,str); return h>a?'home':a>h?'away':null; }
+const dayGap=(a,b)=>Math.abs((new Date(a+'T12:00:00')-new Date(b+'T12:00:00'))/864e5);
 function gameFor(b){
-  if(b.gameId&&games[b.gameId])return games[b.gameId];
-  let best=null; const raw=b.matchup+' '+b.pick, toks=tokens(raw);
-  for(const g of Object.values(games)){ if(g.week!==b.week)continue; const h=hits(g.home,toks,raw), a=hits(g.away,toks,raw); if(h&&a)return g; if((h||a)&&!best)best=g; }
+  const lg=lgOf(b); if(b.gameId&&games[b.gameId])return games[b.gameId];
+  let best=null, bestS=0; const raw=b.matchup+' '+(b.pick||''), toks=tokens(raw,lg);
+  for(const g of Object.values(games)){ if(g.lg!==lg)continue;
+    if(lg==='NFL'||!b.date){ if(g.week!==b.week)continue; } else if(dayGap(g.day,b.date)>1)continue;
+    const h=score(g.home,toks,raw), a=score(g.away,toks,raw); if(!h&&!a)continue;
+    const s=(h&&a?1000:0)+h+a-(b.date&&g.day!==b.date?50:0); if(s>bestS){ bestS=s; best=g; } }
   return best;
 }
 function scoreLine(g){ const s=`${g.away.abbr} ${g.away.score} – ${g.home.abbr} ${g.home.score}`; if(g.state==='pre')return ''; return g.state==='in'?`Live · ${g.detail} · ${s}`:`${g.detail||'Final'} · ${s}`; }
@@ -599,12 +643,20 @@ function grade(b,g){
   const t=teamIn(g,b.pick); if(!t)return null;
   const me=g[t], opp=g[t==='home'?'away':'home'], d=me.score+(isNaN(line)?0:line)-opp.score; return d>0?'W':d<0?'L':'P';
 }
+function daysToFetch(){ // non-NFL: the game day of every open bet and of this week's lines (plus the next day for late finishes)
+  const want=new Set(), add=(lg,d)=>{ if(!d||d>dayStr(Date.now()+864e5))return; want.add(lg+'|'+d); };
+  const next=d=>dayStr(new Date(d+'T12:00:00').getTime()+864e5);
+  for(const b of bets){ const lg=lgOf(b); if(lg==='NFL'||b.outcome)continue; const d=b.date||dayStr(b.at||Date.now()); add(lg,d); add(lg,next(d)); }
+  for(const l of lines){ const lg=lgOf(l); if(lg==='NFL'||!l.date)continue; if(dateWeek(l.date)>=dateWeek()-1)add(lg,l.date); }
+  return [...want].map(x=>x.split('|'));
+}
 let scoreTimer=null;
 async function refreshScores(manual){
   if(store==='gh')await pull();
   try{
-    await fetchWeek(0);
-    for(const w of [...new Set(bets.filter(b=>!b.outcome).map(b=>b.week))].filter(w=>w!==curWeek))await fetchWeek(w);
+    await fetchNFL(0);
+    for(const w of [...new Set(bets.filter(b=>!b.outcome&&lgOf(b)==='NFL').map(b=>b.week))].filter(w=>w!==curWeek))await fetchNFL(w);
+    await Promise.all(daysToFetch().map(([lg,d])=>fetchDay(lg,d).catch(()=>{})));
     espnOk=true;
     const live=Object.values(games).filter(g=>g.state==='in').length;
     $('#scoreLbl').textContent=`ESPN ${live?live+' live · ':''}${new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}`;
@@ -626,21 +678,21 @@ function saveChat(){ try{ sessionStorage.setItem(KEY+'-chat',JSON.stringify(chat
 function drawLog(extra){
   const log=$('#log');
   log.innerHTML=chat.map(m=>`<div class="msg ${m.r==='u'?'me':'bot'}">${esc(m.t)}${m.n?`<br><small style="opacity:.7">📷 ${m.n} screenshot${m.n>1?'s':''}</small>`:''}</div>`).join('')
-   +(!chat.length?`<div class="msg bot">Call in bets like you would to Max:\n“Dan, Steelers minus 3 for 50 with Max. J, under 44 in the Bills game, computer.”\nPost lines too: “Max has Steelers minus 3, total 44.”\nOr send a screenshot of a slip, a board, or the sheet.</div>`:'')
+   +(!chat.length?`<div class="msg bot">Call in bets like you would to Max:\n“Dan, Steelers minus 3 for 50 with Max. J, under 44 in the Bills game, computer.”\nOther sports work too: “Michael, Lakers plus 130 tonight, risk 100.”\nPost lines: “Max has Steelers minus 3, total 44.”\nOr send a screenshot of a slip, a board, or the sheet.</div>`:'')
    +(pendLines.length?lineHtml():'')+(pending.length?propHtml():'')+(extra||'');
   log.scrollTop=log.scrollHeight;
 }
 function lineHtml(){
   return `<div class="prop"><div style="font-weight:700;margin-bottom:4px">Post ${pendLines.length} line${pendLines.length>1?'s':''}?</div>${pendLines.map((l,i)=>`
     <div class="row"><select data-li="${i}" data-f="book">${BOOKS.map(k=>`<option ${k===l.book?'selected':''}>${k}</option>`).join('')}</select>
-    <div class="what"><b>${esc(l.matchup)}</b><br><span style="color:var(--muted)">Wk ${l.week} · ${l.team?esc(l.team+' '+(l.spread||'PK'))+' ('+esc(l.odds||'11/10')+')':''}${l.team&&l.total?' · ':''}${l.total?'O/U '+esc(l.total):''}</span></div>
+    <div class="what"><b>${esc(l.matchup)}</b><br><span style="color:var(--muted)">${l.lg&&l.lg!=='NFL'?l.lg+' '+esc(shortDay(l.date)):'Wk '+l.week} · ${l.team?esc(l.team+' '+(l.spread||'PK'))+' ('+esc(l.odds||'11/10')+')':''}${l.team&&l.total?' · ':''}${l.total?'O/U '+esc(l.total):''}</span></div>
     <button class="x" data-lrm="${i}" aria-label="Remove">×</button></div>`).join('')}
     <div class="go"><button class="btn small" id="lineNo">Discard</button><button class="btn small primary" id="lineYes">Post lines</button></div></div>`;
 }
 function propHtml(){
   return `<div class="prop"><div style="font-weight:700;margin-bottom:4px">Book ${pending.length} bet${pending.length>1?'s':''}?</div>${pending.map((p,i)=>`
     <div class="row"><select data-pi="${i}" data-f="who">${BETTORS.map(x=>`<option ${x===p.who?'selected':''} value="${x}">${esc(nm(x))}</option>`).join('')}</select>
-    <div class="what"><b>${esc(p.pick)} ${esc(p.spread)}</b> · ${esc(p.matchup)}<br><span style="color:var(--muted)">Wk ${p.week} · risk ${money(p.amount)} to win ${money(p.payout)} (${esc(p.odds)}) · <select data-pi="${i}" data-f="book">${BOOKS.map(k=>`<option ${k===p.book?'selected':''}>${k}</option>`).join('')}</select></span></div>
+    <div class="what"><b>${esc(p.pick)} ${esc(p.spread)}</b> · ${esc(p.matchup)}<br><span style="color:var(--muted)">${p.lg&&p.lg!=='NFL'?p.lg+' '+esc(shortDay(p.date)):'Wk '+p.week} · risk ${money(p.amount)} to win ${money(p.payout)} (${esc(p.odds)}) · <select data-pi="${i}" data-f="book">${BOOKS.map(k=>`<option ${k===p.book?'selected':''}>${k}</option>`).join('')}</select></span></div>
     <button class="x" data-rm="${i}" aria-label="Remove">×</button></div>`).join('')}
     <div class="go"><button class="btn small" id="propNo">Discard</button><button class="btn small primary" id="propYes">Book it</button></div></div>`;
 }
@@ -661,21 +713,23 @@ $('#log').addEventListener('click',async e=>{
 $('#deskHead').onclick=()=>{ $('#deskBody').hidden=!$('#deskBody').hidden; };
 const cap=s=>s.replace(/\b\w/g,c=>c.toUpperCase());
 function gamesText(){
-  const gs=Object.values(games).filter(g=>g.week===curWeek).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
-  if(!gs.length)return 'Schedule unavailable — use team nicknames as said.';
-  return `Week ${curWeek} games (away @ home):\n`+gs.map(g=>`${cap(g.away.nick)} @ ${cap(g.home.nick)} (${g.away.abbr}@${g.home.abbr}, ${new Date(g.date).toLocaleString('en-US',{weekday:'short',hour:'numeric',minute:'2-digit'})}${g.state==='post'?', FINAL':g.state==='in'?', LIVE':''})`).join('\n');
+  const gs=Object.values(games).filter(g=>g.lg==='NFL'&&g.week===curWeek).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+  if(!gs.length)return 'NFL schedule unavailable — use team nicknames as said.';
+  return `NFL week ${curWeek} games (away @ home):\n`+gs.map(g=>`${cap(g.away.nick)} @ ${cap(g.home.nick)} (${g.away.abbr}@${g.home.abbr}, ${new Date(g.date).toLocaleString('en-US',{weekday:'short',hour:'numeric',minute:'2-digit'})}${g.state==='post'?', FINAL':g.state==='in'?', LIVE':''})`).join('\n');
 }
 function buildPrompt(text,nImg){
   const hist=chat.slice(-10,-1).map(m=>(m.r==='u'?'Steve: ':'Clerk: ')+m.t).join('\n');
-  return `You are the bet-booking clerk for the Anolik family NFL betting book (2026 season). Steve (the dad, also "Dad", "Pop") takes bets from his son Al and his brothers Danny, John and Michael and places each with one of two books.
+  return `You are the bet-booking clerk for the Anolik family sports betting book (2026–27). Mostly NFL, plus college football (NCAAF), NBA, college basketball (NCAAB), MLB and NHL. Today is ${new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})} (${today()}). Steve (the dad, also "Dad", "Pop") takes bets from his son Al and his brothers Danny, John and Michael and places each with one of two books.
 Bettors — use these ids exactly: "Al"; "Steve" (the one booking; also "me"/"I"/"mine"); "Dan" (Danny, D); "J" (John); "Mich" (Michael, Mike, M).
 Books (use exactly): "Max" (the bookie) or "Computer" (also "C", "the computer", "the app"). If no book is said, use Max.
-Odds are risk/win, e.g. "11/10" (default when not given); "105" means 21/20, "115" means 23/20, "120" means 6/5.
+Odds: risk/win like "11/10" (default for spreads and totals when not given); Max-style "105"/"115"/"120" mean risk that much to win 100; moneylines are American odds like "-150" or "+130" — keep them exactly like that.
 Amounts: a bare number like "for 50" means TO WIN $50 (amountIs "win") unless they say risk/bet/lay. "Dime"=1000, "nickel"=500.
-Picks: for a side, pick = team city or nickname as said (e.g. "Pittsburgh"); spread = signed number like "-3" or "+2.5" (pick'em/moneyline = ""). For totals, pick = "Over" or "Under" and spread = the total (e.g. "40.5").
-matchup = "Away @ Home" with team nicknames (e.g. "Seahawks @ Broncos"), from the schedule below when possible.
+league = "NFL" unless clearly another sport: "NCAAF" (college football — schools like Ohio State, Alabama), "NBA", "NCAAB" (college hoops), "MLB", "NHL". If unclear, ask.
+Picks: for a side, pick = team or school as said (e.g. "Pittsburgh", "Ohio State", "Lakers"); spread = signed number like "-3" or "+2.5"; a moneyline (common in MLB/NHL) has spread "" and its American odds in odds; run line/puck line is spread "-1.5"/"+1.5". For totals, pick = "Over" or "Under" and spread = the total (e.g. "40.5").
+matchup = "Away @ Home": NFL/NBA/MLB/NHL use nicknames (e.g. "Seahawks @ Broncos", "Celtics @ Knicks"); college uses school names (e.g. "Michigan @ Ohio State"). Use the NFL schedule below when it applies.
+date = the game date "YYYY-MM-DD" for every non-NFL bet or line (today unless they say another day; "tonight" = today, "tomorrow" = the next day). NFL uses week instead.
 Steve may also post LINES — what a book is offering, not a bet (e.g. "Max has Steelers minus 3, total 44", "computer: Bills -6.5 at 115, over/under 47", or a screenshot of a board). Put those in "lines": team = the team the spread number belongs to (usually the favorite, e.g. "Steelers" with spread "-3"), odds = spread odds (default "11/10"), total and totalOdds for the over/under; leave a field "" if not given. One line per game per book. A message can contain bets, lines, or both; never turn a line into a bet unless someone is named as betting it.
-week = NFL week of that game (current week is ${curWeek||dateWeek()}).
+week = NFL week of that game (current NFL week is ${curWeek||dateWeek()}); for other sports leave week 0.
 ${nImg?'The attached image(s) may be a sportsbook slip, a text message, or a handwritten sheet: extract every bet you can read; skip anything illegible and say so in reply.\n':''}If something essential is missing or ambiguous (who, which game, amount), ask in "reply" and leave that bet out.
 
 ${gamesText()}
@@ -685,7 +739,7 @@ ${hist||'(none)'}
 
 New message from Steve: ${text||'(see attached image)'}
 
-Return ONLY JSON, no prose: {"reply":"one short sentence","bets":[{"who":"","book":"Max","week":0,"matchup":"","pick":"","spread":"","amount":0,"amountIs":"win","odds":"11/10"}],"lines":[{"book":"Max","week":0,"matchup":"","team":"","spread":"","odds":"11/10","total":"","totalOdds":"11/10"}]}`;
+Return ONLY JSON, no prose: {"reply":"one short sentence","bets":[{"who":"","book":"Max","league":"NFL","week":0,"date":"","matchup":"","pick":"","spread":"","amount":0,"amountIs":"win","odds":"11/10"}],"lines":[{"book":"Max","league":"NFL","week":0,"date":"","matchup":"","team":"","spread":"","odds":"11/10","total":"","totalOdds":"11/10"}]}`;
 }
 async function shrink(file){ // phone screenshots are big: scale to ≤1600px JPEG
   const url=URL.createObjectURL(file); const img=new Image(); await new Promise((ok,no)=>{ img.onload=ok; img.onerror=no; img.src=url; });
@@ -714,9 +768,10 @@ async function send(){
     const out=await askAI(buildPrompt(text,blobs.length),blobs);
     const list=Array.isArray(out&&out.bets)?out.bets:[];
     pending=pending.concat(list.filter(x=>x&&x.matchup&&+x.amount>0).map(x=>{ const odds=parseOdds(x.odds)?String(x.odds):'11/10'; const {risk,win}=riskWin(+x.amount,odds,x.amountIs==='risk'?'risk':'win');
-      return {who:BETTORS.includes(x.who)?x.who:'Steve',book:BOOKS.includes(x.book)?x.book:'Max',week:+x.week||curWeek||dateWeek(),matchup:String(x.matchup),pick:String(x.pick||''),spread:String(x.spread??''),amount:risk,payout:win,odds}; }));
+      const lg=LG.includes(x.league)?x.league:'NFL', date=lg==='NFL'?undefined:(/^\d{4}-\d{2}-\d{2}$/.test(x.date||'')?x.date:today());
+      return {who:BETTORS.includes(x.who)?x.who:'Steve',book:BOOKS.includes(x.book)?x.book:'Max',lg,date,week:lg==='NFL'?(+x.week||curWeek||dateWeek()):dateWeek(date),matchup:String(x.matchup),pick:String(x.pick||''),spread:String(x.spread??''),amount:risk,payout:win,odds}; }));
     const ll=Array.isArray(out&&out.lines)?out.lines:[];
-    pendLines=pendLines.concat(ll.filter(x=>x&&x.matchup&&(x.spread||x.total||x.team)).map(x=>({book:BOOKS.includes(x.book)?x.book:'Max',week:+x.week||curWeek||dateWeek(),matchup:String(x.matchup),team:String(x.team||''),spread:String(x.spread||''),odds:parseOdds(x.odds)?String(x.odds):'11/10',total:String(x.total||''),totalOdds:parseOdds(x.totalOdds)?String(x.totalOdds):'11/10'})));
+    pendLines=pendLines.concat(ll.filter(x=>x&&x.matchup&&(x.spread||x.total||x.team)).map(x=>{ const lg=LG.includes(x.league)?x.league:'NFL', date=lg==='NFL'?undefined:(/^\d{4}-\d{2}-\d{2}$/.test(x.date||'')?x.date:today()); return {book:BOOKS.includes(x.book)?x.book:'Max',lg,date,week:lg==='NFL'?(+x.week||curWeek||dateWeek()):dateWeek(date),matchup:String(x.matchup),team:String(x.team||''),spread:String(x.spread||''),odds:parseOdds(x.odds)?String(x.odds):'11/10',total:String(x.total||''),totalOdds:parseOdds(x.totalOdds)?String(x.totalOdds):'11/10'}; }));
     chat.push({r:'b',t:String(out&&out.reply||(list.length||ll.length?'Here’s what I got:':'I couldn’t find a bet or a line in that.'))});
   }catch(e){
     chat.push({r:'b',t:e.code==='bad_key'?'The AI key on this phone isn’t working — check it in Booker setup.':e.code==='rate_limited'?'Too many requests — try again in a minute.':e.code==='not_granted'?'Allow “Ask Claude” for this page to book by chat.':'Couldn’t read that'+(e.message?` (${e.message})`:'')+'. Try again or use “New bet”.'});
@@ -755,7 +810,7 @@ $('#sClear').onclick=()=>{ cfg={}; ls.set('-cfg',cfg); $('#setup').hidden=true; 
 
 /* ================= export / import ================= */
 $('#exportBtn').onclick=async()=>{ const txt=JSON.stringify({bets,carry},null,1);
-  try{ if(navigator.share){ await navigator.share({title:'Football book',text:txt}); return; } }catch(e){}
+  try{ if(navigator.share){ await navigator.share({title:'Sports book',text:txt}); return; } }catch(e){}
   try{ await navigator.clipboard.writeText(txt); toast('Copied to clipboard'); }catch(e){ prompt('Copy this:',txt); } };
 $('#importBtn').onclick=async()=>{ const txt=prompt('Paste exported bets:'); if(!txt)return;
   try{ let inc=JSON.parse(txt); const ops=[]; if(!Array.isArray(inc)){ if(inc.carry)ops.push({t:'carry',carry:{...carry,...inc.carry}}); inc=inc.bets; } if(!Array.isArray(inc))throw 0;
