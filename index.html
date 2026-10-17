@@ -160,7 +160,8 @@ label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px;font-wei
 .thumbs div{position:relative}
 .thumbs img{width:54px;height:54px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
 .thumbs button{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;border:0;background:#101820;color:#fff;font-size:12px;cursor:pointer}
-.ro .edit-only,.ro #toggleForm,.ro #importBtn,.ro #carryRow{display:none!important}
+.rw #reqBtn{display:none!important}
+.ro .edit-only,.ro #toggleForm,.ro #importBtn,.ro #exportBtn,.ro #carryRow{display:none!important}
 .setup{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-top:16px}
 .setup h2{margin:0 0 4px;font-size:20px;font-weight:800}
 .setup p{font-size:13px;color:var(--muted);margin:0 0 10px}
@@ -195,6 +196,16 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 .ochips button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:4px 10px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
 .ochips button.on{background:#101820;border-color:#101820;color:var(--gold)}
 .prop .oin{width:64px;padding:2px 6px;font-size:13px;display:inline-block}
+.melbl{border:0;background:transparent;color:var(--gold);font:inherit;font-size:12px;font-weight:600;padding:0 0 0 8px;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.who-ov{position:fixed;inset:0;z-index:30;background:rgba(8,12,18,.72);display:grid;place-items:center;padding:16px}
+.who-card{background:#101820;color:#fff;border-top:4px solid var(--gold);border-radius:14px;padding:22px 20px;width:100%;max-width:360px;text-align:center}
+.who-card h2{margin:0 0 6px;font-family:"Barlow Condensed",sans-serif;font-size:30px;font-weight:800;color:var(--gold)}
+.who-card p{margin:0 0 16px;font-size:14px;opacity:.8}
+.who-btns{display:grid;gap:10px}
+.who-btns button{border:0;border-radius:10px;background:var(--gold);color:#101820;font:inherit;font-size:19px;font-weight:700;padding:13px;cursor:pointer}
+.who-skip{margin-top:12px;border:0;background:transparent;color:rgba(255,255,255,.7);font:inherit;font-size:14px;cursor:pointer;text-decoration:underline}
+.tbl td.mute{color:var(--muted)}
+.bet .amt.priv{font-size:18px;letter-spacing:.5px}
 .typing{align-self:flex-start;color:var(--muted);font-size:13px}
 </style>
 </head>
@@ -211,7 +222,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
     <div class="side"><div class="who" id="netWho">Even</div><div class="rec num" id="net">$0</div></div>
   </div>
   <div class="totals"><span id="totBets">0 bets</span><span id="totPend">0 pending</span><span id="totRisk">$0 at risk</span></div>
-  <div class="sync"><span id="syncLbl">This device only</span><span id="scoreLbl"></span></div>
+  <div class="sync"><span><span id="syncLbl">This device only</span><button class="melbl" id="meLbl" hidden></button></span><span id="scoreLbl"></span></div>
 </div></header>
 
 <main>
@@ -237,7 +248,17 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
     <h2>Request a bet</h2>
     <p class="hint" id="rqLine" style="margin:0 0 10px"></p>
     <div class="grid">
-      <div class="full"><label>Your pick</label><div class="seg" id="rqPick"></div></div>
+      <div class="full" id="rqPickBox"><label>Your pick</label><div class="seg" id="rqPick"></div></div>
+      <div class="full" id="rqFree" hidden><div class="grid">
+        <div><label for="rqLg">Sport</label><select id="rqLg"></select></div>
+        <div><label for="rqBook">Book</label><select id="rqBook"></select></div>
+        <div class="full"><label for="rqMatch">Game</label><input id="rqMatch" list="rqGames" placeholder="Pick a game or type it" autocomplete="off"><datalist id="rqGames"></datalist></div>
+        <div><label for="rqPk">Your pick</label><input id="rqPk" list="rqTeams" placeholder="Team, Over or Under" autocomplete="off"><datalist id="rqTeams"></datalist></div>
+        <div><label for="rqSp">Spread / total</label><input id="rqSp" placeholder="-3, +2.5, 44.5" inputmode="decimal"></div>
+        <div id="rqWkBox"><label for="rqWk">NFL week</label><input id="rqWk" type="number" min="1" max="22" inputmode="numeric"></div>
+        <div id="rqDtBox" hidden><label for="rqDt">Game date</label><input id="rqDt" type="date"></div>
+        <div><label for="rqOd">Odds</label><input id="rqOd" placeholder="11/10" autocomplete="off"></div>
+      </div></div>
       <div><label for="rqWho">I am</label><select id="rqWho"></select></div>
       <div><label for="rqAmt">To win ($)</label><input id="rqAmt" type="number" min="1" step="1" inputmode="decimal" placeholder="50"></div>
     </div>
@@ -252,6 +273,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
   <div class="toolbar">
     <select id="weekFilter" aria-label="Filter by week"><option value="all">All weeks</option></select>
     <button class="btn primary" id="toggleForm">+ New bet</button>
+    <button class="btn primary" id="reqBtn">+ Request a bet</button>
   </div>
 
   <section class="slip" id="slip" hidden>
@@ -293,10 +315,18 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
   <p class="credit">Built by <b>Maven BI Group</b> · Phoenix, AZ</p>
 </main>
 <div class="toast" id="toast"></div>
+<div class="who-ov" id="whoOv" hidden role="dialog" aria-modal="true" aria-labelledby="whoT">
+  <div class="who-card">
+    <h2 id="whoT">Who’s this?</h2>
+    <p>Pick your name — the book opens to your bets on this phone. You can still see everyone’s.</p>
+    <div class="who-btns" id="whoBtns"></div>
+    <button class="who-skip" id="whoSkip">Just looking</button>
+  </div>
+</div>
 <button class="upd" id="updBar" hidden>New version available — tap to update</button>
 
 <script>
-const APP_V='2026.10.17-4';
+const APP_V='2026.10.17-7';
 const KEY='anolik-football-book-v1';
 const BETTORS=['Al','Steve','Dan','J','Mich'];
 const BOOKS=['Max','Computer'];
@@ -406,10 +436,13 @@ const inLg=b=>lgView==='all'||lgOf(b)===lgView;
 function bal(who,book){ const rows=bets.filter(b=>b.who===who&&(book==='all'||b.book===book)&&inLg(b)); return stat(rows).n+(lgView!=='all'?[]:book==='all'?BOOKS:[book]).reduce((s,k)=>s+cv(who,k),0); }
 function outcomeOf(b){ if(b.outcome)return b.outcome; const g=gameFor(b); return grade(b,g); }
 
+// Dollar privacy: admins (booker phones) see every amount; an uncle sees only his own dollars — picks and W-L stay visible to all
+const meId=()=>{ const m=ls.get('-me',''); return UNCLES.includes(m)?m:null; };
+const canSee=who=>canEdit()||who===meId();
 function render(){
   renderLines(); renderInbox();
   ls.set('-view',{p:view,b:bookView});
-  document.body.classList.toggle('ro',!canEdit());
+  document.body.classList.toggle('ro',!canEdit()); document.body.classList.toggle('rw',canEdit());
   $('#desk').hidden=!canBook();
   $('#people').innerHTML=['all',...BETTORS].map(p=>`<button class="chip ${view===p?'on':''}" role="tab" aria-selected="${view===p}" data-p="${p}">${p==='all'?'Everyone':esc(nm(p))}</button>`).join('');
   $('#bookSeg').innerHTML=['all',...BOOKS].map(k=>`<button class="${bookView===k?'on':''}" data-k="${k}">${k==='all'?'All books':k}</button>`).join('');
@@ -417,30 +450,32 @@ function render(){
   renderLgSeg();
   const mine=bets.filter(b=>(view==='all'||b.who===view)&&inBook(b));
   const bookLbl=bookView==='all'?'the books':bookView;
-  const cell=v=>`<td class="n ${v>0?'up':v<0?'down':''}">${v?signed(v):'$0'}</td>`;
+  const cell=(v,ok=true)=>ok?`<td class="n ${v>0?'up':v<0?'down':''}">${v?signed(v):'$0'}</td>`:'<td class="n mute">—</td>';
   if(view==='all'){
     const s=stat(mine), n=BETTORS.reduce((t,p)=>t+bal(p,bookView),0);
     $('#recWho').textContent='Family record'; $('#rec').textContent=s.rec;
-    $('#netWho').textContent=n>0?`${bookView==='all'?'Books owe':bookView+' owes'} the family`:n<0?`Family owes ${bookLbl}`:'Even with '+bookLbl;
-    setNet(n);
-    const rows=BETTORS.map(p=>({p,s:stat(bets.filter(b=>b.who===p&&inLg(b))),t:bal(p,'all')})).sort((a,b)=>b.t-a.t);
+    if(canEdit()){ $('#netWho').textContent=n>0?`${bookView==='all'?'Books owe':bookView+' owes'} the family`:n<0?`Family owes ${bookLbl}`:'Even with '+bookLbl; setNet(n); }
+    else if(meId()){ const m=bal(meId(),bookView); $('#netWho').textContent=m>0?`${bookLbl==='the books'?'Books owe':bookLbl+' owes'} you`:m<0?`You owe ${bookLbl}`:'You’re even'; setNet(m); }
+    else { $('#netWho').textContent='Balances are private'; privNet(); }
+    const rows=BETTORS.map(p=>({p,s:stat(bets.filter(b=>b.who===p&&inLg(b))),t:bal(p,'all')})).sort(canEdit()?(a,b)=>b.t-a.t:(a,b)=>(b.s.w-b.s.l)-(a.s.w-a.s.l)||b.s.w-a.s.w);
     $('#groupView').innerHTML=`<table class="tbl"><thead><tr><th>Bettor</th><th class="n">Record</th>${BOOKS.map(k=>`<th class="n">${k}</th>`).join('')}<th class="n">Total</th></tr></thead><tbody>${
-      rows.map(({p,s,t})=>`<tr data-p="${p}"><td>${esc(nm(p))}</td><td class="n">${s.rec}</td>${BOOKS.map(k=>cell(bal(p,k))).join('')}${cell(t)}</tr>`).join('')
-    }</tbody><tfoot><tr><td>Book</td><td></td>${BOOKS.map(k=>cell(-BETTORS.reduce((t,p)=>t+bal(p,k),0))).join('')}<td></td></tr></tfoot></table>`;
+      rows.map(({p,s,t})=>`<tr data-p="${p}"><td>${esc(nm(p))}${p===meId()?' <small style="color:var(--muted)">(you)</small>':''}</td><td class="n">${s.rec}</td>${BOOKS.map(k=>cell(bal(p,k),canSee(p))).join('')}${cell(t,canSee(p))}</tr>`).join('')
+    }</tbody>${canEdit()?`<tfoot><tr><td>Book</td><td></td>${BOOKS.map(k=>cell(-BETTORS.reduce((t,p)=>t+bal(p,k),0))).join('')}<td></td></tr></tfoot>`:''}</table>`;
     $('#carryRow').hidden=true;
   } else {
     const s=stat(mine), n=bal(view,bookView);
     $('#recWho').textContent=(view==='Al'?'My':nm(view))+' record'; $('#rec').textContent=s.rec;
     const me=view==='Al'?'me':view, I=view==='Al'?'I owe':view+' owes';
-    $('#netWho').textContent=n>0?`${bookView==='all'?'Books owe':bookView+' owes'} ${me}`:n<0?`${I} ${bookLbl}`:'Even with '+bookLbl;
-    setNet(n); $('#groupView').innerHTML='';
+    if(canSee(view)){ const you=view===meId(); $('#netWho').textContent=n>0?`${bookView==='all'?'Books owe':bookView+' owes'} ${you?'you':me}`:n<0?`${you?'You owe':I} ${bookLbl}`:'Even with '+bookLbl; setNet(n); }
+    else { $('#netWho').textContent=`${nm(view)}’s balance is private`; privNet(); }
+    $('#groupView').innerHTML='';
     $('#carryRow').hidden=!canEdit();
     $('#carryRow').innerHTML='<span>Carry-in before tracked bets:</span>'+BOOKS.map(k=>`<label style="margin:0;display:flex;align-items:center;gap:4px">${k}<input type="number" step="1" inputmode="decimal" data-carry="${view}|${k}" value="${carry[view+'|'+k]||''}" placeholder="0"></label>`).join('');
   }
   const pend=mine.filter(b=>!outcomeOf(b));
   $('#totBets').textContent=`${mine.length} bet${mine.length===1?'':'s'}`;
   $('#totPend').textContent=`${pend.length} pending`;
-  $('#totRisk').textContent=money(pend.reduce((s,b)=>s+b.amount,0))+' at risk';
+  const seeAll=mine.every(b=>canSee(b.who)); $('#totRisk').textContent=seeAll?money(pend.reduce((s,b)=>s+b.amount,0))+' at risk':'';
   const weeks=[...new Set(mine.map(b=>b.week))].sort((a,b)=>b-a);
   const wf=$('#weekFilter'), cur=wf.value;
   wf.innerHTML='<option value="all">All weeks</option>'+weeks.map(w=>`<option value="${w}">Week ${w}</option>`).join('');
@@ -451,17 +486,18 @@ function render(){
     const rows=mine.filter(b=>b.week===w);
     const n=rows.reduce((s,b)=>s+net(b),0), open=rows.filter(b=>!outcomeOf(b)).length;
     const sec=document.createElement('section'); sec.className='week';
-    sec.innerHTML=`<div class="week-head"><h2>Week ${w}</h2><span class="sum">${rows.length} bets · ${open?open+' open · ':''}${signed(n)}</span></div>`;
+    sec.innerHTML=`<div class="week-head"><h2>Week ${w}</h2><span class="sum">${rows.length} bet${rows.length===1?'':'s'}${open?' · '+open+' open':''}${rows.every(b=>canSee(b.who))?' · '+signed(n):''}</span></div>`;
     for(const b of rows){
       const o=outcomeOf(b), d=document.createElement('div'); d.className='bet';
       const cls=o==='W'?'win':o==='L'?'loss':o==='P'?'push':'';
-      const amt=o==='W'?'+'+money(b.payout??b.amount):o==='L'?'-'+money(b.amount):o==='P'?'$0':money(b.payout??b.amount);
+      const vis=canSee(b.who);
+      const amt=!vis?(o==='W'?'WIN':o==='L'?'LOSS':o==='P'?'PUSH':'OPEN'):o==='W'?'+'+money(b.payout??b.amount):o==='L'?'-'+money(b.amount):o==='P'?'$0':money(b.payout??b.amount);
       const g=gameFor(b), sc=g?scoreLine(g):(b.final?'Final · '+b.final:'');
       d.innerHTML=`
         <div class="match">${view==='all'?`<span class="who">${esc(nm(b.who))}</span>`:''}${esc(b.matchup)}${lgOf(b)!=='NFL'?`<span class="lgb">${lgOf(b)}</span>`:''}<span class="bk">${esc(b.book)}</span></div>
-        <div class="amt num ${cls}">${amt}</div>
+        <div class="amt num ${cls} ${vis?'':'priv'}">${amt}</div>
         <div class="pick"><b>${esc(b.pick)}</b> ${esc(b.spread)}${b.date&&lgOf(b)!=='NFL'?` · ${esc(shortDay(b.date))}`:''}</div>
-        <div class="tag">${o==='W'?'Won':o==='L'?'Lost':o==='P'?'Push':'To win'} · ${money(b.amount)}/${money(b.payout??b.amount)}</div>
+        <div class="tag">${vis?`${o==='W'?'Won':o==='L'?'Lost':o==='P'?'Push':'To win'} · ${money(b.amount)}/${money(b.payout??b.amount)} · ${esc(b.odds||'11/10')}`:''}</div>
         ${sc?`<div class="score ${g&&g.state==='in'?'live':''}">${esc(sc)}</div>`:''}
         <div class="outcome edit-only">
           ${['W','L','P','O'].map(x=>`<button class="oc ${x} ${(o||'O')===x?'on':''}" data-id="${b.id}" data-o="${x}">${{W:'Win',L:'Loss',P:'Push',O:'Open'}[x]}</button>`).join('')}
@@ -511,20 +547,47 @@ function lineOptions(l){
   return o;
 }
 function openRequest(l){
-  rqLine=l; rqOpts=lineOptions(l); rqSel=0; if(!rqOpts.length)return;
+  rqLine=l; rqOpts=lineOptions(l); rqSel=0; if(!rqOpts.length)return; $('#rqPickBox').hidden=false; $('#rqFree').hidden=true;
   $('#rqLine').textContent=`${lgOf(l)!=='NFL'?LEAGUES[lgOf(l)].n+' · ':''}${l.matchup} · ${l.book} · ${l.date&&lgOf(l)!=='NFL'?shortDay(l.date):'Week '+l.week}`;
   $('#rqPick').innerHTML=rqOpts.map((o,i)=>`<button type="button" data-i="${i}" class="${i===0?'on':''}">${esc(o.pick)} ${esc(o.spread)}</button>`).join('');
   $('#rqWho').innerHTML=UNCLES.map(p=>`<option value="${p}">${esc(nm(p))}</option>`).join(''); const me=ls.get('-me',''); if(UNCLES.includes(me))$('#rqWho').value=me;
   $('#reqSheet').hidden=false; rqCalc(); $('#reqSheet').scrollIntoView({behavior:'smooth'});
 }
-function rqCalc(){ const a=+$('#rqAmt').value, o=rqOpts[rqSel]; $('#rqCalc').textContent=a>0?`Risk ${money(riskWin(a,o.odds,'win').risk)} to win ${money(a)} (${o.odds}). Steve or Al books it once they approve.`:'Steve or Al books it once they approve. Nothing counts until then.'; }
+function openFreeRequest(){
+  rqLine=null; $('#rqPickBox').hidden=true; $('#rqFree').hidden=false; $('#rqLine').textContent='Enter the bet you want. Steve or Al books it once they approve.';
+  $('#rqLg').innerHTML=LG.map(l=>`<option value="${l}">${esc(LEAGUES[l].n)}</option>`).join(''); $('#rqLg').value=lgView==='all'?'NFL':lgView;
+  $('#rqBook').innerHTML=BOOKS.map(k=>`<option>${k}</option>`).join('');
+  $('#rqWho').innerHTML=UNCLES.map(p=>`<option value="${p}">${esc(nm(p))}</option>`).join(''); const me=ls.get('-me',''); if(UNCLES.includes(me))$('#rqWho').value=me;
+  $('#rqWk').value=curWeek||dateWeek(); $('#rqDt').value=today(); ['#rqMatch','#rqPk','#rqSp','#rqOd'].forEach(s=>$(s).value='');
+  rqSyncLg(); $('#reqSheet').hidden=false; rqCalc(); $('#reqSheet').scrollIntoView({behavior:'smooth'});
+}
+function rqSyncLg(){ const lg=$('#rqLg').value, nfl=lg==='NFL'; $('#rqWkBox').hidden=!nfl; $('#rqDtBox').hidden=nfl;
+  const day=$('#rqDt').value||today(), wk=+$('#rqWk').value||curWeek;
+  const gs=Object.values(games).filter(g=>g.lg===lg&&(nfl?g.week===wk:g.day===day)&&g.state!=='post').sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+  const nmOf=s=>cap(lg==='NFL'||lg==='NBA'||lg==='MLB'||lg==='NHL'?(s.nick||s.short):(s.short||s.loc));
+  $('#rqGames').innerHTML=gs.map(g=>`<option value="${esc(nmOf(g.away)+' @ '+nmOf(g.home))}"></option>`).join('');
+  rqTeams(); }
+function rqTeams(){ const [a,h]=sides($('#rqMatch').value); $('#rqTeams').innerHTML=[a,h,'Over','Under'].filter(Boolean).map(x=>`<option value="${esc(x)}"></option>`).join(''); }
+['#rqLg','#rqWk','#rqDt'].forEach(s=>$(s).addEventListener('change',rqSyncLg));
+$('#rqMatch').addEventListener('input',rqTeams);
+['#rqOd'].forEach(s=>$(s).addEventListener('input',rqCalc));
+$('#reqBtn').onclick=()=>$('#reqSheet').hidden||rqLine?openFreeRequest():($('#reqSheet').hidden=true);
+function rqCurrent(){ // the bet being requested, from a posted line or from the free-form fields
+  if(rqLine){ const o=rqOpts[rqSel], l=rqLine; return {book:l.book,lg:lgOf(l),date:l.date,week:l.week,matchup:l.matchup,pick:o.pick,spread:o.spread,odds:o.odds}; }
+  const lg=$('#rqLg').value, date=lg==='NFL'?undefined:($('#rqDt').value||today()), odds=$('#rqOd').value.trim()||'11/10';
+  return {book:$('#rqBook').value,lg,date,week:lg==='NFL'?(+$('#rqWk').value||curWeek||dateWeek()):dateWeek(date),matchup:$('#rqMatch').value.trim(),pick:$('#rqPk').value.trim(),spread:$('#rqSp').value.trim(),odds};
+}
+function rqCalc(){ const a=+$('#rqAmt').value, o=rqCurrent(); if(!parseOdds(o.odds)){ $('#rqCalc').textContent='Odds look like 11/10, 44/40, -150 or +130.'; return; } $('#rqCalc').textContent=a>0?`Risk ${money(riskWin(a,o.odds,'win').risk)} to win ${money(a)} (${o.odds}). Steve or Al books it once they approve.`:'Steve or Al books it once they approve. Nothing counts until then.'; }
 $('#rqPick').addEventListener('click',e=>{ const i=e.target.dataset.i; if(i===undefined)return; rqSel=+i; document.querySelectorAll('#rqPick button').forEach((b,j)=>b.classList.toggle('on',j===rqSel)); rqCalc(); });
 $('#rqAmt').addEventListener('input',rqCalc);
 $('#rqCancel').onclick=()=>{ $('#reqSheet').hidden=true; };
 $('#rqSend').onclick=async()=>{
-  const a=+$('#rqAmt').value, who=$('#rqWho').value, o=rqOpts[rqSel], l=rqLine; if(!(a>0)){ toast('Enter how much you want to win'); return; }
+  const a=+$('#rqAmt').value, who=$('#rqWho').value, o=rqCurrent(), l=o;
+  if(!rqLine&&(!o.matchup||!o.pick)){ toast('Enter the game and your pick'); return; }
+  if(!parseOdds(o.odds)){ toast('Odds look like 11/10, 44/40, -150 or +130'); return; }
+  if(!(a>0)){ toast('Enter how much you want to win'); return; }
   ls.set('-me',who);
-  const req={rid:newId(),who,book:l.book,lg:lgOf(l),date:l.date,week:l.week,matchup:l.matchup,pick:o.pick,spread:o.spread,odds:o.odds,win:a,at:Date.now()};
+  const req={rid:newId(),who,book:o.book,lg:o.lg,date:o.date,week:o.week,matchup:o.matchup,pick:o.pick,spread:o.spread,odds:o.odds,win:a,at:Date.now()};
   const link=location.origin+location.pathname+'#req='+encodeURIComponent(b64e(JSON.stringify(req)));
   const text=`Bet request from ${nm(who)}: ${o.pick} ${o.spread} — ${lgOf(l)!=='NFL'?lgOf(l)+' ':''}${l.matchup} (${l.book}, ${l.date&&lgOf(l)!=='NFL'?shortDay(l.date):'Wk '+l.week}), to win $${a}. Tap to book: ${link}`;
   $('#reqSheet').hidden=true;
@@ -561,6 +624,7 @@ function renderLgSeg(){ // only shows once a second sport is in use
   seg.hidden=false; seg.innerHTML=['all',...used].map(l=>`<button class="${lgView===l?'on':''}" data-lg="${l}" role="tab" aria-selected="${lgView===l}">${l==='all'?'All sports':lgIcon(l)+esc(LEAGUES[l].n)}</button>`).join('');
 }
 $('#lgSeg').addEventListener('click',e=>{ const b=e.target.closest('[data-lg]'); if(b){ lgView=b.dataset.lg; ls.set('-lg',lgView); render(); } });
+function privNet(){ const el=$('#net'); el.textContent='•••'; el.className='rec num'; }
 function setNet(n){ const el=$('#net'); el.textContent=money(Math.abs(n)); el.className='rec num '+(n>0?'up':n<0?'down':''); }
 
 $('#people').addEventListener('click',e=>{ const p=e.target.dataset.p; if(p){ view=p; render(); } });
@@ -863,6 +927,14 @@ const SEED=[
 curWeek=dateWeek();
 if(repo()){ store='gh'; bets=SEED.map(x=>({...x})); }
 else { bets=(ls.get('',null)||SEED.map(x=>({...x}))).map(norm); carry=ls.get('-carry',{}); lines=ls.get('-lines',[]); }
+// Uncles: "Who's this?" once per phone; the book then opens on their own tab (everyone's bets stay one tap away)
+function meLabel(){ const me=ls.get('-me',''), b=$('#meLbl'); if(canEdit()){ b.hidden=true; return; } b.hidden=false; b.textContent=UNCLES.includes(me)?`${nm(me)} · switch`:'Who are you?'; }
+function askWho(){ $('#whoBtns').innerHTML=UNCLES.map(p=>`<button data-me="${p}">${esc(nm(p))}</button>`).join(''); $('#whoOv').hidden=false; }
+$('#whoBtns').addEventListener('click',e=>{ const p=e.target.dataset.me; if(!p)return; ls.set('-me',p); ls.set('-meSkip',0); view=p; $('#whoOv').hidden=true; meLabel(); render(); window.scrollTo({top:0}); });
+$('#whoSkip').onclick=()=>{ ls.set('-meSkip',1); $('#whoOv').hidden=true; meLabel(); };
+$('#meLbl').onclick=askWho;
+if(!canEdit()){ const me=ls.get('-me',''); if(UNCLES.includes(me))view=me; else if(!ls.get('-meSkip',0))askWho(); }
+meLabel();
 setSync(); render(); drawLog(); refreshScores();
 if(incomingReq){ addToInbox(incomingReq); setTimeout(()=>window.scrollTo({top:0}),50); }
 // links tapped while the app is already open only change the #hash, so handle that too
