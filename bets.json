@@ -5,6 +5,66 @@
    "book": "Max",
    "lg": "NFL",
    "week": 6,
+   "matchup": "Bears @ Falcons",
+   "pick": "Bears",
+   "spread": "-1",
+   "amount": 44,
+   "payout": 40,
+   "odds": "44/40",
+   "id": "mvdxfvm7pt8s3",
+   "outcome": null,
+   "at": 1792334090962
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 6,
+   "matchup": "Cardinals @ Rams",
+   "pick": "Cardinals",
+   "spread": "+12.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "44/40",
+   "id": "mvdxfvm7off42",
+   "outcome": null,
+   "at": 1792334090961
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 6,
+   "matchup": "Titans @ Colts",
+   "pick": "Colts",
+   "spread": "-6.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "44/40",
+   "id": "mvdxfvm7fj2m1",
+   "outcome": null,
+   "at": 1792334090960
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 6,
+   "matchup": "Steelers @ Buccaneers",
+   "pick": "Steelers",
+   "spread": "-2.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "44/40",
+   "id": "mvdxfvm7cplz0",
+   "outcome": null,
+   "at": 1792334090959
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 6,
    "matchup": "Texans @ Jaguars",
    "pick": "Jacksonville",
    "spread": "-2.5",
@@ -255,5 +315,5 @@
    "aka": "Mike, M, Uncle Michael"
   }
  ],
- "updated": "2026-10-18T13:26:07.433Z"
+ "updated": "2026-10-18T14:34:51.365Z"
 }
