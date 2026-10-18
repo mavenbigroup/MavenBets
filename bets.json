@@ -12,8 +12,10 @@
    "payout": 40,
    "odds": "44/40",
    "id": "mvdxfvm7pt8s3",
-   "outcome": null,
-   "at": 1792334090962
+   "outcome": "W",
+   "at": 1792334090962,
+   "gameId": "NFL:401872999",
+   "final": "CHI 31–ATL 23"
   },
   {
    "who": "Al",
@@ -42,8 +44,10 @@
    "payout": 40,
    "odds": "44/40",
    "id": "mvdxfvm7fj2m1",
-   "outcome": null,
-   "at": 1792334090960
+   "outcome": "L",
+   "at": 1792334090960,
+   "gameId": "NFL:401873003",
+   "final": "TEN 26–IND 20"
   },
   {
    "who": "Al",
@@ -57,8 +61,10 @@
    "payout": 40,
    "odds": "44/40",
    "id": "mvdxfvm7cplz0",
-   "outcome": null,
-   "at": 1792334090959
+   "outcome": "W",
+   "at": 1792334090959,
+   "gameId": "NFL:401873002",
+   "final": "PIT 26–TB 19"
   },
   {
    "who": "Al",
@@ -317,5 +323,5 @@
    "aka": "Mike, M, Uncle Michael"
   }
  ],
- "updated": "2026-10-18T16:52:23.052Z"
+ "updated": "2026-10-18T22:24:52.579Z"
 }
