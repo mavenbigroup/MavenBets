@@ -29,8 +29,10 @@
    "payout": 40,
    "odds": "44/40",
    "id": "mvdxfvm7off42",
-   "outcome": null,
-   "at": 1792334090961
+   "outcome": "W",
+   "at": 1792334090961,
+   "gameId": "NFL:401873004",
+   "final": "ARI 18–LAR 16"
   },
   {
    "who": "Al",
@@ -323,5 +325,5 @@
    "aka": "Mike, M, Uncle Michael"
   }
  ],
- "updated": "2026-10-18T22:24:52.579Z"
+ "updated": "2026-10-18T23:38:23.467Z"
 }
