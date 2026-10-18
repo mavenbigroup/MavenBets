@@ -5,6 +5,21 @@
    "book": "Max",
    "lg": "NFL",
    "week": 6,
+   "matchup": "Cowboys @ Packers",
+   "pick": "Packers",
+   "spread": "+3.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "44/40",
+   "id": "mvegvvoovbzk0",
+   "outcome": null,
+   "at": 1792366750248
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 6,
    "matchup": "Bears @ Falcons",
    "pick": "Bears",
    "spread": "-1",
@@ -325,5 +340,5 @@
    "aka": "Mike, M, Uncle Michael"
   }
  ],
- "updated": "2026-10-18T23:38:24.669Z"
+ "updated": "2026-10-18T23:39:10.622Z"
 }
