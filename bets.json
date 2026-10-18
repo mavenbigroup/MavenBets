@@ -72,8 +72,10 @@
    "payout": 40,
    "odds": "44/40",
    "id": "mvduzhdqgrp10",
-   "outcome": null,
-   "at": 1792329966782
+   "outcome": "L",
+   "at": 1792329966782,
+   "gameId": "NFL:401872996",
+   "final": "HOU 34–JAX 31"
   },
   {
    "who": "Al",
@@ -315,5 +317,5 @@
    "aka": "Mike, M, Uncle Michael"
   }
  ],
- "updated": "2026-10-18T14:34:51.365Z"
+ "updated": "2026-10-18T16:52:23.052Z"
 }
