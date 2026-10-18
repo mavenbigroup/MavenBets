@@ -3,6 +3,21 @@
   {
    "who": "Al",
    "book": "Max",
+   "lg": "NFL",
+   "week": 6,
+   "matchup": "Texans @ Jaguars",
+   "pick": "Jacksonville",
+   "spread": "-2.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "44/40",
+   "id": "mvduzhdqgrp10",
+   "outcome": null,
+   "at": 1792329966782
+  },
+  {
+   "who": "Al",
+   "book": "Max",
    "id": "s1",
    "week": 1,
    "matchup": "Falcons @ Steelers",
@@ -240,5 +255,5 @@
    "aka": "Mike, M, Uncle Michael"
   }
  ],
- "updated": "2026-10-17T15:58:04.957Z"
+ "updated": "2026-10-18T13:26:07.433Z"
 }
