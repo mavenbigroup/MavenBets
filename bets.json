@@ -12,8 +12,10 @@
    "amount": 44,
    "payout": 40,
    "odds": "44/40",
-   "outcome": null,
-   "at": 1792366750248
+   "outcome": "W",
+   "at": 1792366750248,
+   "gameId": "NFL:401873007",
+   "final": "DAL 13–GB 23"
   },
   {
    "who": "Al",
@@ -340,5 +342,5 @@
    "aka": "Mike, M, Uncle Michael"
   }
  ],
- "updated": "2026-10-19T00:24:22.515Z"
+ "updated": "2026-10-19T12:24:51.030Z"
 }
