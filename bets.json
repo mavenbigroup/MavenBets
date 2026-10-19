@@ -1,17 +1,17 @@
 {
  "bets": [
   {
+   "id": "mvegvvoovbzk0",
    "who": "Al",
    "book": "Max",
    "lg": "NFL",
    "week": 6,
    "matchup": "Cowboys @ Packers",
    "pick": "Packers",
-   "spread": "+3.5",
+   "spread": "+1",
    "amount": 44,
    "payout": 40,
    "odds": "44/40",
-   "id": "mvegvvoovbzk0",
    "outcome": null,
    "at": 1792366750248
   },
@@ -340,5 +340,5 @@
    "aka": "Mike, M, Uncle Michael"
   }
  ],
- "updated": "2026-10-18T23:39:10.622Z"
+ "updated": "2026-10-19T00:24:22.515Z"
 }
