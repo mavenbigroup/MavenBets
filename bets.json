@@ -312,7 +312,34 @@
   }
  ],
  "carry": {},
- "lines": [],
+ "lines": [
+  {
+   "book": "Max",
+   "lg": "NFL",
+   "week": 7,
+   "matchup": "Buccaneers @ Panthers",
+   "team": "Buccaneers",
+   "spread": "+3",
+   "odds": "11/10",
+   "total": "",
+   "totalOdds": "11/10",
+   "at": 1792959952429,
+   "id": "7_Max_buccaneers_panthers"
+  },
+  {
+   "book": "Max",
+   "lg": "NFL",
+   "week": 7,
+   "matchup": "49ers @ Falcons",
+   "team": "49ers",
+   "spread": "-2.5",
+   "odds": "11/10",
+   "total": "",
+   "totalOdds": "11/10",
+   "at": 1792959952430,
+   "id": "7_Max_49ers_falcons"
+  }
+ ],
  "people": [
   {
    "id": "Al",
@@ -342,5 +369,5 @@
    "aka": "Mike, M, Uncle Michael"
   }
  ],
- "updated": "2026-10-19T12:24:51.030Z"
+ "updated": "2026-10-25T20:25:52.937Z"
 }
