@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "id": "mvoa3gsnnptt",
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 7,
+   "matchup": "Buccaneers @ Panthers",
+   "pick": "Buccaneers",
+   "spread": "+3",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": null,
+   "at": 1792960008647
+  },
+  {
    "id": "mvegvvoovbzk0",
    "who": "Al",
    "book": "Max",
@@ -369,5 +384,5 @@
    "aka": "Mike, M, Uncle Michael"
   }
  ],
- "updated": "2026-10-25T20:25:52.937Z"
+ "updated": "2026-10-25T20:26:49.227Z"
 }
