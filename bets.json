@@ -5,6 +5,21 @@
    "book": "Max",
    "lg": "NFL",
    "week": 7,
+   "matchup": "Chiefs @ Seahawks",
+   "pick": "Seahawks",
+   "spread": "-3.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "44/40",
+   "id": "mvoh0l93a2dw0",
+   "outcome": null,
+   "at": 1792971631767
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 7,
    "matchup": "Steelers @ Saints",
    "pick": "Steelers",
    "spread": "+3.5",
@@ -420,5 +435,5 @@
    "aka": "Mike, M, Uncle Michael"
   }
  ],
- "updated": "2026-10-25T23:38:37.766Z"
+ "updated": "2026-10-25T23:40:32.232Z"
 }
