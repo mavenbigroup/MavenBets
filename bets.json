@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "id": "mvoa3s92l7r3",
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 7,
+   "matchup": "49ers @ Falcons",
+   "pick": "49ers",
+   "spread": "-2.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": null,
+   "at": 1792960023494
+  },
+  {
    "id": "mvoa3gsnnptt",
    "who": "Al",
    "book": "Max",
@@ -384,5 +399,5 @@
    "aka": "Mike, M, Uncle Michael"
   }
  ],
- "updated": "2026-10-25T20:26:49.227Z"
+ "updated": "2026-10-25T20:27:03.904Z"
 }
