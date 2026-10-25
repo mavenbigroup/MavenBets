@@ -12,8 +12,10 @@
    "payout": 40,
    "odds": "44/40",
    "id": "mvoa51nd3wnn0",
-   "outcome": null,
-   "at": 1792960082329
+   "outcome": "W",
+   "at": 1792960082329,
+   "gameId": "NFL:401873011",
+   "final": "PIT 16–NO 10"
   },
   {
    "id": "mvoa3s92l7r3",
@@ -418,5 +420,5 @@
    "aka": "Mike, M, Uncle Michael"
   }
  ],
- "updated": "2026-10-25T20:28:02.680Z"
+ "updated": "2026-10-25T23:38:37.766Z"
 }
