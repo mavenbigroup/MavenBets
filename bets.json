@@ -12,8 +12,10 @@
    "amount": 44,
    "payout": 40,
    "odds": "11/10",
-   "outcome": null,
-   "at": 1792960024740
+   "outcome": "L",
+   "at": 1792960024740,
+   "gameId": "NFL:401873017",
+   "final": "SF 20–ATL 29"
   },
   {
    "id": "mvoa3s92l7r3",
@@ -27,8 +29,10 @@
    "amount": 44,
    "payout": 40,
    "odds": "11/10",
-   "outcome": null,
-   "at": 1792960023494
+   "outcome": "L",
+   "at": 1792960023494,
+   "gameId": "NFL:401873017",
+   "final": "SF 20–ATL 29"
   },
   {
    "id": "mvoa3gsnnptt",
@@ -42,8 +46,10 @@
    "amount": 44,
    "payout": 40,
    "odds": "11/10",
-   "outcome": null,
-   "at": 1792960008647
+   "outcome": "W",
+   "at": 1792960008647,
+   "gameId": "NFL:401873018",
+   "final": "TB 43–CAR 13"
   },
   {
    "id": "mvegvvoovbzk0",
@@ -414,5 +420,5 @@
    "aka": "Mike, M, Uncle Michael"
   }
  ],
- "updated": "2026-10-25T20:27:05.148Z"
+ "updated": "2026-10-25T20:27:07.505Z"
 }
