@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 7,
+   "matchup": "Steelers @ Saints",
+   "pick": "Steelers",
+   "spread": "+3.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "44/40",
+   "id": "mvoa51nd3wnn0",
+   "outcome": null,
+   "at": 1792960082329
+  },
+  {
    "id": "mvoa3s92l7r3",
    "who": "Al",
    "book": "Max",
@@ -403,5 +418,5 @@
    "aka": "Mike, M, Uncle Michael"
   }
  ],
- "updated": "2026-10-25T20:27:11.540Z"
+ "updated": "2026-10-25T20:28:02.680Z"
 }
