@@ -12,8 +12,10 @@
    "payout": 40,
    "odds": "44/40",
    "id": "mvoh0l93a2dw0",
-   "outcome": null,
-   "at": 1792971631767
+   "outcome": "W",
+   "at": 1792971631767,
+   "gameId": "NFL:401873022",
+   "final": "KC 3–SEA 20"
   },
   {
    "who": "Al",
@@ -435,5 +437,5 @@
    "aka": "Mike, M, Uncle Michael"
   }
  ],
- "updated": "2026-10-25T23:40:32.232Z"
+ "updated": "2026-10-26T03:24:09.718Z"
 }
