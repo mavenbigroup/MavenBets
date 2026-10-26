@@ -1,17 +1,17 @@
 {
  "bets": [
   {
+   "id": "mvpulpxurrcj0",
    "who": "Al",
    "book": "Max",
    "lg": "NFL",
    "week": 7,
    "matchup": "Cowboys @ Eagles",
    "pick": "Eagles",
-   "spread": "+3.5",
+   "spread": "+4",
    "amount": 44,
    "payout": 40,
    "odds": "11/10",
-   "id": "mvpulpxurrcj0",
    "outcome": null,
    "at": 1793054918802
   },
@@ -452,5 +452,5 @@
    "aka": "Mike, M, Uncle Michael"
   }
  ],
- "updated": "2026-10-26T22:48:39.343Z"
+ "updated": "2026-10-26T22:49:51.448Z"
 }
