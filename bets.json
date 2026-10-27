@@ -12,8 +12,10 @@
    "amount": 44,
    "payout": 40,
    "odds": "11/10",
-   "outcome": null,
-   "at": 1793054918802
+   "outcome": "L",
+   "at": 1793054918802,
+   "gameId": "NFL:401873009",
+   "final": "DAL 38–PHI 21"
   },
   {
    "who": "Al",
@@ -423,34 +425,5 @@
    "id": "7_Max_49ers_falcons"
   }
  ],
- "people": [
-  {
-   "id": "Al",
-   "name": "Al",
-   "admin": true,
-   "aka": ""
-  },
-  {
-   "id": "Steve",
-   "name": "Steve",
-   "admin": true,
-   "aka": "Dad, Pop"
-  },
-  {
-   "id": "Dan",
-   "name": "Danny",
-   "aka": "D, Dan, Uncle D"
-  },
-  {
-   "id": "J",
-   "name": "John",
-   "aka": "J"
-  },
-  {
-   "id": "Mich",
-   "name": "Michael",
-   "aka": "Mike, M, Uncle Michael"
-  }
- ],
- "updated": "2026-10-26T22:49:51.448Z"
+ "updated": "2026-10-27T15:32:01.353Z"
 }
