@@ -1,6 +1,51 @@
 {
  "bets": [
   {
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 8,
+   "matchup": "Cardinals @ Cowboys",
+   "pick": "Arizona",
+   "spread": "+7.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "44/40",
+   "id": "mvy4zv75yn192",
+   "outcome": null,
+   "at": 1793556104371
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 8,
+   "matchup": "Vikings @ Lions",
+   "pick": "Detroit",
+   "spread": "-3.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "44/40",
+   "id": "mvy4zv75c34u1",
+   "outcome": null,
+   "at": 1793556104370
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 8,
+   "matchup": "Browns @ Steelers",
+   "pick": "Pittsburgh",
+   "spread": "-3.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "44/40",
+   "id": "mvy4zv75mqds0",
+   "outcome": null,
+   "at": 1793556104369
+  },
+  {
    "id": "mvpulpxurrcj0",
    "who": "Al",
    "book": "Max",
@@ -425,5 +470,5 @@
    "id": "7_Max_49ers_falcons"
   }
  ],
- "updated": "2026-10-27T15:32:01.353Z"
+ "updated": "2026-11-01T18:01:44.792Z"
 }
