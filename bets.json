@@ -27,8 +27,9 @@
    "payout": 40,
    "odds": "44/40",
    "id": "mvy4zv75yn192",
-   "outcome": null,
-   "at": 1793556104371
+   "outcome": "W",
+   "at": 1793556104371,
+   "manual": true
   },
   {
    "who": "Al",
@@ -489,5 +490,5 @@
    "id": "7_Max_49ers_falcons"
   }
  ],
- "updated": "2026-11-01T21:07:40.928Z"
+ "updated": "2026-11-01T21:27:20.321Z"
 }
