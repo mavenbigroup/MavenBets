@@ -42,8 +42,10 @@
    "payout": 40,
    "odds": "44/40",
    "id": "mvy4zv75c34u1",
-   "outcome": null,
-   "at": 1793556104370
+   "outcome": "W",
+   "at": 1793556104370,
+   "gameId": "NFL:401873030",
+   "final": "MIN 15–DET 19"
   },
   {
    "who": "Al",
@@ -57,8 +59,10 @@
    "payout": 40,
    "odds": "44/40",
    "id": "mvy4zv75mqds0",
-   "outcome": null,
-   "at": 1793556104369
+   "outcome": "W",
+   "at": 1793556104369,
+   "gameId": "NFL:401873027",
+   "final": "CLE 6–PIT 27"
   },
   {
    "id": "mvpulpxurrcj0",
@@ -485,5 +489,5 @@
    "id": "7_Max_49ers_falcons"
   }
  ],
- "updated": "2026-11-01T21:00:16.496Z"
+ "updated": "2026-11-01T21:07:40.928Z"
 }
