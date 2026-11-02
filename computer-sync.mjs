@@ -118,7 +118,8 @@ const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 const READ_PAGES = [/^\/$/, /^\/dgs\/login\.aspx$/i, /^\/dgs\/wager\/(welcome|history|openbets)\.aspx$/i, /^\/dgs\/wager\/createsports\.aspx$/i];
 function guard(url, opts) {
   const u = new URL(url), path = u.pathname;
-  if (u.origin !== new URL(BASE).origin) throw new Error('Blocked: off-site request ' + u.origin);
+  const host = h => h.toLowerCase().replace(/^www\./, ''), base = new URL(BASE);
+  if (u.protocol !== base.protocol || host(u.hostname) !== host(base.hostname)) throw new Error('Blocked: off-site request ' + u.origin);
   if (!READ_PAGES.some(re => re.test(path))) throw new Error('Blocked: not a read-only page ' + path);
   const method = (opts.method || 'GET').toUpperCase();
   if (method === 'GET') return;
