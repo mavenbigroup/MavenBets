@@ -373,7 +373,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 <button class="upd" id="updBar" hidden>New version available — tap to update</button>
 
 <script>
-const APP_V='2026.11.02-2';
+const APP_V='2026.11.02-3';
 const KEY='anolik-football-book-v1';
 // People live in the book file so admins can add or hide them; these are the starting five
 const DEFAULT_PEOPLE=[{id:'Al',name:'Al',admin:true,aka:''},{id:'Steve',name:'Steve',admin:true,aka:'Dad, Pop'},{id:'Dan',name:'Danny',aka:'D, Dan'},{id:'J',name:'John',aka:'J'},{id:'Mich',name:'Michael',aka:'Mike, M'}];
@@ -604,6 +604,8 @@ const PRO=['NFL','NBA','MLB','NHL'];
 const k23Name=(s,lg)=>{ let w=String(s||'').trim().split(/\s+/); if(PRO.includes(lg)&&w.length>1&&w[0].length<=3)w=w.slice(1); return cap(w.join(' ').toLowerCase()); };
 const sgn=n=>n==null||n===''?'':+n===0?'PK':(+n>0?'+':'')+(+n);
 const am=n=>n==null||n===''?'':(+n>0?'+':'')+(+n);
+// a posted line is live until its week is over (NFL) or its game day has passed (other sports)
+const lineLive=l=>lgOf(l)==='NFL'||!l.date?(+l.week||0)>=(curWeek||dateWeek()):l.date>=today();
 function compLines(lg){ return ((comp&&comp.lines)||[]).filter(g=>g.lg===lg&&g.date>=today()); }
 function boardRows(src,lg){
   const rows=[];
@@ -617,9 +619,8 @@ function boardRows(src,lg){
     for(const g of compLines(lg))rows.push({lg,date:g.date,time:g.time,week:dateWeek(g.date),away:k23Name(g.away,lg),home:k23Name(g.home,lg),src,
       aSp:g.awaySpread,aSpO:g.awaySpreadOdds,hSp:g.homeSpread,hSpO:g.homeSpreadOdds,tot:g.total,oO:g.overOdds,uO:g.underOdds,aML:g.awayML,hML:g.homeML});
   } else { // posted lines (Max, or Computer when king23 isn't syncing)
-    const book=src==='comp'?'Computer':'Max', mine=lines.filter(l=>l.book===book&&lgOf(l)===lg);
-    const weeks=[...new Set(mine.map(l=>l.week))].sort((a,b)=>b-a), wk=weeks.includes(curWeek)?curWeek:weeks.find(w=>w<=(curWeek||99))||weeks[0];
-    for(const l of mine.filter(l=>l.week===wk)){ const [a,h]=sides(l.matchup), gm=lineGame(l), row={lg,date:l.date||(gm&&gm.day),week:l.week,away:a||l.matchup,home:h||'',gm,src,lineId:l.id};
+    const book=src==='comp'?'Computer':'Max', mine=lines.filter(l=>l.book===book&&lgOf(l)===lg&&lineLive(l));
+    for(const l of mine){ const [a,h]=sides(l.matchup), gm=lineGame(l), row={lg,date:l.date||(gm&&gm.day),week:l.week,away:a||l.matchup,home:h||'',gm,src,lineId:l.id};
       if(l.team){ const tk=tokens(l.team,lg), onHome=h&&tokens(h,lg).some(w=>tk.includes(w)); const v=parseFloat(l.spread)||0;
         row[onHome?'hSp':'aSp']=v; row[onHome?'aSp':'hSp']=-v; const o=/^[+-]\d{3}$/.test(l.odds||'')?l.odds:''; if(o){ row.aSpO=o; row.hSpO=o; } }
       if(l.total){ row.tot=+l.total; } rows.push(row); }
@@ -631,7 +632,7 @@ function boardRows(src,lg){
 function srcLeagues(src){
   if(src==='comp'&&comp&&comp.lines&&comp.lines.length)return LG.filter(l=>compLines(l).length);
   if(src==='espn')return LG.filter(l=>Object.values(games).some(g=>g.lg===l&&g.line&&g.state!=='post'&&(l==='NFL'?g.week===curWeek:g.day>=today())));
-  const book=src==='comp'?'Computer':'Max'; return LG.filter(l=>lines.some(x=>x.book===book&&lgOf(x)===l));
+  const book=src==='comp'?'Computer':'Max'; return LG.filter(l=>lines.some(x=>x.book===book&&lgOf(x)===l&&lineLive(x)));
 }
 function renderLines(){
   const box=$('#linesView'), SRC={espn:'ESPN',comp:'Computer',max:'Max'};
