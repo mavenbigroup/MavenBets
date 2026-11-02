@@ -115,7 +115,7 @@ const cookie = () => [...jar].map(([k, v]) => `${k}=${v}`).join('; ');
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Safari/537.36';
 // READ-ONLY GUARD. This script must never place, change or cancel a bet on king23.
 // Only these pages may be requested; anything else (bet slips, confirm pages, etc.) is refused.
-const READ_PAGES = [/^\/$/, /^\/dgs\/login\.aspx$/i, /^\/dgs\/wager\/(welcome|history|openbets)\.aspx$/i, /^\/dgs\/wager\/createsports\.aspx$/i];
+const READ_PAGES = [/^\/$/, /^\/default\.aspx$/i, /^\/dgs\/(login|sessionend|default)\.aspx$/i, /^\/dgs\/wager\/(welcome|history|openbets)\.aspx$/i, /^\/dgs\/wager\/createsports\.aspx$/i];
 function guard(url, opts) {
   const u = new URL(url), path = u.pathname;
   const host = h => h.toLowerCase().replace(/^www\./, ''), base = new URL(BASE);
@@ -125,7 +125,7 @@ function guard(url, opts) {
   if (method === 'GET') return;
   if (method !== 'POST') throw new Error('Blocked: ' + method);
   const body = new URLSearchParams(String(opts.body || ''));
-  if (/login\.aspx$/i.test(path)) { if ([...body.keys()].some(k => !['Account', 'Password'].includes(k))) throw new Error('Blocked: unexpected login fields'); return; }
+  if (/login\.aspx$/i.test(path)) { const bad = [...body.keys()].find(k => /text_|risk|win|wager|amount|confirm|bet/i.test(k)); if (bad) throw new Error('Blocked: unexpected login field ' + bad); return; }
   // The only other POST allowed is picking which leagues' lines to VIEW (the "Continue" on the league list).
   // It may carry only page state, league boxes and that Continue button: no line selections ("text_"),
   // no amounts, no wager or confirm buttons.
@@ -135,13 +135,17 @@ function guard(url, opts) {
   }
   if (!/^\/dgs\/wager\/createsports\.aspx$/i.test(path) || !/^WT=0$/i.test(u.search.slice(1))) throw new Error('Blocked: post to ' + path + u.search);
 }
+let ORIGIN = BASE;                                   // becomes the site's real address after the first visit
+const short = u => { const x = new URL(u); return x.host + x.pathname; };
 async function req(path, opts = {}) {
-  let url = new URL(path, BASE + '/DGS/wager/').href;
+  let url = new URL(path, ORIGIN + '/DGS/wager/').href;
   for (let hop = 0; hop < 8; hop++) {
     guard(url, opts);
     const res = await fetch(url, { ...opts, redirect: 'manual', headers: { 'User-Agent': UA, Cookie: cookie(), ...(opts.headers || {}) } });
     keep(res);
-    if (res.status >= 300 && res.status < 400 && res.headers.get('location')) { url = new URL(res.headers.get('location'), url).href; opts = { method: 'GET' }; continue; }
+    if (res.status >= 300 && res.status < 400 && res.headers.get('location')) {
+      const next = new URL(res.headers.get('location'), url).href; console.log(`  ${opts.method || 'GET'} ${short(url)} -> ${res.status} ${short(next)}`);
+      url = next; if (![307, 308].includes(res.status)) opts = { method: 'GET' }; continue; }
     return { url, status: res.status, text: await res.text() };
   }
   throw new Error('Too many redirects at ' + url);
@@ -149,11 +153,20 @@ async function req(path, opts = {}) {
 const hidden = html => Object.fromEntries([...html.matchAll(/<input[^>]*type="hidden"[^>]*>/gi)].map(m => [(m[0].match(/name="([^"]+)"/i) || [])[1], (m[0].match(/value="([^"]*)"/i) || [, ''])[1].replace(/&amp;/g, '&').replace(/&#43;/g, '+').replace(/&#47;/g, '/').replace(/&#61;/g, '=')]).filter(([k]) => k));
 
 async function login(user, pass) {
-  await req(BASE + '/');
-  const body = new URLSearchParams({ Account: user, Password: pass });
-  await req(BASE + '/dgs/login.aspx', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Referer: BASE + '/' }, body });
-  const w = await req('Welcome.aspx');
-  if (!/Logout/i.test(w.text)) throw new Error(`Login failed (status ${w.status} at ${w.url}). Check K23_USER / K23_PASS, or the site may be blocking this server.`);
+  const home = await req(BASE + '/');
+  ORIGIN = new URL(home.url).origin; console.log('Site address:', ORIGIN, '· status', home.status);
+  const form = (home.text.match(/<form[^>]*action="([^"]*login[^"]*)"[^>]*>([\s\S]*?)<\/form>/i) || []);
+  const action = new URL(form[1] || 'dgs/login.aspx', home.url).href;
+  const extra = form[2] ? hidden(form[2]) : {};          // any hidden fields the login form carries
+  const body = new URLSearchParams({ ...extra, Account: user, Password: pass });
+  const r = await req(action, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Referer: home.url, Origin: ORIGIN }, body });
+  console.log('After sign-in:', short(r.url), '· status', r.status, '· cookies', jar.size);
+  const w = /logout/i.test(r.text) ? r : await req('Welcome.aspx');
+  if (!/Logout/i.test(w.text)) {
+    const msg = (w.text.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').match(/(invalid|incorrect|wrong|locked|disabled|denied|suspend)[^.]{0,80}/i) || [])[0];
+    throw new Error(`Login failed — landed on ${short(w.url)} (status ${w.status}).${msg ? ' Site says: "' + msg.trim() + '".' : ''} Check K23_USER / K23_PASS (exact, no spaces); if they're right, king23 may be refusing GitHub's servers.`);
+  }
+  console.log('Signed in ✔');
   return w.text;
 }
 async function leagueLines(lgField, lg) {
