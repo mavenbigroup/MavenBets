@@ -174,7 +174,34 @@ label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px;font-wei
 .lg{padding:9px 12px;border-top:1px solid var(--line)}.lg:first-of-type{border-top:0}
 .lg .gm{display:flex;justify-content:space-between;gap:8px;font-weight:600;font-size:15px}
 .lg .gm small{color:var(--muted);font-weight:500;font-size:12px;white-space:nowrap}
-.lg .bks{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
+.lg .bks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:6px}
+.lc.esp{background:var(--paper)}.lc.esp b{color:#A87400}
+.lines-head{flex-wrap:wrap;gap:8px}
+.srcseg{display:flex;border:1px solid rgba(255,255,255,.25);border-radius:999px;overflow:hidden}
+.srcseg button{border:0;background:transparent;color:#fff;font:inherit;font-size:13px;font-weight:600;padding:4px 11px;cursor:pointer}
+.srcseg button.on{background:var(--gold);color:#101820}.srcseg button:disabled{opacity:.35;cursor:default}
+.lnlg{display:flex;gap:6px;overflow-x:auto;padding:8px 12px 0;scrollbar-width:none}.lnlg::-webkit-scrollbar{display:none}
+.lnlg button{flex:none;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:4px 10px;font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+.lnlg button.on{background:#101820;border-color:#101820;color:var(--gold)}
+.lnote{margin:0;padding:6px 12px 2px;font-size:12px;color:var(--muted)}
+.lg .bd{display:grid;grid-template-columns:minmax(0,1.25fr) repeat(3,minmax(0,1fr));gap:5px 6px;align-items:center;margin-top:6px}
+.lg .tn{font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.px{border:1px solid var(--line);border-radius:7px;background:transparent;color:var(--ink);font:inherit;font-size:14px;font-weight:600;padding:5px 4px;cursor:pointer;line-height:1.15;text-align:center;font-variant-numeric:tabular-nums}
+.px small{display:block;font-size:11px;font-weight:500;color:var(--muted)}
+.px:hover{border-color:var(--gold)}.px.none{border-style:dashed;color:var(--muted);font-weight:500;cursor:default}
+.comp{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);margin:0 0 16px;overflow:hidden}
+.comp-head{background:#101820;color:var(--gold);padding:9px 12px;display:flex;justify-content:space-between;align-items:baseline;cursor:pointer}
+.comp-head h2{margin:0;font-size:20px;font-weight:800}.comp-head span{color:rgba(255,255,255,.65);font-size:12px}
+.ctiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:10px 12px}
+.ct{background:#101820;border-radius:8px;padding:7px 6px;text-align:center}.ct span{display:block;font-size:11px;color:rgba(255,255,255,.7);font-weight:600}
+.ct b{display:block;font-family:"Barlow Condensed",sans-serif;font-size:21px;font-weight:800;color:#fff}.ct b.up{color:var(--gold)}.ct b.down{color:#FF6B6B}
+.ctbl{margin:0 12px 10px;width:calc(100% - 24px)}.ctbl small{font-size:11px}
+.csub{margin:6px 12px 4px;font-family:"Barlow Condensed",sans-serif;font-size:18px;font-weight:800}
+.ctk{display:grid;grid-template-columns:1fr auto;gap:6px 10px;padding:8px 12px;border-top:1px solid var(--line);font-size:14px}
+.ctk small{color:var(--muted);font-size:12px}.ctk .n{text-align:right;font-variant-numeric:tabular-nums}.ctk .up{color:var(--win)}.ctk .down{color:var(--loss)}
+.ctk .cadd{grid-column:1/-1;display:flex;gap:6px}.ctk .cadd select{flex:1;padding:6px 8px}
+.res{font-size:11px;font-weight:800;letter-spacing:.4px}.res.W{color:var(--win)}.res.L{color:var(--loss)}.res.P{color:var(--push)}
+.rmL2{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:15px;padding:0 0 0 6px}
 .lc{border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:13px;line-height:1.3;background:transparent;color:var(--ink);text-align:left;font:inherit;font-size:13px;position:relative}
 .lc b{display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:700}
 .lc.none{color:var(--muted);border-style:dashed}
@@ -280,6 +307,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
     <div class="bookseg" id="bookSeg"></div>
   </div>
   <div class="carry" id="carryRow" hidden></div>
+  <section class="comp" id="compView" hidden></section>
   <div class="toolbar">
     <select id="weekFilter" aria-label="Filter by week"><option value="all">All weeks</option></select>
     <button class="btn primary" id="toggleForm">+ New bet</button>
@@ -345,7 +373,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 <button class="upd" id="updBar" hidden>New version available — tap to update</button>
 
 <script>
-const APP_V='2026.10.17-11';
+const APP_V='2026.11.02-2';
 const KEY='anolik-football-book-v1';
 // People live in the book file so admins can add or hide them; these are the starting five
 const DEFAULT_PEOPLE=[{id:'Al',name:'Al',admin:true,aka:''},{id:'Steve',name:'Steve',admin:true,aka:'Dad, Pop'},{id:'Dan',name:'Danny',aka:'D, Dan'},{id:'J',name:'John',aka:'J'},{id:'Mich',name:'Michael',aka:'Mike, M'}];
@@ -455,6 +483,36 @@ async function commit(ops,msg){
 }
 function clean(o){ const r={}; for(const k in o){ if(o[k]!==undefined)r[k]=o[k]; } return r; }
 function setSync(t){ $('#syncLbl').textContent=t||(store==='db'?'Shared book · live':store==='gh'?`Book: ${repo()}${cfg.ghToken?' · booker':' · view only'}`:'This device only'); }
+async function loadComputer(){
+  const r=repo(); let res=null;
+  try{
+    // booker phones read straight from GitHub's API (no 5-minute cache); everyone else reads the public copy
+    if(r&&cfg.ghToken)res=await fetch(`https://api.github.com/repos/${r}/contents/computer.json?t=${Date.now()}`,{cache:'no-store',headers:{...ghHeaders(),Accept:'application/vnd.github.raw+json'}});
+    if(!res||!res.ok)res=await fetch(r?`https://raw.githubusercontent.com/${r}/main/computer.json?t=${Date.now()}`:`computer.json?t=${Date.now()}`,{cache:'no-store'});
+    if(res.ok){ comp=await res.json(); ls.set('-comp',comp); }
+  }catch(e){}
+}
+/* Refresh on a booker phone asks GitHub to run the king23 pull now, then watches for the new lines.
+   Reading only — the pull never places a bet. Needs the token to have Actions: Read and write. */
+let syncAsked=ls.get('-syncAsked',0), syncWatch=null;
+async function askComputerSync(manual){
+  const r=repo(); if(!r||!cfg.ghToken)return;
+  const fresh=comp&&comp.updated&&Date.now()-new Date(comp.updated)<3*60e3;
+  if(fresh||Date.now()-syncAsked<3*60e3){ if(manual&&syncWatch)toast('Already pulling Computer lines…'); return; }
+  try{
+    const res=await fetch(`https://api.github.com/repos/${r}/actions/workflows/computer-sync.yml/dispatches`,{method:'POST',headers:{...ghHeaders(),'Content-Type':'application/json'},body:JSON.stringify({ref:'main'})});
+    if(res.status===204){ syncAsked=Date.now(); ls.set('-syncAsked',syncAsked); if(manual)toast('Pulling fresh Computer lines — about a minute'); watchComputer(); return; }
+    if(manual)toast(res.status===403||res.status===404?'To pull Computer lines on Refresh, give the GitHub token Actions: Read and write':'Couldn’t start the Computer pull ('+res.status+')');
+  }catch(e){ if(manual)toast('Couldn’t reach GitHub'); }
+}
+function watchComputer(){
+  clearInterval(syncWatch); const since=syncAsked, until=Date.now()+4*60e3;
+  syncWatch=setInterval(async()=>{
+    await loadComputer();
+    if(comp&&comp.updated&&new Date(comp.updated)>=since-30e3){ clearInterval(syncWatch); syncWatch=null; render(); toast('Computer lines updated ✔'); }
+    else if(Date.now()>until){ clearInterval(syncWatch); syncWatch=null; }
+  },15000);
+}
 async function pull(){ if(store!=='gh')return; try{ const d=await ghRead(); if(d){ bets=(d.bets||[]).map(norm); carry=d.carry||{}; lines=d.lines||[]; setPeople(d.people); } else { bets=SEED.map(x=>({...x})); carry={}; } setSync(); render(); }catch(e){ setSync('Couldn’t load the book from GitHub'); } }
 
 /* ================= standings ================= */
@@ -468,7 +526,7 @@ function outcomeOf(b){ if(b.outcome)return b.outcome; const g=gameFor(b); return
 const meId=()=>{ const m=ls.get('-me',''); return m&&ALL_IDS.includes(m)&&!canEdit()?m:null; };
 const canSee=who=>canEdit()||who===meId();
 function render(){
-  renderLines(); renderInbox(); meLabel();
+  renderLines(); renderInbox(); meLabel(); renderComp();
   ls.set('-view',{p:view,b:bookView});
   document.body.classList.toggle('ro',!canEdit()); document.body.classList.toggle('rw',canEdit());
   $('#desk').hidden=!canBook();
@@ -539,30 +597,127 @@ function render(){
 const mkey=s=>tokens(s).filter(x=>x!=='@'&&x!=='at'&&x!=='vs'&&x!=='tnf'&&x!=='snf'&&x!=='mnf').sort().join(' ');
 const lineId=l=>`${lgOf(l)==='NFL'?'':lgOf(l)+'|'}${l.week}|${l.book}|${mkey(l.matchup)}`.replace(/[^A-Za-z0-9|_ -]/g,'').replace(/[ |]+/g,'_');
 function lineGame(l){ return gameFor({lg:l.lg,date:l.date,week:l.week,matchup:l.matchup,pick:l.team||''}); }
+/* ---------- lines board: one source at a time (ESPN · Computer · Max) ---------- */
+let comp=ls.get('-comp',null), board=[];                                   // comp = computer.json (king23), board = rows on screen
+let lnSrc=ls.get('-lsrc',''), lnLg=ls.get('-lnlg','');
+const PRO=['NFL','NBA','MLB','NHL'];
+const k23Name=(s,lg)=>{ let w=String(s||'').trim().split(/\s+/); if(PRO.includes(lg)&&w.length>1&&w[0].length<=3)w=w.slice(1); return cap(w.join(' ').toLowerCase()); };
+const sgn=n=>n==null||n===''?'':+n===0?'PK':(+n>0?'+':'')+(+n);
+const am=n=>n==null||n===''?'':(+n>0?'+':'')+(+n);
+function compLines(lg){ return ((comp&&comp.lines)||[]).filter(g=>g.lg===lg&&g.date>=today()); }
+function boardRows(src,lg){
+  const rows=[];
+  if(src==='espn'){
+    for(const g of Object.values(games)){ if(g.lg!==lg||g.state==='post'||!g.line)continue; if(lg==='NFL'?g.week!==curWeek:g.day<today())continue;
+      const L=g.line, fav=L.fav, p=L.pts, row={lg,date:g.day,week:g.week,away:tName(g,'away'),home:tName(g,'home'),gm:g,src};
+      if(!L.ml&&p!=null){ if(p===0){ row.aSp=0; row.hSp=0; } else if(fav){ row[fav==='home'?'hSp':'aSp']=-p; row[fav==='home'?'aSp':'hSp']=p; } }
+      if(L.ml&&fav&&L.odds)row[fav==='home'?'hML':'aML']=L.odds;
+      if(L.ou){ row.tot=L.ou; } rows.push(row); }
+  } else if(src==='comp'&&comp&&comp.lines&&comp.lines.length){
+    for(const g of compLines(lg))rows.push({lg,date:g.date,time:g.time,week:dateWeek(g.date),away:k23Name(g.away,lg),home:k23Name(g.home,lg),src,
+      aSp:g.awaySpread,aSpO:g.awaySpreadOdds,hSp:g.homeSpread,hSpO:g.homeSpreadOdds,tot:g.total,oO:g.overOdds,uO:g.underOdds,aML:g.awayML,hML:g.homeML});
+  } else { // posted lines (Max, or Computer when king23 isn't syncing)
+    const book=src==='comp'?'Computer':'Max', mine=lines.filter(l=>l.book===book&&lgOf(l)===lg);
+    const weeks=[...new Set(mine.map(l=>l.week))].sort((a,b)=>b-a), wk=weeks.includes(curWeek)?curWeek:weeks.find(w=>w<=(curWeek||99))||weeks[0];
+    for(const l of mine.filter(l=>l.week===wk)){ const [a,h]=sides(l.matchup), gm=lineGame(l), row={lg,date:l.date||(gm&&gm.day),week:l.week,away:a||l.matchup,home:h||'',gm,src,lineId:l.id};
+      if(l.team){ const tk=tokens(l.team,lg), onHome=h&&tokens(h,lg).some(w=>tk.includes(w)); const v=parseFloat(l.spread)||0;
+        row[onHome?'hSp':'aSp']=v; row[onHome?'aSp':'hSp']=-v; const o=/^[+-]\d{3}$/.test(l.odds||'')?l.odds:''; if(o){ row.aSpO=o; row.hSpO=o; } }
+      if(l.total){ row.tot=+l.total; } rows.push(row); }
+  }
+  const t24=s=>{ const m=String(s||'').match(/(\d{1,2}):(\d{2})\s*([AP])M/i); if(!m)return '99:99'; let h=+m[1]%12; if(/p/i.test(m[3]))h+=12; return String(h).padStart(2,'0')+':'+m[2]; };
+  const key=r=>r.gm&&r.gm.date?new Date(r.gm.date).toISOString():`${r.date}T${t24(r.time)}`;
+  return rows.sort((a,b)=>key(a).localeCompare(key(b)));
+}
+function srcLeagues(src){
+  if(src==='comp'&&comp&&comp.lines&&comp.lines.length)return LG.filter(l=>compLines(l).length);
+  if(src==='espn')return LG.filter(l=>Object.values(games).some(g=>g.lg===l&&g.line&&g.state!=='post'&&(l==='NFL'?g.week===curWeek:g.day>=today())));
+  const book=src==='comp'?'Computer':'Max'; return LG.filter(l=>lines.some(x=>x.book===book&&lgOf(x)===l));
+}
 function renderLines(){
-  const box=$('#linesView'); const lns=lines.filter(inLg); if(!lns.length){ box.hidden=true; return; }
-  const weeks=[...new Set(lns.map(l=>l.week))].sort((a,b)=>b-a);
-  const wk=weeks.includes(curWeek)?curWeek:weeks.find(w=>w<=(curWeek||99))||weeks[0];
-  const ls_=lns.filter(l=>l.week===wk), groups={};
-  for(const l of ls_){ const k=lgOf(l)+'|'+(l.date||'')+'|'+mkey(l.matchup); (groups[k]=groups[k]||{matchup:l.matchup,lg:lgOf(l),date:l.date,by:{}}).by[l.book]=l; }
-  const rows=Object.values(groups).map(g=>{ const gm=lineGame(Object.values(g.by)[0]); return {...g,gm}; }).sort((a,b)=>String(a.gm?.date||a.date||'z').localeCompare(String(b.gm?.date||b.date||'z')));
-  const when=(g,r)=>!g?(r&&r.date?shortDay(r.date):''):g.state==='in'?'LIVE '+g.detail:g.state==='post'?'Final':new Date(g.date).toLocaleString([], {weekday:'short',hour:'numeric',minute:'2-digit'});
-  const cell=(l,k)=>{ if(!l)return `<div class="lc none"><b>${k}</b>—</div>`;
-    const side=l.team?`${esc(l.team)} ${esc(l.spread||'PK')}${l.odds&&l.odds!=='11/10'?` (${esc(l.odds)})`:''}`:'';
-    const tot=l.total?`O/U ${esc(l.total)}${l.totalOdds&&l.totalOdds!=='11/10'?` (${esc(l.totalOdds)})`:''}`:'';
-    const inner=`<b>${k}</b>${side}${side&&tot?'<br>':''}${tot}`;
-    return canEdit()?`<button class="lc" data-lb="${esc(l.id)}" title="Book a bet on this line">${inner}<span class="rmL" data-ld="${esc(l.id)}" role="button" aria-label="Remove line">×</span></button>`:`<button class="lc" data-lr="${esc(l.id)}" title="Request a bet on this line">${inner}</button>`; };
+  const box=$('#linesView'), SRC={espn:'ESPN',comp:'Computer',max:'Max'};
+  const avail=Object.keys(SRC).filter(s=>srcLeagues(s).length);
+  if(!avail.length){ box.hidden=true; return; }
+  if(!avail.includes(lnSrc))lnSrc=avail.includes('comp')?'comp':avail[0];
+  const lgs=srcLeagues(lnSrc), want=lgView!=='all'&&lgs.includes(lgView)?lgView:lnLg;
+  const lg=lgs.includes(want)?want:lgs.includes('NFL')?'NFL':lgs[0];
+  board=boardRows(lnSrc,lg);
+  const when=r=>{ const g=r.gm; if(g&&g.state==='in')return 'LIVE '+g.detail; if(g)return new Date(g.date).toLocaleString([], {weekday:'short',hour:'numeric',minute:'2-digit'}); return [shortDay(r.date),r.time].filter(Boolean).join(' '); };
+  const px=(i,k,main,odds)=>main===''||main==null?'<span class="px none">—</span>':`<button class="px" data-r="${i}" data-k="${k}">${esc(main)}${odds!==''&&odds!=null?`<small>${esc(odds)}</small>`:''}</button>`;
+  const head=`<div class="lines-head"><h2>${lg==='NFL'&&new Set(board.map(r=>r.week)).size<=1?'Week '+(board[0]?.week||curWeek)+' lines':esc(LEAGUES[lg].n)+' lines'}</h2><div class="srcseg" role="tablist">${Object.keys(SRC).map(s=>`<button class="${s===lnSrc?'on':''}" data-src="${s}" ${avail.includes(s)?'':'disabled'}>${SRC[s]}</button>`).join('')}</div></div>`;
+  const chips=lgs.length>1?`<div class="lnlg">${lgs.map(l=>`<button class="${l===lg?'on':''}" data-lnlg="${l}">${esc(LEAGUES[l].n)}</button>`).join('')}</div>`:'';
+  const note=lnSrc==='comp'&&comp&&comp.updated&&comp.lines&&comp.lines.length?`From king23 · ${new Date(comp.updated).toLocaleString([], {weekday:'short',hour:'numeric',minute:'2-digit'})}`:lnSrc==='espn'?'ESPN’s posted line':lnSrc==='max'?'Posted by Steve':'Posted by Steve (king23 sync not set up)';
   box.className='lines'; box.hidden=false;
-  box.innerHTML=`<div class="lines-head"><h2>${lgView!=='all'&&lgView!=='NFL'?esc(LEAGUES[lgView].n)+' lines':'Week '+wk+' lines'}</h2><span>${canEdit()?'Tap a line to book it':'Tap a line to request a bet'}</span></div>`+rows.map(g=>`<div class="lg"><div class="gm"><span>${g.lg!=='NFL'?`<span class="lgt">${g.lg}</span>`:''}${esc(g.matchup)}</span><small>${esc(when(g.gm,g))}</small></div><div class="bks">${BOOKS.map(k=>cell(g.by[k],k)).join('')}</div></div>`).join('');
+  box.innerHTML=head+chips+`<p class="lnote">${esc(note)} · ${canEdit()?'tap a price to book it':'tap a price to request it'}</p>`+(board.length?board.map((r,i)=>`<div class="lg"><div class="gm"><span>${esc(r.away)} @ ${esc(r.home)}</span><small>${esc(when(r))}${r.lineId&&canEdit()?` <button class="rmL2" data-ld="${esc(r.lineId)}" aria-label="Remove line">×</button>`:''}</small></div>
+    <div class="bd"><span class="tn">${esc(r.away)}</span>${px(i,'aSp',sgn(r.aSp),am(r.aSpO))}${px(i,'o',r.tot!=null&&r.tot!==''?'o'+r.tot:'',am(r.oO))}${px(i,'aML',am(r.aML),'')}
+    <span class="tn">${esc(r.home)}</span>${px(i,'hSp',sgn(r.hSp),am(r.hSpO))}${px(i,'u',r.tot!=null&&r.tot!==''?'u'+r.tot:'',am(r.uO))}${px(i,'hML',am(r.hML),'')}</div></div>`).join(''):`<p class="lnote">No ${esc(LEAGUES[lg].n)} lines right now.</p>`);
+}
+// one tapped price -> the bet it describes
+function boardPick(r,k){
+  const book=r.src==='comp'?'Computer':'Max', o={book,lg:r.lg,week:r.lg==='NFL'?(r.week||dateWeek(r.date)):dateWeek(r.date),date:r.lg==='NFL'?undefined:r.date,matchup:`${r.away} @ ${r.home}`};
+  const od=(v,dflt)=>v!=null&&v!==''?am(v):dflt;
+  if(k==='aSp')return {...o,pick:r.away,spread:sgn(r.aSp)==='PK'?'':sgn(r.aSp),odds:od(r.aSpO,'11/10')};
+  if(k==='hSp')return {...o,pick:r.home,spread:sgn(r.hSp)==='PK'?'':sgn(r.hSp),odds:od(r.hSpO,'11/10')};
+  if(k==='o'||k==='u')return {...o,pick:k==='o'?'Over':'Under',spread:String(r.tot),odds:od(k==='o'?r.oO:r.uO,'11/10')};
+  if(k==='aML')return {...o,pick:r.away,spread:'',odds:am(r.aML)};
+  if(k==='hML')return {...o,pick:r.home,spread:'',odds:am(r.hML)};
 }
 $('#linesView').addEventListener('click',e=>{
   const d=e.target.dataset.ld; if(d){ e.stopPropagation(); if(confirm('Remove this line?'))commit([{t:'unline',id:d}],'Remove line'); return; }
-  const q=e.target.closest('[data-lr]'); if(q){ const l=lines.find(x=>x.id===q.dataset.lr); if(l)openRequest(l); return; }
-  const b=e.target.closest('[data-lb]'); if(!b||!canEdit())return; const l=lines.find(x=>x.id===b.dataset.lb); if(!l)return;
-  openForm(null); $('#fBook').value=l.book; $('#fLg').value=lgOf(l); $('#fDate').value=l.date||''; syncLg(); $('#fWeek').value=l.week; $('#fMatch').value=l.matchup;
-  if(l.team){ $('#fPick').value=l.team; $('#fSpread').value=l.spread||''; $('#fOdds').value=l.odds||''; } else if(l.total){ $('#fPick').value='Over'; $('#fSpread').value=l.total; $('#fOdds').value=l.totalOdds||''; }
-  showCalc(); $('#slip').scrollIntoView({behavior:'smooth'}); $('#fWho').focus();
+  const s=e.target.closest('[data-src]'); if(s){ lnSrc=s.dataset.src; ls.set('-lsrc',lnSrc); renderLines(); return; }
+  const c=e.target.closest('[data-lnlg]'); if(c){ lnLg=c.dataset.lnlg; ls.set('-lnlg',lnLg); renderLines(); return; }
+  const b=e.target.closest('.px[data-r]'); if(!b)return; const r=board[+b.dataset.r]; if(!r)return; const o=boardPick(r,b.dataset.k); if(!o)return;
+  if(!canEdit()){ openRequest(o,[{pick:o.pick,spread:o.spread,odds:o.odds}]); return; }
+  fillFromLine({...o,team:o.pick==='Over'||o.pick==='Under'?'':o.pick,total:o.pick==='Over'||o.pick==='Under'?o.spread:'',totalOdds:o.odds,pickOU:o.pick});
+  if(r.src==='espn')toast('ESPN line — change the book or number if Max’s is different');
 });
+function fillFromLine(l){
+  openForm(null); $('#fBook').value=l.book; $('#fLg').value=lgOf(l); $('#fDate').value=l.date||''; syncLg(); $('#fWeek').value=l.week; $('#fMatch').value=l.matchup;
+  if(l.team){ $('#fPick').value=l.team; $('#fSpread').value=l.spread||''; $('#fOdds').value=l.odds||''; } else if(l.total){ $('#fPick').value=l.pickOU||'Over'; $('#fSpread').value=l.total; $('#fOdds').value=l.totalOdds||''; }
+  showCalc(); $('#slip').scrollIntoView({behavior:'smooth'}); $('#fWho').focus();
+}
+/* ---------- Computer (king23) account: figures, weekly check against the book, tickets to add ---------- */
+const tktLg=t=>LG.includes(t.lg)?t.lg:'NFL';
+const tktWeek=t=>dateWeek(t.date||t.placed);
+function tktBet(t,who){ const lg=tktLg(t), side=t.kind==='side'||t.kind==='ml';
+  const pick=side?k23Name(t.team,lg):t.pick, match=t.kind==='total'&&t.away?`${k23Name(t.away,lg)} @ ${k23Name(t.home,lg)}`:side?k23Name(t.team,lg):(t.desc||t.pick);
+  return {id:'k_'+t.tkt,who,book:'Computer',lg,date:lg==='NFL'?undefined:t.date,week:tktWeek(t),matchup:match,pick,spread:t.kind==='ml'?'':(t.spread==='PK'?'':t.spread||''),
+    amount:t.risk,payout:t.win,odds:t.odds||'',outcome:t.result==='X'?'P':t.result||null,manual:t.result?true:undefined,tkt:t.tkt,final:t.score||undefined,at:Date.now()}; }
+function matchTickets(){ // ticket -> bet already in the book (by ticket #, else same week, amounts and pick)
+  const used=new Set(), map=new Map(), cb=bets.filter(b=>b.book==='Computer');
+  for(const b of cb)if(b.tkt){ map.set(b.tkt,b); used.add(b.id); }
+  for(const t of (comp&&comp.tickets)||[]){ if(map.has(t.tkt))continue;
+    const want=t.kind==='total'?t.pick.toLowerCase():tokens(k23Name(t.team,tktLg(t)),tktLg(t)).join(' ');
+    const b=cb.find(b=>!used.has(b.id)&&b.week===tktWeek(t)&&Math.round(b.amount)===t.risk&&Math.round(b.payout??b.amount)===t.win&&(t.kind==='total'?String(b.pick).toLowerCase()===want:tokens(b.pick,lgOf(b)).some(w=>want.split(' ').includes(w))));
+    if(b){ map.set(t.tkt,b); used.add(b.id); } }
+  return map;
+}
+let compOpen=ls.get('-compOpen',1);
+function renderComp(){
+  const box=$('#compView'); if(!canEdit()||bookView!=='Computer'||!comp){ box.hidden=true; return; }
+  const f=comp.figures||{}, tk=comp.tickets||[], m=matchTickets(), miss=tk.filter(t=>!m.has(t.tkt));
+  const weeks=[...new Set(tk.map(tktWeek))].sort((a,b)=>b-a).slice(0,6);
+  const appNet=w=>bets.filter(b=>b.book==='Computer'&&b.week===w).reduce((s,b)=>s+net(b),0);
+  const tile=(l,v)=>`<div class="ct"><span>${l}</span><b class="${v>0?'up':v<0?'down':''}">${v==null?'—':signed(v)}</b></div>`;
+  const opts=BETTORS.map(p=>`<option value="${p}">${esc(nm(p))}</option>`).join('');
+  const line=t=>`${t.kind==='total'?`${t.pick} ${t.spread}`:`${k23Name(t.team||t.pick,tktLg(t))} ${t.spread||''}`} <small>${esc(t.odds||'')}</small>`;
+  box.hidden=false;
+  box.innerHTML=`<div class="comp-head" data-ctoggle><h2>Computer · king23</h2><span>${comp.updated?'Synced '+new Date(comp.updated).toLocaleString([], {weekday:'short',hour:'numeric',minute:'2-digit'}):''} ${compOpen?'▾':'▸'}</span></div>`+(compOpen?`
+    <div class="ctiles">${tile('Balance',f.balance)}${tile('This week',f.thisWeek)}${tile('Last week',f.lastWeek)}<div class="ct"><span>At risk</span><b>${f.atRisk==null?'—':money(f.atRisk)}</b></div></div>
+    <table class="tbl ctbl"><thead><tr><th>Week</th><th class="n">Tickets</th><th class="n">king23</th><th class="n">In book</th><th class="n">Diff</th></tr></thead><tbody>${weeks.map(w=>{ const ts=tk.filter(t=>tktWeek(t)===w), k=ts.reduce((s,t)=>s+(t.net||0),0), a=appNet(w), d=Math.round(a-k);
+      return `<tr><td>Week ${w}</td><td class="n">${ts.length}${ts.some(t=>!m.has(t.tkt))?` <small class="down">${ts.filter(t=>!m.has(t.tkt)).length} new</small>`:''}</td><td class="n ${k>0?'up':k<0?'down':''}">${signed(k)}</td><td class="n">${signed(a)}</td><td class="n ${d?'down':''}">${d?signed(d):'✓'}</td></tr>`; }).join('')}</tbody></table>
+    ${(comp.open||[]).length?`<h3 class="csub">Open on king23 (${comp.open.length})</h3>`+comp.open.map(t=>`<div class="ctk"><div><b>${line(t)}</b><br><small>${esc(t.desc||'')}</small></div><div class="n">${money(t.risk)}/${money(t.win)}</div></div>`).join(''):''}
+    <h3 class="csub">${miss.length?`Not in the book yet (${miss.length})`:'Every king23 ticket is in the book ✓'}</h3>
+    ${miss.length?`<p class="lnote" style="padding:0 12px 6px">Pick who each bet was for and tap Add. It goes in already graded.</p>`+miss.map(t=>`<div class="ctk"><div><b>${line(t)}</b> <span class="res ${t.result||''}">${t.result==='W'?'WIN':t.result==='L'?'LOSS':t.result==='P'?'PUSH':''}</span><br><small>${esc(shortDay(t.date))} · Week ${tktWeek(t)} · ${esc(tktLg(t))}${t.score?' · '+esc(t.score):''} · #${esc(t.tkt)}</small></div>
+      <div class="n">${money(t.risk)}/${money(t.win)}<br><b class="${t.net>0?'up':t.net<0?'down':''}">${signed(t.net||0)}</b></div>
+      <div class="cadd"><select data-cwho="${esc(t.tkt)}" aria-label="Who was this for"><option value="">Who?</option>${opts}</select><button class="btn small primary" data-cadd="${esc(t.tkt)}">Add</button></div></div>`).join(''):''}`:'');
+}
+$('#compView').addEventListener('click',async e=>{
+  if(e.target.closest('[data-ctoggle]')){ compOpen=compOpen?0:1; ls.set('-compOpen',compOpen); renderComp(); return; }
+  const k=e.target.dataset.cadd; if(!k)return; const who=$(`[data-cwho="${k}"]`).value; if(!who){ toast('Pick who the bet was for'); return; }
+  const t=(comp.tickets||[]).find(x=>x.tkt===k); if(!t)return;
+  if(await commit([{t:'put',bet:tktBet(t,who)}],`Add king23 ticket ${k} for ${nm(who)}`))toast(`Added for ${nm(who)}`);
+});
+
 /* ---------- uncle requests: tap a line → text a link to Steve/Al → they approve ---------- */
 let rqLine=null, rqOpts=[], rqSel=0, inbox=ls.get('-reqs',[]);
 const sides=m=>String(m).replace(/\(.*?\)/g,'').split('@').map(s=>s.trim()).filter(Boolean);
@@ -574,9 +729,9 @@ function lineOptions(l){
   if(l.total){ o.push({pick:'Over',spread:l.total,odds:l.totalOdds||'11/10'},{pick:'Under',spread:l.total,odds:l.totalOdds||'11/10'}); }
   return o;
 }
-function openRequest(l){
-  rqLine=l; rqOpts=lineOptions(l); rqSel=0; if(!rqOpts.length)return; $('#rqPickBox').hidden=false; $('#rqFree').hidden=true;
-  $('#rqLine').textContent=`${lgOf(l)!=='NFL'?LEAGUES[lgOf(l)].n+' · ':''}${l.matchup} · ${l.book} · ${l.date&&lgOf(l)!=='NFL'?shortDay(l.date):'Week '+l.week}`;
+function openRequest(l,opts){
+  rqLine=l; rqOpts=opts||lineOptions(l); rqSel=0; if(!rqOpts.length)return; $('#rqPickBox').hidden=false; $('#rqFree').hidden=true;
+  $('#rqLine').textContent=`${lgOf(l)!=='NFL'?LEAGUES[lgOf(l)].n+' · ':''}${l.matchup} · ${l.book} · ${l.date&&lgOf(l)!=='NFL'?shortDay(l.date):'Week '+l.week}${opts&&opts[0].odds&&opts[0].odds!=='11/10'?' · '+opts[0].odds:''}`;
   $('#rqPick').innerHTML=rqOpts.map((o,i)=>`<button type="button" data-i="${i}" class="${i===0?'on':''}">${esc(o.pick)} ${esc(o.spread)}</button>`).join('');
   $('#rqWho').innerHTML=UNCLES.map(p=>`<option value="${p}">${esc(nm(p))}</option>`).join(''); const me=ls.get('-me',''); if(UNCLES.includes(me))$('#rqWho').value=me; else if(ALL_IDS.includes(me)){ $('#rqWho').insertAdjacentHTML('beforeend',`<option value="${me}">${esc(nm(me))}</option>`); $('#rqWho').value=me; }
   $('#reqSheet').hidden=false; rqCalc(); $('#reqSheet').scrollIntoView({behavior:'smooth'});
@@ -712,12 +867,27 @@ const espnUrl=(lg,qs)=>`https://site.api.espn.com/apis/site/v2/sports/${LEAGUES[
 const NICK={pgh:'steelers',pitt:'steelers',jax:'jaguars',jacks:'jaguars',jack:'jaguars',carol:'panthers',car:'panthers',phil:'eagles',philly:'eagles',wash:'commanders',was:'commanders',clev:'browns',cleve:'browns',cle:'browns',cinn:'bengals',cin:'bengals',balt:'ravens',bal:'ravens',houst:'texans',hou:'texans',indy:'colts',ind:'colts',minn:'vikings',min:'vikings',ariz:'cardinals',arz:'cardinals',ari:'cardinals',buff:'bills',buf:'bills',tenn:'titans',ten:'titans',chic:'bears',chi:'bears',nyg:'giants',nyj:'jets',lar:'rams',lac:'chargers',lv:'raiders',vegas:'raiders',gb:'packers',tb:'buccaneers',bucs:'buccaneers',sf:'49ers',niners:'49ers',ne:'patriots',pats:'patriots',no:'saints',kc:'chiefs',det:'lions',dal:'cowboys',den:'broncos',sea:'seahawks',atl:'falcons',mia:'dolphins'};
 function side(c){ const t=c.team||{}, lo=s=>String(s||'').toLowerCase();
   return {abbr:t.abbreviation||'',nick:lo(t.name||t.shortDisplayName),loc:lo(t.location),full:lo(t.displayName),short:lo(t.shortDisplayName),score:+c.score||0}; }
+// ESPN's own line for a game (spread + over/under; MLB/NHL post a moneyline instead of a spread)
+function espnLine(lg,comp,home,away){
+  const o=(comp.odds||[]).find(x=>x&&(x.details||x.overUnder!=null)); if(!o)return null;
+  const ou=+o.overUnder||null, d=String(o.details||'').trim(), ml=lg==='MLB'||lg==='NHL'; let fav=null, pts=null, odds='';
+  const ab=s=>String((s.team||{}).abbreviation||'').toUpperCase();
+  if(/^(even|pk|pick)/i.test(d)){ pts=0; }
+  else { const m=d.match(/^(.+?)\s+([-+]?\d+(?:\.\d+)?)$/); if(m){ const a=m[1].trim().toUpperCase(); fav=a===ab(home)?'home':a===ab(away)?'away':null; if(ml)odds=m[2]; else pts=Math.abs(parseFloat(m[2])); } }
+  if(!fav&&(pts||odds)){ if(o.homeTeamOdds&&o.homeTeamOdds.favorite)fav='home'; else if(o.awayTeamOdds&&o.awayTeamOdds.favorite)fav='away'; }
+  if(pts==null&&!odds&&!ou)return null;
+  return {fav,pts,odds,ml,ou,src:(o.provider&&o.provider.name)||'ESPN'};
+}
+const tName=(g,s)=>cap(['NCAAF','NCAAB'].includes(g.lg)?(g[s].loc||g[s].short||g[s].abbr):(g[s].nick||g[s].abbr));
+function espnSide(g){ const L=g&&g.line; if(!L)return ''; if(L.ml)return L.fav&&L.odds?`${tName(g,L.fav)} ${L.odds} ML`:''; if(L.pts===0)return 'Pick’em'; return L.fav&&L.pts?`${tName(g,L.fav)} -${L.pts}`:''; }
+function espnAsLine(g){ const L=g.line||{}, team=!L.ml&&L.fav&&L.pts?tName(g,L.fav):!L.ml&&L.pts===0?tName(g,'home'):'';
+  return {id:'espn:'+g.id,espn:true,lg:g.lg,week:g.week,date:g.lg==='NFL'?undefined:g.day,matchup:`${tName(g,'away')} @ ${tName(g,'home')}`,book:'Max',team,spread:team&&L.pts?'-'+L.pts:'',odds:'11/10',total:L.ou?String(L.ou):'',totalOdds:'11/10'}; }
 async function getJSON(u){ const r=await fetch(u,{cache:'no-store'}); if(!r.ok)throw new Error(r.status); return r.json(); }
 function ingest(lg,j,wk){
   for(const ev of j.events||[]){ const comp=(ev.competitions||[])[0]; if(!comp)continue;
     const home=comp.competitors.find(c=>c.homeAway==='home'), away=comp.competitors.find(c=>c.homeAway==='away'); if(!home||!away)continue;
-    const st=(ev.status||comp.status||{}).type||{}, day=dayStr(ev.date);
-    games[lg+':'+ev.id]={id:lg+':'+ev.id,lg,week:lg==='NFL'?wk:dateWeek(day),day,state:st.state,detail:st.shortDetail||st.detail||'',date:ev.date,home:side(home),away:side(away)}; }
+    const st=(ev.status||comp.status||{}).type||{}, day=dayStr(ev.date), prev=games[lg+':'+ev.id];
+    games[lg+':'+ev.id]={id:lg+':'+ev.id,lg,week:lg==='NFL'?wk:dateWeek(day),day,state:st.state,detail:st.shortDetail||st.detail||'',date:ev.date,home:side(home),away:side(away),line:espnLine(lg,comp,home,away)||(prev&&prev.line)||null}; }
 }
 async function fetchNFL(w){ const j=await getJSON(w?espnUrl('NFL',`seasontype=2&week=${w}&dates=2026`):espnUrl('NFL','')); if(!w&&j.week&&j.week.number)curWeek=j.week.number; ingest('NFL',j,w||(j.week&&j.week.number)); }
 async function fetchDay(lg,day){ ingest(lg,await getJSON(espnUrl(lg,'limit=400&dates='+day.replace(/-/g,''))),null); }
@@ -755,6 +925,7 @@ function daysToFetch(){ // non-NFL: the game day of every open bet and of this w
 let scoreTimer=null;
 async function refreshScores(manual){
   if(store==='gh')await pull();
+  await loadComputer(); askComputerSync(manual);
   try{
     await fetchNFL(0);
     for(const w of [...new Set(bets.filter(b=>!b.outcome&&lgOf(b)==='NFL').map(b=>b.week))].filter(w=>w!==curWeek))await fetchNFL(w);
@@ -827,8 +998,10 @@ const cap=s=>s.replace(/\b\w/g,c=>c.toUpperCase());
 function gamesText(){
   const gs=Object.values(games).filter(g=>g.lg==='NFL'&&g.week===curWeek).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
   if(!gs.length)return 'NFL schedule unavailable — use team nicknames as said.';
-  return `NFL week ${curWeek} games (away @ home):\n`+gs.map(g=>`${cap(g.away.nick)} @ ${cap(g.home.nick)} (${g.away.abbr}@${g.home.abbr}, ${new Date(g.date).toLocaleString('en-US',{weekday:'short',hour:'numeric',minute:'2-digit'})}${g.state==='post'?', FINAL':g.state==='in'?', LIVE':''})`).join('\n');
+  return `NFL week ${curWeek} games (away @ home):\n`+gs.map(g=>`${cap(g.away.nick)} @ ${cap(g.home.nick)} (${g.away.abbr}@${g.home.abbr}, ${new Date(g.date).toLocaleString('en-US',{weekday:'short',hour:'numeric',minute:'2-digit'})}${g.state==='post'?', FINAL':g.state==='in'?', LIVE':''})${g.line?` — ESPN line: ${espnSide(g)||'no spread'}${g.line.ou?', O/U '+g.line.ou:''}`:''}`).join('\n');
 }
+function compText(){ const ls_=LG.flatMap(compLines).slice(0,60); if(!ls_.length)return '';
+  return '\nComputer book (king23) current lines, away @ home — use these numbers for Computer bets when Steve leaves out the line:\n'+ls_.map(g=>`${g.lg} ${g.date} ${k23Name(g.away,g.lg)} @ ${k23Name(g.home,g.lg)}: ${k23Name(g.away,g.lg)} ${sgn(g.awaySpread)} (${am(g.awaySpreadOdds)}), ${k23Name(g.home,g.lg)} ${sgn(g.homeSpread)} (${am(g.homeSpreadOdds)}), O/U ${g.total} (o ${am(g.overOdds)} / u ${am(g.underOdds)}), ML ${am(g.awayML)}/${am(g.homeML)}`).join('\n'); }
 function buildPrompt(text,nImg){
   const hist=chat.slice(-10,-1).map(m=>(m.r==='u'?'Steve: ':'Clerk: ')+m.t).join('\n');
   return `You are the bet-booking clerk for the Anolik family sports betting book (2026–27). Mostly NFL, plus college football (NCAAF), NBA, college basketball (NCAAB), MLB and NHL. Today is ${new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})} (${today()}). Steve (the dad, also "Dad", "Pop") takes bets from the family and places each with one of two books.
@@ -840,12 +1013,12 @@ league = "NFL" unless clearly another sport: "NCAAF" (college football — schoo
 Picks: for a side, pick = team or school as said (e.g. "Pittsburgh", "Ohio State", "Lakers"); spread = signed number like "-3" or "+2.5"; a moneyline (common in MLB/NHL) has spread "" and its American odds in odds; run line/puck line is spread "-1.5"/"+1.5". For totals, pick = "Over" or "Under" and spread = the total (e.g. "40.5").
 matchup = "Away @ Home": NFL/NBA/MLB/NHL use nicknames (e.g. "Seahawks @ Broncos", "Celtics @ Knicks"); college uses school names (e.g. "Michigan @ Ohio State"). Use the NFL schedule below when it applies.
 date = the game date "YYYY-MM-DD" for every non-NFL bet or line (today unless they say another day; "tonight" = today, "tomorrow" = the next day). NFL uses week instead.
-Steve may also post LINES — what a book is offering, not a bet (e.g. "Max has Steelers minus 3, total 44", "computer: Bills -6.5 at 115, over/under 47", or a screenshot of a board). Put those in "lines": team = the team the spread number belongs to (usually the favorite, e.g. "Steelers" with spread "-3"), odds = spread odds (default "11/10"), total and totalOdds for the over/under; leave a field "" if not given. One line per game per book. A message can contain bets, lines, or both; never turn a line into a bet unless someone is named as betting it.
+Steve may also post LINES — what a book is offering, not a bet (e.g. "Max has Steelers minus 3, total 44", "computer: Bills -6.5 at 115, over/under 47", or a screenshot of a board). Put those in "lines": team = the team the spread number belongs to (usually the favorite, e.g. "Steelers" with spread "-3"), odds = spread odds (default "11/10"), total and totalOdds for the over/under; leave a field "" if not given. One line per game per book. If Steve says a book "has the ESPN lines"/"same as ESPN" (for one game or all of them), post that book's lines using the ESPN numbers in the schedule below. If a BET leaves out the spread or total, fill it from the ESPN line below and say "used the ESPN line" in reply. A message can contain bets, lines, or both; never turn a line into a bet unless someone is named as betting it.
 week = NFL week of that game (current NFL week is ${curWeek||dateWeek()}); for other sports leave week 0. NFL weeks by Sunday date: ${Array.from({length:Math.min(18,(curWeek||dateWeek())+1)},(_,i)=>`wk ${i+1} = Sun ${new Date(new Date('2026-09-13T12:00:00').getTime()+i*6048e5).toLocaleDateString('en-US',{month:'numeric',day:'numeric'})}`).join(', ')} (Thursday/Monday games belong to the same week as that Sunday).
 Catching up on past weeks is normal: when Steve dictates or photographs older bets, give each bet its real week/date. If his sheet or message clearly marks a bet as won, lost or pushed (W, L, P, circled W/L, "won", "lost"), put it in "result" as "W", "L" or "P"; otherwise leave result "".
 ${nImg?'The attached image(s) may be a sportsbook slip, a text message, or a handwritten sheet: extract every bet you can read; skip anything illegible and say so in reply.\n':''}If something essential is missing or ambiguous (who, which game, amount), ask in "reply" and leave that bet out.
 
-${gamesText()}
+${gamesText()}${compText()}
 
 Recent conversation:
 ${hist||'(none)'}
