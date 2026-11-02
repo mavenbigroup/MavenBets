@@ -158,7 +158,9 @@ async function login(user, pass) {
   const form = (home.text.match(/<form[^>]*action="([^"]*login[^"]*)"[^>]*>([\s\S]*?)<\/form>/i) || []);
   const action = new URL(form[1] || 'dgs/login.aspx', home.url).href;
   const extra = form[2] ? hidden(form[2]) : {};          // any hidden fields the login form carries
-  const body = new URLSearchParams({ ...extra, Account: user, Password: pass });
+  // king23's sign-in box turns whatever you type into CAPITALS before sending it (its onkeyup handler),
+  // so the stored password is the uppercase version; do the same here.
+  const body = new URLSearchParams({ ...extra, Account: user.trim().toUpperCase(), Password: pass.trim().toUpperCase() });
   const r = await req(action, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Referer: home.url, Origin: ORIGIN }, body });
   console.log('After sign-in:', short(r.url), '· status', r.status, '· cookies', jar.size);
   const w = /logout/i.test(r.text) ? r : await req('Welcome.aspx');
