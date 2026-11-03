@@ -373,7 +373,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 <button class="upd" id="updBar" hidden>New version available — tap to update</button>
 
 <script>
-const APP_V='2026.11.02-3';
+const APP_V='2026.11.03-1';
 const KEY='anolik-football-book-v1';
 // People live in the book file so admins can add or hide them; these are the starting five
 const DEFAULT_PEOPLE=[{id:'Al',name:'Al',admin:true,aka:''},{id:'Steve',name:'Steve',admin:true,aka:'Dad, Pop'},{id:'Dan',name:'Danny',aka:'D, Dan'},{id:'J',name:'John',aka:'J'},{id:'Mich',name:'Michael',aka:'Mike, M'}];
@@ -497,6 +497,7 @@ async function loadComputer(){
 let syncAsked=ls.get('-syncAsked',0), syncWatch=null;
 async function askComputerSync(manual){
   const r=repo(); if(!r||!cfg.ghToken)return;
+  if(comp&&comp.loginFailed){ if(manual)toast('king23 sign-in is switched off after a failed sign-in — fix the secrets, then Run workflow with “Try signing in again”'); return; }
   const fresh=comp&&comp.updated&&Date.now()-new Date(comp.updated)<3*60e3;
   if(fresh||Date.now()-syncAsked<3*60e3){ if(manual&&syncWatch)toast('Already pulling Computer lines…'); return; }
   try{
@@ -509,7 +510,8 @@ function watchComputer(){
   clearInterval(syncWatch); const since=syncAsked, until=Date.now()+4*60e3;
   syncWatch=setInterval(async()=>{
     await loadComputer();
-    if(comp&&comp.updated&&new Date(comp.updated)>=since-30e3){ clearInterval(syncWatch); syncWatch=null; render(); toast('Computer lines updated ✔'); }
+    if(comp&&comp.loginFailed&&new Date(comp.loginFailed)>=since-30e3){ clearInterval(syncWatch); syncWatch=null; render(); toast('king23 rejected the sign-in — sync switched off. Check the username/password secrets.'); }
+    else if(comp&&comp.updated&&new Date(comp.updated)>=since-30e3){ clearInterval(syncWatch); syncWatch=null; render(); toast('Computer lines updated ✔'); }
     else if(Date.now()>until){ clearInterval(syncWatch); syncWatch=null; }
   },15000);
 }
@@ -694,7 +696,7 @@ function matchTickets(){ // ticket -> bet already in the book (by ticket #, else
 }
 let compOpen=ls.get('-compOpen',1);
 function renderComp(){
-  const box=$('#compView'); if(!canEdit()||bookView!=='Computer'||!comp){ box.hidden=true; return; }
+  const box=$('#compView'); if(!canEdit()||bookView!=='Computer'||!comp||!comp.updated){ box.hidden=true; return; }
   const f=comp.figures||{}, tk=comp.tickets||[], m=matchTickets(), miss=tk.filter(t=>!m.has(t.tkt));
   const weeks=[...new Set(tk.map(tktWeek))].sort((a,b)=>b-a).slice(0,6);
   const appNet=w=>bets.filter(b=>b.book==='Computer'&&b.week===w).reduce((s,b)=>s+net(b),0);
@@ -924,9 +926,9 @@ function daysToFetch(){ // non-NFL: the game day of every open bet and of this w
   return [...want].map(x=>x.split('|'));
 }
 let scoreTimer=null;
-async function refreshScores(manual){
+async function refreshScores(manual,opened){
   if(store==='gh')await pull();
-  await loadComputer(); askComputerSync(manual);
+  await loadComputer();
   try{
     await fetchNFL(0);
     for(const w of [...new Set(bets.filter(b=>!b.outcome&&lgOf(b)==='NFL').map(b=>b.week))].filter(w=>w!==curWeek))await fetchNFL(w);
@@ -941,9 +943,10 @@ async function refreshScores(manual){
     if(manual)toast('Up to date ✔');
   }catch(e){ espnOk=false; $('#scoreLbl').textContent='Live scores unavailable here'; if(manual)toast('Couldn’t reach ESPN'); clearTimeout(scoreTimer); scoreTimer=setTimeout(refreshScores,300000); }
   render();
+  if(manual||opened)askComputerSync(manual);   // king23 pull: only when the app is opened or Refresh is tapped, never on the background timer
 }
 $('#refreshBtn').onclick=()=>refreshScores(true);
-document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'){ refreshScores(); checkUpdate(); } });
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'){ refreshScores(false,true); checkUpdate(); } });
 // Browsers keep a cached copy of the page for a few minutes after an update; this spots a newer version and offers a fresh load
 let newV=null;
 async function checkUpdate(){
@@ -1169,7 +1172,7 @@ $('#meLbl').onclick=askWho;
 (function(){ const m=location.hash.match(/^#me=([A-Za-z0-9_-]+)$/); if(!m)return; ls.set('-me',m[1]); ls.set('-meSkip',0); try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} setTimeout(()=>toast(`Welcome, ${nm(m[1])}!`),800); })();
 if(!canEdit()){ const me=ls.get('-me',''); if(me)view=me; else if(!ls.get('-meSkip',0))askWho(); }
 meLabel();
-setSync(); render(); drawLog(); refreshScores();
+setSync(); render(); drawLog(); refreshScores(false,true);
 if(incomingReq){ addToInbox(incomingReq); setTimeout(()=>window.scrollTo({top:0}),50); }
 // links tapped while the app is already open only change the #hash, so handle that too
 window.addEventListener('hashchange',()=>{ const h=location.hash;
