@@ -153,20 +153,22 @@ async function req(path, opts = {}) {
 const hidden = html => Object.fromEntries([...html.matchAll(/<input[^>]*type="hidden"[^>]*>/gi)].map(m => [(m[0].match(/name="([^"]+)"/i) || [])[1], (m[0].match(/value="([^"]*)"/i) || [, ''])[1].replace(/&amp;/g, '&').replace(/&#43;/g, '+').replace(/&#47;/g, '/').replace(/&#61;/g, '=')]).filter(([k]) => k));
 
 async function login(user, pass) {
+  jar.clear(); ORIGIN = BASE;
   const home = await req(BASE + '/');
   ORIGIN = new URL(home.url).origin; console.log('Site address:', ORIGIN, '· status', home.status);
   const form = (home.text.match(/<form[^>]*action="([^"]*login[^"]*)"[^>]*>([\s\S]*?)<\/form>/i) || []);
   const action = new URL(form[1] || 'dgs/login.aspx', home.url).href;
   const extra = form[2] ? hidden(form[2]) : {};          // any hidden fields the login form carries
-  // king23's sign-in box turns whatever you type into CAPITALS before sending it (its onkeyup handler),
-  // so the stored password is the uppercase version; do the same here.
-  const body = new URLSearchParams({ ...extra, Account: user.trim().toUpperCase(), Password: pass.trim().toUpperCase() });
+  // Send exactly what king23's own sign-in box sends: the account as typed, and the password in CAPITALS
+  // (the box capitalises the password as you type it — see onkey() on their home page).
+  const body = new URLSearchParams({ ...extra, Account: user.trim(), Password: pass.trim().toUpperCase() });
   const r = await req(action, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Referer: home.url, Origin: ORIGIN }, body });
   console.log('After sign-in:', short(r.url), '· status', r.status, '· cookies', jar.size);
   const w = /logout/i.test(r.text) ? r : await req('Welcome.aspx');
   if (!/Logout/i.test(w.text)) {
     const msg = (w.text.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').match(/(invalid|incorrect|wrong|locked|disabled|denied|suspend)[^.]{0,80}/i) || [])[0];
-    throw new Error(`Login failed — landed on ${short(w.url)} (status ${w.status}).${msg ? ' Site says: "' + msg.trim() + '".' : ''} Check K23_USER / K23_PASS (exact, no spaces); if they're right, king23 may be refusing GitHub's servers.`);
+    console.log(`Sign-in rejected — landed on ${short(w.url)} (status ${w.status}).${msg ? ' Site says: "' + msg.trim() + '".' : ''}`);
+    return null;
   }
   console.log('Signed in ✔');
   return w.text;
@@ -183,7 +185,17 @@ async function main() {
   const user = process.env.K23_USER, pass = process.env.K23_PASS;
   if (!user || !pass) throw new Error('Set K23_USER and K23_PASS (repo secrets).');
   const prev = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : {};
+  // ONE sign-in attempt per run. After any rejected sign-in the sync stays off until someone ticks
+  // "Try signing in again" on Run workflow — so a wrong password can never lock the account.
+  const retry = /^true$/i.test(process.env.K23_RETRY || '');
+  if (prev.loginFailed && !retry) { console.log(`Sign-in was rejected on ${prev.loginFailed}. Not trying again. Fix the K23_USER / K23_PASS secrets, then Run workflow with "Try signing in again" ticked.`); return; }
+  console.log('Signing in (one attempt)…');
   const welcome = await login(user, pass);
+  if (!welcome) {
+    writeFileSync(OUT, JSON.stringify({ ...prev, loginFailed: new Date().toISOString() }, null, 1));
+    console.error('Sign-in rejected. The sync is now OFF and will not try again until you Run workflow with "Try signing in again" ticked. Check K23_USER is exactly what you type to sign in and K23_PASS is the current password.');
+    process.exitCode = 1; return;
+  }
   const figures = K23.figures(welcome);
 
   let lines = [];
