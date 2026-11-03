@@ -1,21 +1,6 @@
 {
  "bets": [
   {
-   "id": "mw0zdve51eqg",
-   "who": "Al",
-   "book": "Computer",
-   "lg": "NFL",
-   "week": 9,
-   "matchup": "Jaguars @ Ravens",
-   "pick": "Jaguars",
-   "spread": "-9.5",
-   "amount": 45.2,
-   "payout": 40,
-   "odds": "-113",
-   "outcome": null,
-   "at": 1793728078637
-  },
-  {
    "id": "k_85191350",
    "who": "Steve",
    "book": "Computer",
@@ -2752,5 +2737,5 @@
    "id": "7_Max_49ers_falcons"
   }
  ],
- "updated": "2026-11-03T17:47:59.198Z"
+ "updated": "2026-11-03T17:50:51.039Z"
 }
