@@ -415,7 +415,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 <button class="upd" id="updBar" hidden>New version available — tap to update</button>
 
 <script>
-const APP_V='2026.11.03-8';
+const APP_V='2026.11.03-10';
 const KEY='anolik-football-book-v1';
 // People live in the book file so admins can add or hide them; these are the starting five
 const DEFAULT_PEOPLE=[{id:'Al',name:'Al',admin:true,aka:''},{id:'Steve',name:'Steve',admin:true,aka:'Dad, Pop'},{id:'Dan',name:'Danny',aka:'D, Dan'},{id:'J',name:'John',aka:'J'},{id:'Mich',name:'Michael',aka:'Mike, M'}];
@@ -540,7 +540,8 @@ let syncAsked=ls.get('-syncAsked',0), syncWatch=null;
 async function askComputerSync(manual){
   const r=repo(); if(!r||!cfg.ghToken)return;
   if(comp&&comp.loginFailed){ if(manual)toast('king23 sign-in is switched off after a failed sign-in — fix the secrets, then Run workflow with “Try signing in again”'); return; }
-  const fresh=comp&&comp.updated&&Date.now()-new Date(comp.updated)<3*60e3;
+  // opening the app pulls only if the last pull is 15+ min old; tapping Refresh pulls if it's 3+ min old
+  const fresh=comp&&comp.updated&&Date.now()-new Date(comp.updated)<(manual?3:15)*60e3;
   if(fresh||Date.now()-syncAsked<3*60e3){ if(manual&&syncWatch)toast('Already pulling Computer lines…'); return; }
   try{
     const res=await fetch(`https://api.github.com/repos/${r}/actions/workflows/computer-sync.yml/dispatches`,{method:'POST',headers:{...ghHeaders(),'Content-Type':'application/json'},body:JSON.stringify({ref:'main'})});
@@ -789,6 +790,22 @@ async function settlePlacements(){ // copy finished results onto the bets that w
   for(const b of pend){ const r=((placements&&placements.results)||[]).find(x=>x.id===b.id&&new Date(x.at)>=b.k23.at-60e3); if(r)ops.push({t:'patch',id:b.id,patch:{k23:{status:r.status,mode:r.mode,at:b.k23.at,done:r.at,msg:r.msg,ticket:r.ticket||undefined}}}); }
   if(ops.length&&await commit(ops,'king23 results')){ const r=ops[0].patch.k23; toast(r.status==='test'?'Test result in ✔':r.status==='placed'?'Placed on king23 ✔':'king23: '+r.status); }
   return pend.length-ops.length; }
+/* ---------- one name per team (Pittsburgh = Steelers = PIT) ---------- */
+const NFL_TEAMS='ARI Arizona Cardinals|ATL Atlanta Falcons|BAL Baltimore Ravens|BUF Buffalo Bills|CAR Carolina Panthers|CHI Chicago Bears|CIN Cincinnati Bengals|CLE Cleveland Browns|DAL Dallas Cowboys|DEN Denver Broncos|DET Detroit Lions|GB Green_Bay Packers|HOU Houston Texans|IND Indianapolis Colts|JAX Jacksonville Jaguars|KC Kansas_City Chiefs|LV Las_Vegas Raiders|LAC Los_Angeles Chargers|LAR Los_Angeles Rams|MIA Miami Dolphins|MIN Minnesota Vikings|NE New_England Patriots|NO New_Orleans Saints|NYG New_York Giants|NYJ New_York Jets|PHI Philadelphia Eagles|PIT Pittsburgh Steelers|SF San_Francisco 49ers|SEA Seattle Seahawks|TB Tampa_Bay Buccaneers|TEN Tennessee Titans|WAS Washington Commanders'
+  .split('|').map(s=>{ const [ab,city,nick]=s.split(' '); return {ab:ab.toLowerCase(),city:city.replace(/_/g,' ').toLowerCase(),nick:nick.toLowerCase()}; });
+const NFL_ALIAS={niners:'49ers',bucs:'buccaneers',pats:'patriots',jags:'jaguars',phins:'dolphins',cards:'cardinals',commies:'commanders',skins:'commanders',hawks:'seahawks',philly:'eagles',jax:'jaguars',kan:'chiefs',tam:'buccaneers',sfo:'49ers',vegas:'raiders',jac:'jaguars',was:'commanders',wsh:'commanders',lvr:'raiders',ari:'cardinals',arz:'cardinals'};
+function teamCanon(name,lg,b){
+  const raw=String(name||'').trim(); if(!raw)return raw; const low=raw.toLowerCase().replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
+  if(lg==='NFL'){
+    const words=low.split(' '), hit=NFL_TEAMS.find(t=>words.includes(t.nick)||words.some(w=>NFL_ALIAS[w]===t.nick))
+      ||NFL_TEAMS.filter(t=>(' '+low+' ').includes(' '+t.city+' ')).sort((a,c)=>c.city.length-a.city.length).find((t,i,arr)=>arr.length===1||!['los angeles','new york'].includes(t.city))
+      ||NFL_TEAMS.find(t=>words.length===1&&words[0]===t.ab);
+    if(hit)return cap(hit.nick);
+  }
+  // other sports: use ESPN's game for this bet when it's loaded
+  const g=b&&gameFor(b); if(g){ const s=teamIn(g,raw); if(s)return cap(g[s].nick||g[s].short||raw); }
+  return raw;
+}
 /* ---------- Dashboard: one bettor (or the whole family) — week by week, by team, by bet type ---------- */
 let dashMode=ls.get('-dashMode','chart');
 function tally(rows){ const s={w:0,l:0,p:0,n:0,c:0}; for(const b of rows){ const o=outcomeOf(b); if(o==='W')s.w++; else if(o==='L')s.l++; else if(o==='P')s.p++; else continue; s.c++; s.n+=net(b); } s.rec=`${s.w}–${s.l}`+(s.p?`–${s.p}`:''); s.pct=s.w+s.l?Math.round(s.w/(s.w+s.l)*100):null; return s; }
@@ -817,7 +834,7 @@ function renderDash(){
   const scored=weeks.filter(w=>w.c), bestW=scored.reduce((a,b)=>!a||(see?b.n>a.n:b.w-b.l>a.w-a.l)?b:a,null), worstW=scored.reduce((a,b)=>!a||(see?b.n<a.n:b.w-b.l<a.w-a.l)?b:a,null);
   const tile=(l,v,c='')=>`<div class="ct"><span>${l}</span><b class="${c}">${v}</b></div>`;
   const kind=b=>({sp:'Spread',tot:'Total',ml:'Moneyline'})[marketOf(b)];
-  const teamOf=b=>marketOf(b)==='tot'?null:sideOf(b);
+  const teamOf=b=>marketOf(b)==='tot'?null:teamCanon(sideOf(b),lgOf(b),b);
   const favDog=b=>{ if(marketOf(b)!=='sp')return null; const v=parseFloat(b.spread); return isNaN(v)||v===0?'Pick’em':v<0?'Favorite':'Underdog'; };
   const tbl=(name,list,limit)=>{ if(!list.length)return ''; list.sort((a,b)=>see?b.n-a.n||b.c-a.c:(b.w-b.l)-(a.w-a.l)||b.c-a.c); const more=limit&&list.length>limit;
     return `<h3 class="csub">${name}</h3><table class="tbl ctbl dtbl"><thead><tr><th>${name==='By team'?'Team':''}</th><th class="n">Bets</th><th class="n">Record</th><th class="n">Win %</th>${see?'<th class="n">$</th>':''}</tr></thead><tbody>${(more&&!dashAll[name]?list.slice(0,limit):list).map(x=>`<tr><td>${esc(x.k)}</td><td class="n">${x.c}${x.open?` <small>+${x.open}</small>`:''}</td><td class="n">${x.rec}</td><td class="n">${x.pct==null?'—':x.pct+'%'}</td>${see?`<td class="n ${x.n>0?'up':x.n<0?'down':''}">${signed(x.n)}</td>`:''}</tr>`).join('')}</tbody></table>${more?`<button class="linkbtn" data-dmore="${esc(name)}">${dashAll[name]?'Show top '+limit:'Show all '+list.length}</button>`:''}`; };
@@ -1177,7 +1194,7 @@ async function refreshScores(manual,opened){
   if(Object.keys(posSent).length&&canEdit()){ await loadPlacements(); renderPositions(); }   // king23 pull: only when the app is opened or Refresh is tapped, never on the background timer
 }
 $('#refreshBtn').onclick=()=>refreshScores(true);
-document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'){ refreshScores(false,true); checkUpdate(); } });
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'){ refreshScores(); checkUpdate(); } });   // returning to the app: scores only, no king23 pull
 // Browsers keep a cached copy of the page for a few minutes after an update; this spots a newer version and offers a fresh load
 let newV=null;
 async function checkUpdate(){
