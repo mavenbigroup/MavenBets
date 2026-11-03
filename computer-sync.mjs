@@ -216,10 +216,19 @@ async function main() {
   for (const [lg, f] of Object.entries(LEAGUES)) { try { lines.push(...await leagueLines(f, lg)); } catch (e) { console.warn('lines', lg, e.message); } }
 
   const tickets = new Map((prev.tickets || []).map(t => [t.tkt, t])), adj = new Map((prev.adj || []).map(a => [a.date + '|' + a.amount + '|' + a.what, a]));
-  for (let mode = 0; mode <= 5; mode++) {
-    const h = K23.history((await req('History.aspx?Mode=' + mode)).text);
+  // king23's buttons go back 5 weeks (Mode=0..5). Older weeks may still answer, so keep going
+  // (read-only) until a week repeats or comes back empty — at most to the start of the season.
+  const seen = new Set();
+  for (let mode = 0; mode <= 16; mode++) {
+    const page = (await req('History.aspx?Mode=' + mode)).text;
+    const range = (page.replace(/<[^>]+>/g, ' ').match(/From\s+(\d{2}\/\d{2}\/\d{4})\s+to\s+(\d{2}\/\d{2}\/\d{4})/) || []).slice(1).join('-');
+    if (mode > 5 && (!range || seen.has(range))) { console.log(`History: king23 has nothing older than ${mode - 1} weeks back.`); break; }
+    seen.add(range);
+    const h = K23.history(page);
     for (const t of h.tickets) tickets.set(t.tkt, t);
     for (const a of h.adj) adj.set(a.date + '|' + a.amount + '|' + a.what, a);
+    if (mode > 5) console.log(`History ${range}: ${h.tickets.length} tickets`);
+    if (mode > 5 && range && new Date(range.slice(11)) < new Date('2026-09-01')) break;   // before the season
   }
   const open = K23.openBets((await req('OpenBets.aspx')).text);
   for (const t of open) tickets.delete(t.tkt);
