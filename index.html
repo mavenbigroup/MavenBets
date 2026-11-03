@@ -373,7 +373,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 <button class="upd" id="updBar" hidden>New version available — tap to update</button>
 
 <script>
-const APP_V='2026.11.03-1';
+const APP_V='2026.11.03-2';
 const KEY='anolik-football-book-v1';
 // People live in the book file so admins can add or hide them; these are the starting five
 const DEFAULT_PEOPLE=[{id:'Al',name:'Al',admin:true,aka:''},{id:'Steve',name:'Steve',admin:true,aka:'Dad, Pop'},{id:'Dan',name:'Danny',aka:'D, Dan'},{id:'J',name:'John',aka:'J'},{id:'Mich',name:'Michael',aka:'Mike, M'}];
@@ -931,6 +931,9 @@ async function refreshScores(manual,opened){
   await loadComputer();
   try{
     await fetchNFL(0);
+    // ESPN keeps last week as "current" until Wednesday: once every game in it is over, move on to next week
+    const wkGames=Object.values(games).filter(g=>g.lg==='NFL'&&g.week===curWeek);
+    if(curWeek&&wkGames.length&&wkGames.every(g=>g.state==='post')){ try{ await fetchNFL(curWeek+1); curWeek=curWeek+1; }catch(e){} }
     for(const w of [...new Set(bets.filter(b=>!b.outcome&&lgOf(b)==='NFL').map(b=>b.week))].filter(w=>w!==curWeek))await fetchNFL(w);
     await Promise.all(daysToFetch().map(([lg,d])=>fetchDay(lg,d).catch(()=>{})));
     espnOk=true;
