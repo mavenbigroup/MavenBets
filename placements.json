@@ -1,0 +1,24 @@
+{
+ "results": [
+  {
+   "id": "pos_mw0zeczwsfcp",
+   "at": "2026-11-03T17:49:45.987Z",
+   "mode": "test",
+   "by": "admin",
+   "bet": {
+    "who": "Steve",
+    "lg": "NFL",
+    "matchup": "Jaguars @ Ravens",
+    "pick": "Jaguars",
+    "spread": "-9.5",
+    "odds": "-113",
+    "risk": 45.2,
+    "win": 40
+   },
+   "status": "test",
+   "msg": "Would place: Jaguars -9.5 (-113) — risk $45.2 to win $40 · Jaguars @ Ravens. king23 line now: Jaguars -9.5 (-113) ✓ same.",
+   "lineNow": "Jaguars -9.5 (-113)",
+   "moved": false
+  }
+ ]
+}
