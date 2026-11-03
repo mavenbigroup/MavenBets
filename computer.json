@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T17:48:10.474Z",
+ "updated": "2026-11-03T17:52:34.956Z",
  "book": "Computer",
  "site": "king23.ag",
  "figures": {
@@ -152,14 +152,14 @@
    "awaySpread": 9.5,
    "awaySpreadOdds": -103,
    "total": 47.5,
-   "overOdds": -105,
+   "overOdds": -110,
    "awayML": 390,
    "home": "KAN CHIEFS",
    "homeRot": 464,
    "time": "1:03 PM",
    "homeSpread": -9.5,
    "homeSpreadOdds": -117,
-   "underOdds": -115,
+   "underOdds": -110,
    "homeML": -505
   },
   {
@@ -1306,7 +1306,7 @@
    "date": "2026-11-07",
    "awaySpread": -17,
    "awaySpreadOdds": -110,
-   "total": 45.5,
+   "total": 46.5,
    "overOdds": -110,
    "awayML": -830,
    "home": "NEW MEXICO STATE",
