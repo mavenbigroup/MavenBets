@@ -210,6 +210,8 @@ label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px;font-wei
 @media (max-width:420px){.lines-head h2{font-size:18px}.srcseg button{padding:4px 8px;font-size:12px}}.lines-head .srcseg{margin-left:auto}.fsum{margin-left:auto;color:rgba(255,255,255,.65);font-size:12px}
 .tbl.tbl-in{border:0;border-radius:0;margin:0}
 #booksBody{padding:10px 12px 0}#booksBody .comp{margin:0 -12px;border-left:0;border-right:0;border-radius:0}#booksBody .carry{margin:0 0 10px}
+.week-head[data-wk]{cursor:pointer;user-select:none}.week.wkf{margin-bottom:10px}.week-head .chev{margin-left:4px}
+.call{display:flex;gap:6px;padding:4px 12px 8px}.call select{flex:1;padding:6px 8px}
 .rmL2{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:15px;padding:0 0 0 6px}
 .lc{border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:13px;line-height:1.3;background:transparent;color:var(--ink);text-align:left;font:inherit;font-size:13px;position:relative}
 .lc b{display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:700}
@@ -384,7 +386,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 <button class="upd" id="updBar" hidden>New version available — tap to update</button>
 
 <script>
-const APP_V='2026.11.03-3';
+const APP_V='2026.11.03-5';
 const KEY='anolik-football-book-v1';
 // People live in the book file so admins can add or hide them; these are the starting five
 const DEFAULT_PEOPLE=[{id:'Al',name:'Al',admin:true,aka:''},{id:'Steve',name:'Steve',admin:true,aka:'Dad, Pop'},{id:'Dan',name:'Danny',aka:'D, Dan'},{id:'J',name:'John',aka:'J'},{id:'Mich',name:'Michael',aka:'Mike, M'}];
@@ -582,11 +584,14 @@ function render(){
   wf.value=weeks.includes(+cur)?cur:'all';
   const list=$('#list'); list.innerHTML='';
   if(!mine.length){ list.innerHTML=`<div class="empty">No bets here yet.</div>`; return; }
-  for(const w of (wf.value==='all'?weeks:[+wf.value])){
+  const one=wf.value!=='all';
+  for(const [wi,w] of (one?[+wf.value]:weeks).entries()){
     const rows=mine.filter(b=>b.week===w);
     const n=rows.reduce((s,b)=>s+net(b),0), open=rows.filter(b=>!outcomeOf(b)).length;
     const sec=document.createElement('section'); sec.className='week';
-    sec.innerHTML=`<div class="week-head"><h2>Week ${w}</h2><span class="sum">${rows.length} bet${rows.length===1?'':'s'}${open?' · '+open+' open':''}${rows.every(b=>canSee(b.who))?' · '+signed(n):''}</span></div>`;
+    const wf_=!one&&wkFolded(w,wi);
+    sec.innerHTML=`<div class="week-head" data-wk="${w}"><h2>Week ${w}</h2><span class="sum">${rows.length} bet${rows.length===1?'':'s'}${open?' · '+open+' open':''}${rows.every(b=>canSee(b.who))?' · '+signed(n):''} <b class="chev">${wf_?'▸':'▾'}</b></span></div>`;
+    if(wf_){ sec.classList.add('wkf'); list.appendChild(sec); continue; }
     for(const b of rows){
       const o=outcomeOf(b), d=document.createElement('div'); d.className='bet';
       const cls=o==='W'?'win':o==='L'?'loss':o==='P'?'push':'';
@@ -616,6 +621,9 @@ let comp=ls.get('-comp',null), board=[];                                   // co
 let lnSrc=ls.get('-lsrc',''), lnLg=ls.get('-lnlg','');
 const PRO=['NFL','NBA','MLB','NHL'];
 let fold=ls.get('-fold',{}); const folded=k=>!!fold[k], chev=k=>folded(k)?'▸':'▾';
+// bet-list weeks: newest open, older folded, until you tap one
+const wkFolded=(w,i)=>('wk'+w) in fold?fold['wk'+w]:i>0;
+document.addEventListener('click',e=>{ const h=e.target.closest('.week-head[data-wk]'); if(!h)return; const w=+h.dataset.wk, i=[...document.querySelectorAll('.week-head[data-wk]')].indexOf(h); fold['wk'+w]=!wkFolded(w,i); ls.set('-fold',fold); render(); });
 function toggleFold(k){ fold[k]=!fold[k]; ls.set('-fold',fold); render(); }
 document.addEventListener('click',e=>{ const f=e.target.closest('[data-fold]'); if(f&&!e.target.closest('.srcseg')){ toggleFold(f.dataset.fold); } });
 const k23Name=(s,lg)=>{ let w=String(s||'').trim().split(/\s+/); if(PRO.includes(lg)&&w.length>1&&w[0].length<=3)w=w.slice(1); return cap(w.join(' ').toLowerCase()); };
@@ -714,7 +722,7 @@ let compOpen=ls.get('-compOpen',1);
 function renderComp(){
   const box=$('#compView'); if(!canEdit()||bookView!=='Computer'||!comp||!comp.updated){ box.hidden=true; return; }
   const f=comp.figures||{}, tk=comp.tickets||[], m=matchTickets(), miss=tk.filter(t=>!m.has(t.tkt));
-  const weeks=[...new Set(tk.map(tktWeek))].sort((a,b)=>b-a).slice(0,6);
+  const weeks=[...new Set(tk.map(tktWeek))].sort((a,b)=>b-a);
   const appNet=w=>bets.filter(b=>b.book==='Computer'&&b.week===w).reduce((s,b)=>s+net(b),0);
   const tile=(l,v)=>`<div class="ct"><span>${l}</span><b class="${v>0?'up':v<0?'down':''}">${v==null?'—':signed(v)}</b></div>`;
   const opts=BETTORS.map(p=>`<option value="${p}">${esc(nm(p))}</option>`).join('');
@@ -726,12 +734,19 @@ function renderComp(){
       return `<tr><td>Week ${w}</td><td class="n">${ts.length}${ts.some(t=>!m.has(t.tkt))?` <small class="down">${ts.filter(t=>!m.has(t.tkt)).length} new</small>`:''}</td><td class="n ${k>0?'up':k<0?'down':''}">${signed(k)}</td><td class="n">${signed(a)}</td><td class="n ${d?'down':''}">${d?signed(d):'✓'}</td></tr>`; }).join('')}</tbody></table>
     ${(comp.open||[]).length?`<h3 class="csub">Open on king23 (${comp.open.length})</h3>`+comp.open.map(t=>`<div class="ctk"><div><b>${line(t)}</b><br><small>${esc(t.desc||'')}</small></div><div class="n">${money(t.risk)}/${money(t.win)}</div></div>`).join(''):''}
     <h3 class="csub">${miss.length?`Not in the book yet (${miss.length})`:'Every king23 ticket is in the book ✓'}</h3>
-    ${miss.length?`<p class="lnote" style="padding:0 12px 6px">Pick who each bet was for and tap Add. It goes in already graded.</p>`+miss.map(t=>`<div class="ctk"><div><b>${line(t)}</b> <span class="res ${t.result||''}">${t.result==='W'?'WIN':t.result==='L'?'LOSS':t.result==='P'?'PUSH':''}</span><br><small>${esc(shortDay(t.date))} · Week ${tktWeek(t)} · ${esc(tktLg(t))}${t.score?' · '+esc(t.score):''} · #${esc(t.tkt)}</small></div>
+    ${miss.length?`<div class="call"><select id="cAllWho" aria-label="Add all to">${BETTORS.map(p=>`<option value="${p}" ${p==='Steve'?'selected':''}>${esc(nm(p))}</option>`).join('')}</select><button class="btn small primary" id="cAllAdd">Add all ${miss.length} to the book</button></div>
+      <p class="lnote" style="padding:0 12px 6px">Or pick who each bet was for and tap Add. They go in already graded. This only updates the app; nothing is sent to king23.</p>`+miss.map(t=>`<div class="ctk"><div><b>${line(t)}</b> <span class="res ${t.result||''}">${t.result==='W'?'WIN':t.result==='L'?'LOSS':t.result==='P'?'PUSH':''}</span><br><small>${esc(shortDay(t.date))} · Week ${tktWeek(t)} · ${esc(tktLg(t))}${t.score?' · '+esc(t.score):''} · #${esc(t.tkt)}</small></div>
       <div class="n">${money(t.risk)}/${money(t.win)}<br><b class="${t.net>0?'up':t.net<0?'down':''}">${signed(t.net||0)}</b></div>
       <div class="cadd"><select data-cwho="${esc(t.tkt)}" aria-label="Who was this for"><option value="">Who?</option>${opts}</select><button class="btn small primary" data-cadd="${esc(t.tkt)}">Add</button></div></div>`).join(''):''}`:'');
 }
 $('#compView').addEventListener('click',async e=>{
   if(e.target.closest('[data-ctoggle]')){ compOpen=compOpen?0:1; ls.set('-compOpen',compOpen); renderComp(); return; }
+  if(e.target.id==='cAllAdd'){
+    const who=$('#cAllWho').value, m=matchTickets(), todo=(comp.tickets||[]).filter(t=>!m.has(t.tkt));
+    if(!todo.length)return;
+    if(!confirm(`Add all ${todo.length} king23 tickets to the book as ${nm(who)}’s bets?`))return;
+    if(await commit(todo.map(t=>({t:'put',bet:tktBet(t,who)})),`Add ${todo.length} king23 tickets for ${nm(who)}`))toast(`Added ${todo.length} bets for ${nm(who)}`);
+    return; }
   const k=e.target.dataset.cadd; if(!k)return; const who=$(`[data-cwho="${k}"]`).value; if(!who){ toast('Pick who the bet was for'); return; }
   const t=(comp.tickets||[]).find(x=>x.tkt===k); if(!t)return;
   if(await commit([{t:'put',bet:tktBet(t,who)}],`Add king23 ticket ${k} for ${nm(who)}`))toast(`Added for ${nm(who)}`);
