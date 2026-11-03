@@ -203,6 +203,8 @@ async function main() {
   // "Try signing in again" on Run workflow — so a wrong password can never lock the account.
   const retry = /^true$/i.test(process.env.K23_RETRY || '');
   if (prev.loginFailed && !retry) { console.log(`Sign-in was rejected on ${prev.loginFailed}. Not trying again. Fix the K23_USER / K23_PASS secrets, then Run workflow with "Try signing in again" ticked.`); return; }
+  // Two phones refreshing at once queue two runs; the second has nothing new to get, so skip it without signing in.
+  if (!retry && prev.updated && Date.now() - new Date(prev.updated) < 120e3) { console.log(`Pulled ${Math.round((Date.now() - new Date(prev.updated)) / 1000)}s ago — skipping (no sign-in).`); return; }
   console.log('Signing in (one attempt)…');
   const welcome = await login(user, pass);
   if (!welcome) {
