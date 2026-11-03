@@ -141,8 +141,13 @@ async function req(path, opts = {}) {
   let url = new URL(path, ORIGIN + '/DGS/wager/').href;
   for (let hop = 0; hop < 8; hop++) {
     guard(url, opts);
-    const res = await fetch(url, { ...opts, redirect: 'manual', headers: { 'User-Agent': UA, Cookie: cookie(), ...(opts.headers || {}) } });
+    const { follow, ...fo } = opts;
+    const res = await fetch(url, { ...fo, redirect: 'manual', headers: { 'User-Agent': UA, Cookie: cookie(), ...(opts.headers || {}) } });
     keep(res);
+    if (res.status >= 300 && res.status < 400 && res.headers.get('location') && opts.follow === false) {
+      const to = new URL(res.headers.get('location'), url).href; console.log(`  ${opts.method || 'GET'} ${short(url)} -> ${res.status} ${short(to)} (not followed)`);
+      return { url, status: res.status, location: to, text: '' };
+    }
     if (res.status >= 300 && res.status < 400 && res.headers.get('location')) {
       const next = new URL(res.headers.get('location'), url).href; console.log(`  ${opts.method || 'GET'} ${short(url)} -> ${res.status} ${short(next)}`);
       url = next; if (![307, 308].includes(res.status)) opts = { method: 'GET' }; continue; }
@@ -162,9 +167,18 @@ async function login(user, pass) {
   // Send exactly what king23's own sign-in box sends: the account as typed, and the password in CAPITALS
   // (the box capitalises the password as you type it — see onkey() on their home page).
   const body = new URLSearchParams({ ...extra, Account: user.trim(), Password: pass.trim().toUpperCase() });
-  const r = await req(action, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Referer: home.url, Origin: ORIGIN }, body });
-  console.log('After sign-in:', short(r.url), '· status', r.status, '· cookies', jar.size);
-  const w = /logout/i.test(r.text) ? r : await req('Welcome.aspx');
+  // Don't follow where the site sends us after signing in (it may be a prompt page such as
+  // "Self Impose Limits"); go straight to the read-only account page instead.
+  const r = await req(action, { method: 'POST', follow: false, headers: { 'Content-Type': 'application/x-www-form-urlencoded', Referer: home.url, Origin: ORIGIN }, body });
+  const into = r.location ? new URL(r.location).pathname : '';
+  console.log('After sign-in: sent to', into || short(r.url), '· cookies', jar.size);
+  if (r.location && !/^\/dgs\/wager\//i.test(into)) { console.log('Sign-in rejected (sent back to ' + into + ').'); return null; }
+  let w;
+  try { w = await req('Welcome.aspx'); }
+  catch (e) {
+    if (/SelfImposeLimits/i.test(e.message)) throw new Error('Signed in ✔, but king23 is showing a "Self Impose Limits" prompt before anything else. Sign in on the site once and answer it yourself (this sync never changes account settings), then run again.');
+    throw e;
+  }
   if (!/Logout/i.test(w.text)) {
     const msg = (w.text.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').match(/(invalid|incorrect|wrong|locked|disabled|denied|suspend)[^.]{0,80}/i) || [])[0];
     console.log(`Sign-in rejected — landed on ${short(w.url)} (status ${w.status}).${msg ? ' Site says: "' + msg.trim() + '".' : ''}`);
