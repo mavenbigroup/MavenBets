@@ -212,6 +212,26 @@ label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px;font-wei
 #booksBody{padding:10px 12px 0}#booksBody .comp{margin:0 -12px;border-left:0;border-right:0;border-radius:0}#booksBody .carry{margin:0 0 10px}
 .week-head[data-wk]{cursor:pointer;user-select:none}.week.wkf{margin-bottom:10px}.week-head .chev{margin-left:4px}
 .call{display:flex;gap:6px;padding:4px 12px 8px}.call select{flex:1;padding:6px 8px}
+.k23row{grid-column:1/-1;display:flex;margin-top:4px}.k23btn{border-color:#101820;font-size:13px}
+.k23s{grid-column:1/-1;font-size:13px;font-weight:700;color:var(--muted)}.k23s small{display:block;font-weight:500;font-size:12px}
+.k23s.placed{color:var(--win)}.k23s.test{color:#A87400}.k23s.failed,.k23s.refused{color:var(--loss)}.k23s.sending{color:var(--ink)}
+.k23card{text-align:left;max-width:400px}.k23card h2{text-align:center}.k23card p{margin:6px 0;font-size:14px;opacity:1}.k23card label{color:rgba(255,255,255,.75);margin-top:12px}
+.k23mode{background:rgba(255,182,18,.15);border-radius:8px;padding:8px 10px;color:var(--gold)!important}
+.k23line{font-family:"Barlow Condensed",sans-serif;font-size:28px;font-weight:800;margin-top:8px}.k23line span{font-size:18px;color:rgba(255,255,255,.7)}
+.k23card .warn{color:#FF8A8A;font-weight:600}.k23card .ok{color:#7BD99E;font-weight:600}.k23card .sm{font-size:12px;opacity:.75}
+.k23card input{background:#fff;color:#101820;font-size:20px;font-weight:700}
+.k23act{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+#posView .posbar{padding:10px 12px 6px}#posView .bookseg{min-width:0}
+.pos{padding:9px 12px;border-top:1px solid var(--line)}.pos .gm{display:flex;justify-content:space-between;gap:8px;font-weight:600;font-size:15px}.pos .gm small{color:var(--muted);font-weight:500;font-size:12px;white-space:nowrap}
+.pside{display:grid;grid-template-columns:1fr auto;gap:8px;padding:5px 0 0;font-size:14px}.pside small{color:var(--muted);font-size:12px}.pside .n{font-weight:700;font-variant-numeric:tabular-nums}
+.pnet{margin-top:6px;padding-top:6px;border-top:1px dashed var(--line);font-size:14px}.sm2{margin:6px 0 0;font-size:13px;color:var(--muted)}
+#dashView .ctiles{grid-template-columns:repeat(4,minmax(0,1fr))}.dhead{display:flex;justify-content:space-between;align-items:center;padding:4px 12px 0}
+.dseg{width:auto}.dseg button{padding:4px 10px;font-size:12px}
+.wchart{position:relative;padding:4px 12px 0}.wchart svg{width:100%;height:auto;display:block;overflow:visible}
+.wchart .zero{stroke:var(--line);stroke-width:1}.wchart path.pos{fill:var(--win)}.wchart path.neg{fill:var(--loss)}
+.wchart text{font:11px Barlow,sans-serif;fill:var(--muted)}.wchart text.vl{fill:var(--ink);font-weight:700}
+.wchart .wbar:hover path{opacity:.8}.wtip{position:absolute;top:0;background:var(--ink);color:var(--paper);font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;pointer-events:none;white-space:nowrap}
+.dtbl td small{color:var(--muted);font-size:11px}.linkbtn{border:0;background:none;color:var(--muted);font:inherit;font-size:12px;text-decoration:underline;padding:0 12px 6px;cursor:pointer}
 .rmL2{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:15px;padding:0 0 0 6px}
 .lc{border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:13px;line-height:1.3;background:transparent;color:var(--ink);text-align:left;font:inherit;font-size:13px;position:relative}
 .lc b{display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:700}
@@ -292,6 +312,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
   </section>
 
   <section id="linesView" hidden></section>
+  <section class="fold" id="posView" hidden></section>
   <section class="slip" id="reqSheet" hidden>
     <h2>Request a bet</h2>
     <p class="hint" id="rqLine" style="margin:0 0 10px"></p>
@@ -314,6 +335,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
     <div class="actions"><button class="btn" id="rqCancel">Cancel</button><button class="btn primary" id="rqSend">Send request</button></div>
   </section>
   <div id="groupView"></div>
+  <section class="fold" id="dashView" hidden></section>
   <section class="fold" id="booksBox"><div class="fhead" data-fold="books"><h2>Books</h2><span><span id="booksSum"></span> <b class="chev" id="booksChev">▾</b></span></div><div id="booksBody">
   <div class="toolbar">
     <div class="bookseg" id="bookSeg"></div>
@@ -370,6 +392,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
     <label for="sRepo">GitHub repo</label><input id="sRepo" placeholder="your-username/MavenBets" autocomplete="off">
     <label for="sGh">GitHub token (lets this phone save bets)</label><input id="sGh" type="password" placeholder="github_pat_…" autocomplete="off">
     <label for="sAi">Anthropic API key (reads dictation &amp; screenshots)</label><input id="sAi" type="password" placeholder="sk-ant-…" autocomplete="off">
+    <label for="sK23">Send bets to king23</label><select id="sK23"><option value="off">Off</option><option value="test">Test mode — nothing is placed on king23</option><option value="live" disabled>Live — not built yet (Stage 2)</option></select>
     <div class="actions"><button class="btn small" id="sClear">Remove keys</button><button class="btn small primary" id="sSave">Save</button></div>
   </section>
   <p class="credit">Built by <b>Maven BI Group</b> · Phoenix, AZ</p>
@@ -383,10 +406,16 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
     <button class="who-skip" id="whoSkip">Just looking</button>
   </div>
 </div>
+<div class="who-ov" id="k23Ov" hidden role="dialog" aria-modal="true" aria-labelledby="k23T"><div class="who-card k23card">
+  <h2 id="k23T">Send to king23</h2><p id="k23Mode" class="k23mode"></p>
+  <div id="k23Body"></div>
+  <label for="k23Amt">Type the risk amount to confirm</label><input id="k23Amt" inputmode="decimal" autocomplete="off" placeholder="">
+  <div class="k23act"><button class="btn" id="k23No">Cancel</button><button class="btn primary" id="k23Go" disabled>Send</button></div>
+</div></div>
 <button class="upd" id="updBar" hidden>New version available — tap to update</button>
 
 <script>
-const APP_V='2026.11.03-5';
+const APP_V='2026.11.03-8';
 const KEY='anolik-football-book-v1';
 // People live in the book file so admins can add or hide them; these are the starting five
 const DEFAULT_PEOPLE=[{id:'Al',name:'Al',admin:true,aka:''},{id:'Steve',name:'Steve',admin:true,aka:'Dad, Pop'},{id:'Dan',name:'Danny',aka:'D, Dan'},{id:'J',name:'John',aka:'J'},{id:'Mich',name:'Michael',aka:'Mike, M'}];
@@ -541,7 +570,7 @@ function outcomeOf(b){ if(b.outcome)return b.outcome; const g=gameFor(b); return
 const meId=()=>{ const m=ls.get('-me',''); return m&&ALL_IDS.includes(m)&&!canEdit()?m:null; };
 const canSee=who=>canEdit()||who===meId();
 function render(){
-  renderLines(); renderInbox(); meLabel(); renderComp();
+  renderLines(); renderInbox(); meLabel(); renderComp(); renderPositions(); renderDash();
   ls.set('-view',{p:view,b:bookView});
   document.body.classList.toggle('ro',!canEdit()); document.body.classList.toggle('rw',canEdit());
   $('#desk').hidden=!canBook(); $('#deskBody').hidden=folded('desk'); $('#deskChev').textContent=chev('desk'); $('#deskSub').hidden=folded('desk');
@@ -607,7 +636,8 @@ function render(){
         <div class="outcome edit-only">
           ${['W','L','P','O'].map(x=>`<button class="oc ${x} ${(o||'O')===x?'on':''}" data-id="${b.id}" data-o="${x}">${{W:'Win',L:'Loss',P:'Push',O:'Open'}[x]}</button>`).join('')}
           <button class="del" data-edit="${b.id}">Edit</button><button class="del" data-del="${b.id}">Delete</button>
-        </div>`;
+        </div>
+        ${canEdit()?k23Status(b):''}`;
       sec.appendChild(d);
     }
     list.appendChild(sec);
@@ -702,6 +732,168 @@ function fillFromLine(l){
   if(l.team){ $('#fPick').value=l.team; $('#fSpread').value=l.spread||''; $('#fOdds').value=l.odds||''; } else if(l.total){ $('#fPick').value=l.pickOU||'Over'; $('#fSpread').value=l.total; $('#fOdds').value=l.totalOdds||''; }
   showCalc(); $('#slip').scrollIntoView({behavior:'smooth'}); $('#fWho').focus();
 }
+/* ---------- Send to king23 (Stage 1: TEST MODE — the placement job never contacts king23) ---------- */
+const k23Mode=()=>canEdit()&&repo()&&cfg.ghToken?(ls.get('-k23mode','off')):'off';
+let placements=ls.get('-placements',null), k23Bet=null, k23Watch=null;
+function oddsNum(s){ const o=parseOdds(s); if(!o)return null; return o.r>=o.w?-Math.round(o.r/o.w*100):Math.round(o.w/o.r*100); }
+function compGame(b){ // the king23 board row for this bet, from the last pull
+  const lg=lgOf(b), [a,h]=sides(b.matchup), ov=(x,y)=>tokens(x,lg).some(w=>w.length>1&&tokens(y,lg).includes(w));
+  return compLines(lg).find(g=>{ const ga=k23Name(g.away,lg), gh=k23Name(g.home,lg); return a&&h?(ov(ga,a)&&ov(gh,h))||(ov(ga,h)&&ov(gh,a)):(ov(ga,b.pick)||ov(gh,b.pick)); }); }
+function compPrice(b,g){ if(!g)return null; const lg=lgOf(b), ov=(x,y)=>tokens(x,lg).some(w=>w.length>1&&tokens(y,lg).includes(w));
+  if(/^(over|under)$/i.test(b.pick)){ const o=/^o/i.test(b.pick)?g.overOdds:g.underOdds; return {txt:`${b.pick} ${g.total} (${am(o)})`,same:+b.spread===g.total&&oddsNum(b.odds)===o}; }
+  const s=ov(k23Name(g.away,lg),b.pick)?'away':ov(k23Name(g.home,lg),b.pick)?'home':null; if(!s)return null;
+  if(b.spread===''||b.spread==null){ const o=g[s+'ML']; return {txt:`${b.pick} ${am(o)} moneyline`,same:oddsNum(b.odds)===o}; }
+  const sp=g[s+'Spread'], o=g[s+'SpreadOdds']; return {txt:`${b.pick} ${sgn(sp)} (${am(o)})`,same:(parseFloat(b.spread)||0)===sp&&oddsNum(b.odds)===o}; }
+function k23Status(b){ const k=b.k23; if(!k)return '';
+  const T={sending:'Sending to king23…',test:'Test ✔ — not placed',placed:`On king23 ✔${k.ticket?' #'+k.ticket:''}`,failed:'king23: failed',refused:'king23: refused'};
+  return `<div class="k23s ${k.status}" title="${esc(k.msg||'')}">${esc(T[k.status]||k.status)}${k.msg&&k.status!=='placed'?`<small>${esc(k.msg)}</small>`:''}</div>`; }
+function openK23(b){
+  if(k23Mode()==='off'){ toast('Turn on “Send bets to king23” in Booker setup'); return; }
+  const g=compGame(b), pr=compPrice(b,g), test=k23Mode()==='test'; k23Bet=b;
+  $('#k23T').textContent=test?'Send to king23 — TEST':'Send to king23';
+  $('#k23Mode').textContent=test?'Test mode: nothing will be placed on king23. You’ll see exactly what would have been sent.':'This places a real bet on king23 account PPL218.';
+  $('#k23Body').innerHTML=`<div class="k23line"><b>${esc(b.pick)} ${esc(b.spread||'')}</b> <span>${esc(b.odds||'')}</span></div>
+    <p>${esc(b.matchup)} · ${esc(lgOf(b))}${g?` · ${esc(shortDay(g.date))} ${esc(g.time||'')}`:''}</p>
+    <p>${b.pos?`<b>Dad’s position</b> (covers the family’s net)`:`For <b>${esc(nm(b.who))}</b>`} · risk <b>${money(b.amount)}</b> to win <b>${money(b.payout??b.amount)}</b></p>
+    ${!g?`<p class="warn">Not on king23’s board right now (started, not posted, or the lines are old — tap Refresh). Live mode would refuse this.</p>`:pr&&!pr.same?`<p class="warn">king23’s line is now ${esc(pr.txt)}. Live mode would stop and ask.</p>`:pr?`<p class="ok">✓ Matches king23’s line: ${esc(pr.txt)}</p>`:''}
+    ${comp&&comp.figures&&comp.figures.available!=null?`<p class="sm">Available on king23: ${money(comp.figures.available)}</p>`:''}`;
+  $('#k23Amt').value=''; $('#k23Amt').placeholder=String(Math.round(b.amount)); $('#k23Go').disabled=true; $('#k23Go').textContent=test?'Send (test)':'Place bet';
+  $('#k23Ov').hidden=false; setTimeout(()=>$('#k23Amt').focus(),50);
+}
+$('#k23Amt').addEventListener('input',()=>{ $('#k23Go').disabled=!(k23Bet&&Math.round(+$('#k23Amt').value)===Math.round(k23Bet.amount)); });
+$('#k23No').onclick=()=>{ $('#k23Ov').hidden=true; k23Bet=null; };
+$('#k23Go').onclick=async()=>{
+  const b=k23Bet; if(!b)return; $('#k23Go').disabled=true; $('#k23Ov').hidden=true; k23Bet=null;
+  const mode=k23Mode(), sentAt=Date.now(), me=ls.get('-me','')||'admin';
+  if(b.pos){ // a position isn't a family bet: nothing is written to the book, the result shows on the position
+    const payload={id:b.id,who:'Steve',book:'Computer',lg:lgOf(b),week:b.week,date:b.date,matchup:b.matchup,pick:b.pick,spread:b.spread||'',odds:b.odds,amount:b.amount,payout:b.payout,by:me,position:b.posKey};
+    posSent[b.posKey]={id:b.id,at:sentAt,mode}; ls.set('-posSent',posSent); render();
+    try{ const res=await fetch(`https://api.github.com/repos/${repo()}/actions/workflows/place-bet.yml/dispatches`,{method:'POST',headers:{...ghHeaders(),'Content-Type':'application/json'},body:JSON.stringify({ref:'main',inputs:{bet:JSON.stringify(payload),mode}})});
+      if(res.status!==204){ posSent[b.posKey]={...posSent[b.posKey],fail:res.status===404?'Placement job not set up in GitHub yet':'GitHub said '+res.status}; ls.set('-posSent',posSent); render(); return; }
+      toast(mode==='test'?'Sent (test) — result in about a minute':'Sending to king23 — about a minute'); watchPositions();
+    }catch(e){ posSent[b.posKey]={...posSent[b.posKey],fail:'Couldn’t reach GitHub'}; ls.set('-posSent',posSent); render(); }
+    return; }
+  if(!await commit([{t:'patch',id:b.id,patch:{k23:{status:'sending',mode,at:sentAt}}}],`Send to king23 (${mode}): ${b.pick} ${b.spread||''}`))return;
+  const payload={id:b.id,who:b.who,book:b.book,lg:lgOf(b),week:b.week,date:b.date,matchup:b.matchup,pick:b.pick,spread:b.spread||'',odds:b.odds||'11/10',amount:b.amount,payout:b.payout??b.amount,by:me};
+  try{
+    const res=await fetch(`https://api.github.com/repos/${repo()}/actions/workflows/place-bet.yml/dispatches`,{method:'POST',headers:{...ghHeaders(),'Content-Type':'application/json'},body:JSON.stringify({ref:'main',inputs:{bet:JSON.stringify(payload),mode}})});
+    if(res.status!==204){ await commit([{t:'patch',id:b.id,patch:{k23:{status:'failed',mode,at:sentAt,msg:res.status===404?'Placement job not set up in GitHub yet':'GitHub said '+res.status}}}],'king23 send failed'); return; }
+    toast(mode==='test'?'Sent (test) — result in about a minute':'Sending to king23 — about a minute'); watchPlacements();
+  }catch(e){ await commit([{t:'patch',id:b.id,patch:{k23:{status:'failed',mode,at:sentAt,msg:'Couldn’t reach GitHub'}}}],'king23 send failed'); }
+};
+async function loadPlacements(){ const r=repo(); if(!r||!cfg.ghToken)return;
+  try{ const res=await fetch(`https://api.github.com/repos/${r}/contents/placements.json?t=${Date.now()}`,{cache:'no-store',headers:{...ghHeaders(),Accept:'application/vnd.github.raw+json'}}); if(res.ok){ placements=await res.json(); ls.set('-placements',placements); } }catch(e){} }
+async function settlePlacements(){ // copy finished results onto the bets that were sending
+  const pend=bets.filter(b=>b.k23&&b.k23.status==='sending'); if(!pend.length||!canEdit())return 0;
+  await loadPlacements(); const ops=[];
+  for(const b of pend){ const r=((placements&&placements.results)||[]).find(x=>x.id===b.id&&new Date(x.at)>=b.k23.at-60e3); if(r)ops.push({t:'patch',id:b.id,patch:{k23:{status:r.status,mode:r.mode,at:b.k23.at,done:r.at,msg:r.msg,ticket:r.ticket||undefined}}}); }
+  if(ops.length&&await commit(ops,'king23 results')){ const r=ops[0].patch.k23; toast(r.status==='test'?'Test result in ✔':r.status==='placed'?'Placed on king23 ✔':'king23: '+r.status); }
+  return pend.length-ops.length; }
+/* ---------- Dashboard: one bettor (or the whole family) — week by week, by team, by bet type ---------- */
+let dashMode=ls.get('-dashMode','chart');
+function tally(rows){ const s={w:0,l:0,p:0,n:0,c:0}; for(const b of rows){ const o=outcomeOf(b); if(o==='W')s.w++; else if(o==='L')s.l++; else if(o==='P')s.p++; else continue; s.c++; s.n+=net(b); } s.rec=`${s.w}–${s.l}`+(s.p?`–${s.p}`:''); s.pct=s.w+s.l?Math.round(s.w/(s.w+s.l)*100):null; return s; }
+function groupBy(rows,keyFn){ const m=new Map(); for(const b of rows){ const k=keyFn(b); if(k==null)continue; if(!m.has(k))m.set(k,[]); m.get(k).push(b); } return [...m].map(([k,r])=>({k,...tally(r),open:r.filter(b=>!outcomeOf(b)).length})).filter(x=>x.c||x.open); }
+function weekChart(weeks,money_){
+  if(!weeks.length)return '';
+  const val=w=>money_?w.n:(w.w-w.l), up_=Math.max(0,...weeks.map(val)), dn_=Math.max(0,...weeks.map(w=>-val(w))), span=Math.max(1,up_+dn_);
+  // zero line sits where the data needs it (mostly-winning seasons use the space above, losing below); room kept for labels
+  const W=340,H=140,pad={l:6,r:6,t:16,b:30}, iw=W-pad.l-pad.r, ih=H-pad.t-pad.b, zero=pad.t+ih*(up_/span), sc=v=>v/span*ih, slot=iw/weeks.length, bw=Math.min(24,slot-2);
+  const bar=(w,i)=>{ const v=val(w), x=pad.l+i*slot+(slot-bw)/2, h=Math.max(Math.abs(sc(v)),v?2:0), up=v>=0, y=up?zero-h:zero, r=Math.min(4,h);
+    const d=!h?'':up?`M${x},${zero}V${y+r}Q${x},${y} ${x+r},${y}H${x+bw-r}Q${x+bw},${y} ${x+bw},${y+r}V${zero}Z`:`M${x},${zero}V${y+h-r}Q${x},${y+h} ${x+r},${y+h}H${x+bw-r}Q${x+bw},${y+h} ${x+bw},${y+h-r}V${zero}Z`;
+    const tip=`Week ${w.k} · ${w.rec}${money_?' · '+signed(w.n):''}`;
+    return `<g class="wbar" data-tip="${esc(tip)}"><rect x="${pad.l+i*slot}" y="${pad.t}" width="${slot}" height="${ih}" fill="transparent"/>${d?`<path d="${d}" class="${up?'pos':'neg'}"/>`:''}<text x="${x+bw/2}" y="${H-4}" text-anchor="middle">${w.k}</text></g>`; };
+  const best=weeks.reduce((a,b)=>val(b)>val(a)?b:a), worst=weeks.reduce((a,b)=>val(b)<val(a)?b:a);
+  const lab=(w,i)=>{ const v=val(w); if(!v)return ''; const x=pad.l+i*slot+slot/2, h=Math.abs(sc(v)), y=v>0?zero-h-4:zero+h+12; return `<text class="vl" x="${x}" y="${y}" text-anchor="middle">${money_?signed(v):(v>0?'+':'')+v}</text>`; };
+  return `<div class="wchart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Week by week ${money_?'winnings':'record'}"><line x1="${pad.l}" x2="${W-pad.r}" y1="${zero}" y2="${zero}" class="zero"/>${weeks.map(bar).join('')}${[best,worst].filter((w,i,a)=>a.indexOf(w)===i).map(w=>lab(w,weeks.indexOf(w))).join('')}</svg><div class="wtip" hidden></div></div>`;
+}
+function renderDash(){
+  const box=$('#dashView'), who=view, rows=bets.filter(b=>(who==='all'||b.who===who)&&inLg(b)&&(bookView==='all'||b.book===bookView));
+  const settled=rows.filter(b=>outcomeOf(b)); if(!settled.length){ box.hidden=true; return; }
+  const see=who==='all'?canEdit():canSee(who), title=who==='all'?'Family dashboard':`${nm(who)}’s dashboard`;
+  const all=tally(rows), weeks=groupBy(rows,b=>b.week).sort((a,b)=>a.k-b.k);
+  box.hidden=false;
+  const head=`<div class="fhead" data-fold="dash"><h2>${esc(title)}</h2><span>${folded('dash')?esc(all.rec+(see?' · '+signed(all.n):'')):''} <b class="chev">${chev('dash')}</b></span></div>`;
+  if(folded('dash')){ box.innerHTML=head; return; }
+  const scored=weeks.filter(w=>w.c), bestW=scored.reduce((a,b)=>!a||(see?b.n>a.n:b.w-b.l>a.w-a.l)?b:a,null), worstW=scored.reduce((a,b)=>!a||(see?b.n<a.n:b.w-b.l<a.w-a.l)?b:a,null);
+  const tile=(l,v,c='')=>`<div class="ct"><span>${l}</span><b class="${c}">${v}</b></div>`;
+  const kind=b=>({sp:'Spread',tot:'Total',ml:'Moneyline'})[marketOf(b)];
+  const teamOf=b=>marketOf(b)==='tot'?null:sideOf(b);
+  const favDog=b=>{ if(marketOf(b)!=='sp')return null; const v=parseFloat(b.spread); return isNaN(v)||v===0?'Pick’em':v<0?'Favorite':'Underdog'; };
+  const tbl=(name,list,limit)=>{ if(!list.length)return ''; list.sort((a,b)=>see?b.n-a.n||b.c-a.c:(b.w-b.l)-(a.w-a.l)||b.c-a.c); const more=limit&&list.length>limit;
+    return `<h3 class="csub">${name}</h3><table class="tbl ctbl dtbl"><thead><tr><th>${name==='By team'?'Team':''}</th><th class="n">Bets</th><th class="n">Record</th><th class="n">Win %</th>${see?'<th class="n">$</th>':''}</tr></thead><tbody>${(more&&!dashAll[name]?list.slice(0,limit):list).map(x=>`<tr><td>${esc(x.k)}</td><td class="n">${x.c}${x.open?` <small>+${x.open}</small>`:''}</td><td class="n">${x.rec}</td><td class="n">${x.pct==null?'—':x.pct+'%'}</td>${see?`<td class="n ${x.n>0?'up':x.n<0?'down':''}">${signed(x.n)}</td>`:''}</tr>`).join('')}</tbody></table>${more?`<button class="linkbtn" data-dmore="${esc(name)}">${dashAll[name]?'Show top '+limit:'Show all '+list.length}</button>`:''}`; };
+  box.innerHTML=head+`<div class="ctiles">${tile('Record',all.rec)}${tile('Win %',all.pct==null?'—':all.pct+'%')}${see?tile('Net',signed(all.n),all.n>0?'up':all.n<0?'down':''):tile('Bets',all.c)}${tile('Best week',bestW?'Wk '+bestW.k:'—')}</div>
+    <div class="dhead"><h3 class="csub" style="margin:0">Week by week ${see?'· $':'· wins minus losses'}</h3><div class="seg dseg"><button class="${dashMode==='chart'?'on':''}" data-dmode="chart">Chart</button><button class="${dashMode==='table'?'on':''}" data-dmode="table">Table</button></div></div>
+    ${dashMode==='chart'?weekChart(scored,see):`<table class="tbl ctbl dtbl"><thead><tr><th>Week</th><th class="n">Record</th>${see?'<th class="n">$</th><th class="n">Running</th>':''}</tr></thead><tbody>${(()=>{ let run=0; return scored.map(w=>{ run+=w.n; return `<tr><td>Week ${w.k}</td><td class="n">${w.rec}</td>${see?`<td class="n ${w.n>0?'up':w.n<0?'down':''}">${signed(w.n)}</td><td class="n">${signed(run)}</td>`:''}</tr>`; }).reverse().join(''); })()}</tbody></table>`}
+    ${bestW&&worstW&&bestW!==worstW?`<p class="lnote" style="padding:2px 12px 0">Best: Week ${bestW.k} (${bestW.rec}${see?', '+signed(bestW.n):''}) · Worst: Week ${worstW.k} (${worstW.rec}${see?', '+signed(worstW.n):''})</p>`:''}
+    ${tbl('By team',groupBy(rows,teamOf),8)}${tbl('By bet type',groupBy(rows,kind))}${tbl('Favorite vs underdog',groupBy(rows,favDog))}${LG.filter(l=>rows.some(b=>lgOf(b)===l)).length>1?tbl('By sport',groupBy(rows,b=>LEAGUES[lgOf(b)].n)):''}${bookView==='all'?tbl('By book',groupBy(rows,b=>b.book)):''}${who==='all'?tbl('By bettor',groupBy(rows,b=>nm(b.who))):''}
+    <p class="lnote" style="padding:6px 12px 10px">Graded bets${lgView!=='all'?' · '+esc(LEAGUES[lgView].n):''}${bookView!=='all'?' · '+esc(bookView):''}. “+N” = still open.</p>`;
+}
+let dashAll={};
+$('#dashView').addEventListener('click',e=>{ const m=e.target.dataset.dmode; if(m){ dashMode=m; ls.set('-dashMode',m); renderDash(); return; } const more=e.target.dataset.dmore; if(more){ dashAll[more]=!dashAll[more]; renderDash(); } });
+$('#dashView').addEventListener('pointermove',e=>{ const g=e.target.closest('.wbar'), tip=$('#dashView .wtip'); if(!tip)return; if(!g){ tip.hidden=true; return; }
+  const box=$('#dashView .wchart').getBoundingClientRect(); tip.textContent=g.dataset.tip; tip.hidden=false; tip.style.left=Math.min(box.width-150,Math.max(0,e.clientX-box.left-60))+'px'; });
+$('#dashView').addEventListener('pointerleave',()=>{ const tip=$('#dashView .wtip'); if(tip)tip.hidden=true; });
+
+/* ---------- Positions: the family's open bets netted per game, per book (Dad's exposure) ---------- */
+let posBook=ls.get('-posBook','Computer'), posSent=ls.get('-posSent',{}), posWatch=null;
+function marketOf(b){ return /^(over|under)$/i.test(b.pick)?'tot':(b.spread===''||b.spread==null)?'ml':'sp'; }
+function sideOf(b){ if(marketOf(b)==='tot')return /^o/i.test(b.pick)?'Over':'Under'; const [a,h]=sides(b.matchup), lg=lgOf(b), tk=tokens(b.pick,lg);
+  return a&&tokens(a,lg).some(w=>tk.includes(w))?a:h&&tokens(h,lg).some(w=>tk.includes(w))?h:b.pick; }
+function positions(book){
+  const groups={};
+  for(const b of bets){ if(b.book!==book||outcomeOf(b))continue;
+    const m=marketOf(b), key=[lgOf(b),b.week,b.date||'',mkey(b.matchup),m].join('|');
+    const g=groups[key]=groups[key]||{key,lg:lgOf(b),week:b.week,date:b.date,matchup:b.matchup,market:m,sides:{},bets:[]};
+    const s=sideOf(b), sd=g.sides[s]=g.sides[s]||{name:s,win:0,risk:0,bets:[],lines:{}};
+    sd.win+=+(b.payout??b.amount)||0; sd.risk+=+b.amount||0; sd.bets.push(b); sd.lines[(b.spread||'')+(b.odds&&b.odds!=='11/10'&&b.odds!=='-110'?' ('+b.odds+')':'')]=1; g.bets.push(b); }
+  return Object.values(groups).map(g=>{ const ss=Object.values(g.sides).sort((a,b)=>b.win-a.win), top=ss[0], other=ss[1];
+    g.list=ss; g.net=top?{side:top.name,win:Math.round(top.win-(other?other.win:0))}:null; return g; })
+   .sort((a,b)=>String(gameFor(a.bets[0])?.date||a.date||'').localeCompare(String(gameFor(b.bets[0])?.date||b.date||'')));
+}
+function onK23(g){ // what Dad already has on king23 for this game + side (open tickets from the last pull)
+  if(!g.net)return 0; const [a,h]=sides(g.matchup), lg=g.lg, ov=(x,y)=>tokens(x,lg).some(w=>w.length>1&&tokens(y,lg).includes(w));
+  let tot=0; for(const t of (comp&&comp.open)||[]){ if(tktLg(t)!==lg)continue;
+    if(g.market==='tot'){ if(t.kind!=='total'||t.pick!==g.net.side)continue; if(!(a&&ov(k23Name(t.away||'',lg),a)||h&&ov(k23Name(t.home||'',lg),h)))continue; }
+    else { if(t.kind!==(g.market==='ml'?'ml':'side'))continue; if(!ov(k23Name(t.team||'',lg),g.net.side))continue; }
+    tot+=t.win||0; }
+  return Math.round(tot); }
+function renderPositions(){
+  const box=$('#posView'); if(!canEdit()){ box.hidden=true; return; }
+  const ps=positions(posBook); box.hidden=false;
+  const head=`<div class="fhead" data-fold="pos"><h2>Positions</h2><span>${folded('pos')?esc(posBook+' · '+ps.length+' game'+(ps.length===1?'':'s')):''} <b class="chev">${chev('pos')}</b></span></div>`;
+  if(folded('pos')){ box.innerHTML=head; return; }
+  const mk={sp:'Spread',tot:'Total',ml:'Moneyline'}, mode=k23Mode();
+  box.innerHTML=head+`<div class="posbar"><div class="bookseg">${BOOKS.map(k=>`<button class="${k===posBook?'on':''}" data-pbook="${k}">${k}</button>`).join('')}</div></div>
+    <p class="lnote" style="padding:0 12px 6px">Open bets netted per game — what Dad needs ${posBook==='Max'?'to call in to Max':'on king23'}. Amounts are “to win”.</p>`+
+    (ps.length?ps.map(g=>{ const k23=posBook==='Computer'?onK23(g):0, gap=g.net?g.net.win-k23:0, sent=posSent[g.key];
+      const res=sent&&((placements&&placements.results)||[]).find(r=>r.id===sent.id);
+      return `<div class="pos"><div class="gm"><span>${g.lg!=='NFL'?`<span class="lgt">${g.lg}</span>`:''}${esc(g.matchup)}</span><small>${mk[g.market]}${g.lg==='NFL'?' · Wk '+g.week:g.date?' · '+esc(shortDay(g.date)):''}</small></div>
+        ${g.list.map(s=>`<div class="pside"><div><b>${esc(s.name)}</b> <small>${esc(Object.keys(s.lines).filter(Boolean).join(', '))}</small><br><small>${s.bets.map(b=>`${esc(nm(b.who))} ${money(b.payout??b.amount)}`).join(' · ')}</small></div><div class="n">${money(s.win)}</div></div>`).join('')}
+        <div class="pnet">${g.net&&g.net.win?`Net: <b>${money(g.net.win)} on ${esc(g.net.side)}</b>`:'Net: <b>even</b> — sides cancel out'}${posBook==='Computer'?` · on king23 now: <b>${money(k23)}</b>`:''}</div>
+        ${posBook==='Computer'&&g.net&&gap>0&&mode!=='off'?`<div class="k23row"><button class="btn small primary k23btn" data-psend="${esc(g.key)}">Send ${money(gap)} on ${esc(g.net.side)} to king23${mode==='test'?' · test':''}</button></div>`:posBook==='Computer'&&g.net&&gap<0?`<p class="sm2">king23 has ${money(-gap)} more than the net — nothing to send.</p>`:posBook==='Max'&&g.net&&g.net.win?`<p class="sm2">Call Max: ${money(g.net.win)} on ${esc(g.net.side)}</p>`:''}
+        ${sent?`<div class="k23s ${res?res.status:sent.fail?'failed':'sending'}">${res?esc(res.status==='test'?'Test ✔ — not placed':res.status==='placed'?'Placed on king23 ✔'+(res.ticket?' #'+res.ticket:''):'king23: '+res.status):sent.fail?'Send failed':'Sending to king23…'}<small>${esc(res?res.msg:sent.fail||'')}</small></div>`:''}
+      </div>`; }).join(''):`<p class="lnote" style="padding:0 12px 10px">No open ${esc(posBook)} bets right now.</p>`);
+}
+$('#posView').addEventListener('click',e=>{
+  const bk=e.target.closest('[data-pbook]'); if(bk){ posBook=bk.dataset.pbook; ls.set('-posBook',posBook); renderPositions(); return; }
+  const s=e.target.closest('[data-psend]'); if(!s)return; const g=positions('Computer').find(x=>x.key===s.dataset.psend); if(!g||!g.net)return;
+  const gap=g.net.win-onK23(g); if(!(gap>0))return;
+  // price it at king23's current line for that side when we have it, else the family's most common line
+  const side=g.list[0], b0=side.bets[0];
+  let pick=g.net.side, spread=g.market==='tot'?b0.spread:g.market==='ml'?'':b0.spread, odds=b0.odds||'11/10';
+  const cg=compGame(b0), pr=cg&&compPrice({...b0,pick},cg);
+  if(cg){ const lg=g.lg, isAway=tokens(k23Name(cg.away,lg),lg).some(w=>tokens(pick,lg).includes(w));
+    if(g.market==='tot'){ spread=String(cg.total); odds=am(/^o/i.test(pick)?cg.overOdds:cg.underOdds); }
+    else if(g.market==='ml'){ odds=am(isAway?cg.awayML:cg.homeML); }
+    else { spread=sgn(isAway?cg.awaySpread:cg.homeSpread); odds=am(isAway?cg.awaySpreadOdds:cg.homeSpreadOdds); if(spread==='PK')spread=''; } }
+  const {risk,win}=riskWin(gap,odds,'win');
+  openK23({pos:true,posKey:g.key,id:'pos_'+newId(),who:'Steve',book:'Computer',lg:g.lg,week:g.week,date:g.date,matchup:g.matchup,pick,spread,odds,amount:risk,payout:win});
+});
+function watchPositions(){ clearInterval(posWatch); const until=Date.now()+4*60e3; posWatch=setInterval(async()=>{ await loadPlacements(); renderPositions();
+  const open=Object.values(posSent).filter(s=>!s.fail&&!((placements&&placements.results)||[]).some(r=>r.id===s.id)&&Date.now()-s.at<5*60e3);
+  if(!open.length||Date.now()>until){ clearInterval(posWatch); posWatch=null; } },12000); }
+function watchPlacements(){ clearInterval(k23Watch); const until=Date.now()+4*60e3; k23Watch=setInterval(async()=>{ const left=await settlePlacements(); if(!left||Date.now()>until){ clearInterval(k23Watch); k23Watch=null; } },12000); }
+
 /* ---------- Computer (king23) account: figures, weekly check against the book, tickets to add ---------- */
 const tktLg=t=>LG.includes(t.lg)?t.lg:'NFL';
 const tktWeek=t=>dateWeek(t.date||t.placed);
@@ -830,6 +1022,7 @@ $('#reqInbox').addEventListener('click',async e=>{
   if(n!==undefined){ inbox.splice(+n,1); ls.set('-reqs',inbox); render(); toast('Request declined'); }
   if(k!==undefined){ const r=inbox[+k]; e.target.disabled=true; const {risk,win}=riskWin(r.win,r.odds,'win');
     const bet={id:'r_'+r.rid,who:r.who,book:r.book,lg:lgOf(r),date:r.date,week:r.week,matchup:r.matchup,pick:r.pick,spread:r.spread,amount:risk,payout:win,odds:r.odds,outcome:null,at:Date.now(),requested:true};
+    const send=e.target.dataset.send;
     if(await commit([{t:'put',bet}],`Book ${nm(r.who)} request: ${r.pick} ${r.spread}`)){ inbox.splice(+k,1); ls.set('-reqs',inbox); toast(`Booked ${nm(r.who)}`); } render(); }
 });
 const ICON={football:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="10" ry="6" transform="rotate(-35 12 12)"/><path d="M9 15l6-6M10.5 10.5l1 1M12.5 12.5l1 1"/></svg>',basketball:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5.6 5.6c3 3 3 9.8 0 12.8M18.4 5.6c-3 3-3 9.8 0 12.8"/></svg>',baseball:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M7 4.5c2 4 2 11 0 15M17 4.5c-2 4-2 11 0 15"/></svg>',hockey:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3l-4 13h-5a2 2 0 0 0 0 4h6l5-17"/><ellipse cx="18" cy="19" rx="3" ry="1.5"/></svg>'};
@@ -852,8 +1045,10 @@ $('#weekFilter').onchange=render;
 $('#list').addEventListener('click',e=>{
   const t=e.target;
   if(t.dataset.o){ commit([{t:'patch',id:t.dataset.id,patch:{outcome:t.dataset.o==='O'?null:t.dataset.o,manual:true}}],'Grade bet'); }
+  else if(t.dataset.edit&&bets.find(x=>x.id===t.dataset.edit)?.k23?.status==='placed'){ toast('This bet is on king23 — change it there, not here'); }
   else if(t.dataset.edit){ openForm(bets.find(x=>x.id===t.dataset.edit)); window.scrollTo({top:0}); }
   else if(t.dataset.del){ if(confirm('Delete this bet?'))commit([{t:'del',id:t.dataset.del}],'Delete bet'); }
+  else if(t.dataset.k23){ const b=bets.find(x=>x.id===t.dataset.k23); if(b)openK23(b); }
 });
 
 /* ================= manual form ================= */
@@ -977,7 +1172,9 @@ async function refreshScores(manual,opened){
     if(manual)toast('Up to date ✔');
   }catch(e){ espnOk=false; $('#scoreLbl').textContent='Live scores unavailable here'; if(manual)toast('Couldn’t reach ESPN'); clearTimeout(scoreTimer); scoreTimer=setTimeout(refreshScores,300000); }
   render();
-  if(manual||opened)askComputerSync(manual);   // king23 pull: only when the app is opened or Refresh is tapped, never on the background timer
+  if(manual||opened)askComputerSync(manual);
+  if(bets.some(b=>b.k23&&b.k23.status==='sending')&&!k23Watch)settlePlacements();
+  if(Object.keys(posSent).length&&canEdit()){ await loadPlacements(); renderPositions(); }   // king23 pull: only when the app is opened or Refresh is tapped, never on the background timer
 }
 $('#refreshBtn').onclick=()=>refreshScores(true);
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'){ refreshScores(false,true); checkUpdate(); } });
@@ -1146,7 +1343,8 @@ $('#ppAdd').onclick=async()=>{ const name=$('#ppNew').value.trim(); if(!name){ t
   if(await savePeople([...people.map(x=>({...x})),{id,name,aka:''}],`Add ${name}`)){ $('#ppNew').value=''; toast(`${name} added — tap Invite to send their link`); } };
 
 /* ================= booker setup (keys stay on this device) ================= */
-$('#setupBtn').onclick=()=>{ const s=$('#setup'); s.hidden=!s.hidden; if(!s.hidden){ $('#sRepo').value=repo(); $('#sGh').value=cfg.ghToken||''; $('#sAi').value=cfg.aiKey||''; s.scrollIntoView({behavior:'smooth'}); } };
+$('#sK23').onchange=()=>{ ls.set('-k23mode',$('#sK23').value); render(); toast($('#sK23').value==='off'?'Sending to king23 is off':'Test mode on — nothing is placed on king23'); };
+$('#setupBtn').onclick=()=>{ const s=$('#setup'); s.hidden=!s.hidden; if(!s.hidden){ $('#sK23').value=ls.get('-k23mode','off'); $('#sRepo').value=repo(); $('#sGh').value=cfg.ghToken||''; $('#sAi').value=cfg.aiKey||''; s.scrollIntoView({behavior:'smooth'}); } };
 $('#sSave').onclick=async()=>{
   cfg={repo:$('#sRepo').value.trim()||undefined,ghToken:$('#sGh').value.trim()||undefined,aiKey:$('#sAi').value.trim()||undefined}; ls.set('-cfg',cfg);
   if(store!=='db'&&repo())store='gh';
