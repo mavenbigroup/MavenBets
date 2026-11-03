@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T16:51:31.017Z",
+ "updated": "2026-11-03T17:01:08.529Z",
  "book": "Computer",
  "site": "king23.ag",
  "figures": {
@@ -378,14 +378,14 @@
    "awayRot": 309,
    "date": "2026-11-04",
    "awaySpread": -25.5,
-   "awaySpreadOdds": -110,
+   "awaySpreadOdds": -115,
    "total": 53,
    "overOdds": -110,
    "home": "SACRAMENTO ST",
    "homeRot": 310,
    "time": "7:03 PM",
    "homeSpread": 25.5,
-   "homeSpreadOdds": -110,
+   "homeSpreadOdds": -105,
    "underOdds": -110
   },
   {
@@ -569,14 +569,14 @@
    "awaySpreadOdds": -115,
    "total": 50.5,
    "overOdds": -110,
-   "awayML": -275,
+   "awayML": -270,
    "home": "BOSTON COLLEGE",
    "homeRot": 332,
    "time": "12:03 PM",
    "homeSpread": 6.5,
    "homeSpreadOdds": -105,
    "underOdds": -110,
-   "homeML": 220
+   "homeML": 215
   },
   {
    "lg": "NCAAF",
@@ -1733,14 +1733,14 @@
    "awaySpreadOdds": -115,
    "total": 6,
    "overOdds": -115,
-   "awayML": 216,
+   "awayML": 217,
    "home": "TAM LIGHTNING",
    "homeRot": 18,
    "time": "7:08 PM",
    "homeSpread": -1.5,
    "homeSpreadOdds": -105,
    "underOdds": -105,
-   "homeML": -256
+   "homeML": -257
   },
   {
    "lg": "NHL",
@@ -1771,14 +1771,14 @@
    "awaySpreadOdds": -240,
    "total": 6.5,
    "overOdds": -120,
-   "awayML": -106,
+   "awayML": -105,
    "home": "PIT PENGUINS",
    "homeRot": 22,
    "time": "7:08 PM",
    "homeSpread": -1.5,
    "homeSpreadOdds": 200,
    "underOdds": 100,
-   "homeML": -114
+   "homeML": -115
   },
   {
    "lg": "NHL",
