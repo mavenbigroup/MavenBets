@@ -201,6 +201,15 @@ label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px;font-wei
 .ctk small{color:var(--muted);font-size:12px}.ctk .n{text-align:right;font-variant-numeric:tabular-nums}.ctk .up{color:var(--win)}.ctk .down{color:var(--loss)}
 .ctk .cadd{grid-column:1/-1;display:flex;gap:6px}.ctk .cadd select{flex:1;padding:6px 8px}
 .res{font-size:11px;font-weight:800;letter-spacing:.4px}.res.W{color:var(--win)}.res.L{color:var(--loss)}.res.P{color:var(--push)}
+.fold{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);margin:0 0 16px;overflow:hidden}
+.fhead{background:#101820;color:var(--gold);padding:8px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.fhead h2{margin:0;font-family:"Barlow Condensed",sans-serif;font-size:20px;font-weight:800}.fhead>span{color:rgba(255,255,255,.65);font-size:12px}
+.chev{display:inline-block;margin-left:6px;color:var(--gold);font-size:14px;font-weight:800}
+.lines-head{cursor:pointer;user-select:none;align-items:center;flex-wrap:nowrap!important}
+.lines-head h2{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:420px){.lines-head h2{font-size:18px}.srcseg button{padding:4px 8px;font-size:12px}}.lines-head .srcseg{margin-left:auto}.fsum{margin-left:auto;color:rgba(255,255,255,.65);font-size:12px}
+.tbl.tbl-in{border:0;border-radius:0;margin:0}
+#booksBody{padding:10px 12px 0}#booksBody .comp{margin:0 -12px;border-left:0;border-right:0;border-radius:0}#booksBody .carry{margin:0 0 10px}
 .rmL2{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:15px;padding:0 0 0 6px}
 .lc{border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:13px;line-height:1.3;background:transparent;color:var(--ink);text-align:left;font:inherit;font-size:13px;position:relative}
 .lc b{display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:700}
@@ -266,7 +275,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
   <div class="lgseg" id="lgSeg" role="tablist" aria-label="Sport" hidden></div>
   <section id="reqInbox" hidden></section>
   <section class="desk" id="desk" hidden>
-    <div class="desk-head" id="deskHead"><h2>Bet desk</h2><span>Type, talk, or send a screenshot</span></div>
+    <div class="desk-head" id="deskHead"><h2>Bet desk</h2><span><span id="deskSub">Type, talk, or send a screenshot</span> <b class="chev" id="deskChev">▾</b></span></div>
     <div id="deskBody">
       <div class="log" id="log" aria-live="polite"></div>
       <div class="thumbs" id="thumbs"></div>
@@ -303,11 +312,13 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
     <div class="actions"><button class="btn" id="rqCancel">Cancel</button><button class="btn primary" id="rqSend">Send request</button></div>
   </section>
   <div id="groupView"></div>
+  <section class="fold" id="booksBox"><div class="fhead" data-fold="books"><h2>Books</h2><span><span id="booksSum"></span> <b class="chev" id="booksChev">▾</b></span></div><div id="booksBody">
   <div class="toolbar">
     <div class="bookseg" id="bookSeg"></div>
   </div>
   <div class="carry" id="carryRow" hidden></div>
   <section class="comp" id="compView" hidden></section>
+  </div></section>
   <div class="toolbar">
     <select id="weekFilter" aria-label="Filter by week"><option value="all">All weeks</option></select>
     <button class="btn primary" id="toggleForm">+ New bet</button>
@@ -373,7 +384,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 <button class="upd" id="updBar" hidden>New version available — tap to update</button>
 
 <script>
-const APP_V='2026.11.03-2';
+const APP_V='2026.11.03-3';
 const KEY='anolik-football-book-v1';
 // People live in the book file so admins can add or hide them; these are the starting five
 const DEFAULT_PEOPLE=[{id:'Al',name:'Al',admin:true,aka:''},{id:'Steve',name:'Steve',admin:true,aka:'Dad, Pop'},{id:'Dan',name:'Danny',aka:'D, Dan'},{id:'J',name:'John',aka:'J'},{id:'Mich',name:'Michael',aka:'Mike, M'}];
@@ -531,7 +542,8 @@ function render(){
   renderLines(); renderInbox(); meLabel(); renderComp();
   ls.set('-view',{p:view,b:bookView});
   document.body.classList.toggle('ro',!canEdit()); document.body.classList.toggle('rw',canEdit());
-  $('#desk').hidden=!canBook();
+  $('#desk').hidden=!canBook(); $('#deskBody').hidden=folded('desk'); $('#deskChev').textContent=chev('desk'); $('#deskSub').hidden=folded('desk');
+  $('#booksBody').hidden=folded('books'); $('#booksChev').textContent=chev('books'); $('#booksSum').textContent=folded('books')?(bookView==='all'?'All books':bookView):'';
   $('#people').innerHTML=['all',...BETTORS].map(p=>`<button class="chip ${view===p?'on':''}" role="tab" aria-selected="${view===p}" data-p="${p}">${p==='all'?'Everyone':esc(nm(p))}</button>`).join('');
   $('#bookSeg').innerHTML=['all',...BOOKS].map(k=>`<button class="${bookView===k?'on':''}" data-k="${k}">${k==='all'?'All books':k}</button>`).join('');
   const inBook=b=>(bookView==='all'||b.book===bookView)&&inLg(b);
@@ -546,9 +558,9 @@ function render(){
     else if(meId()){ const m=bal(meId(),bookView); $('#netWho').textContent=m>0?`${bookLbl==='the books'?'Books owe':bookLbl+' owes'} you`:m<0?`You owe ${bookLbl}`:'You’re even'; setNet(m); }
     else { $('#netWho').textContent='Balances are private'; privNet(); }
     const rows=BETTORS.map(p=>({p,s:stat(bets.filter(b=>b.who===p&&inLg(b))),t:bal(p,'all')})).sort(canEdit()?(a,b)=>b.t-a.t:(a,b)=>(b.s.w-b.s.l)-(a.s.w-a.s.l)||b.s.w-a.s.w);
-    $('#groupView').innerHTML=`<table class="tbl"><thead><tr><th>Bettor</th><th class="n">Record</th>${BOOKS.map(k=>`<th class="n">${k}</th>`).join('')}<th class="n">Total</th></tr></thead><tbody>${
+    $('#groupView').innerHTML=`<section class="fold"><div class="fhead" data-fold="stand"><h2>Standings</h2><span>${folded('stand')?esc(rows.length+' bettors'):''} <b class="chev">${chev('stand')}</b></span></div>${folded('stand')?'':`<table class="tbl tbl-in"><thead><tr><th>Bettor</th><th class="n">Record</th>${BOOKS.map(k=>`<th class="n">${k}</th>`).join('')}<th class="n">Total</th></tr></thead><tbody>${
       rows.map(({p,s,t})=>`<tr data-p="${p}"><td>${esc(nm(p))}${p===meId()?' <small style="color:var(--muted)">(you)</small>':''}</td><td class="n">${s.rec}</td>${BOOKS.map(k=>cell(bal(p,k),canSee(p))).join('')}${cell(t,canSee(p))}</tr>`).join('')
-    }</tbody>${canEdit()?`<tfoot><tr><td>Book</td><td></td>${BOOKS.map(k=>cell(-ALL_IDS.reduce((t,p)=>t+bal(p,k),0))).join('')}<td></td></tr></tfoot>`:''}</table>`;
+    }</tbody>${canEdit()?`<tfoot><tr><td>Book</td><td></td>${BOOKS.map(k=>cell(-ALL_IDS.reduce((t,p)=>t+bal(p,k),0))).join('')}<td></td></tr></tfoot>`:''}</table>`}</section>`;
     $('#carryRow').hidden=true;
   } else {
     const s=stat(mine), n=bal(view,bookView);
@@ -603,6 +615,9 @@ function lineGame(l){ return gameFor({lg:l.lg,date:l.date,week:l.week,matchup:l.
 let comp=ls.get('-comp',null), board=[];                                   // comp = computer.json (king23), board = rows on screen
 let lnSrc=ls.get('-lsrc',''), lnLg=ls.get('-lnlg','');
 const PRO=['NFL','NBA','MLB','NHL'];
+let fold=ls.get('-fold',{}); const folded=k=>!!fold[k], chev=k=>folded(k)?'▸':'▾';
+function toggleFold(k){ fold[k]=!fold[k]; ls.set('-fold',fold); render(); }
+document.addEventListener('click',e=>{ const f=e.target.closest('[data-fold]'); if(f&&!e.target.closest('.srcseg')){ toggleFold(f.dataset.fold); } });
 const k23Name=(s,lg)=>{ let w=String(s||'').trim().split(/\s+/); if(PRO.includes(lg)&&w.length>1&&w[0].length<=3)w=w.slice(1); return cap(w.join(' ').toLowerCase()); };
 const sgn=n=>n==null||n===''?'':+n===0?'PK':(+n>0?'+':'')+(+n);
 const am=n=>n==null||n===''?'':(+n>0?'+':'')+(+n);
@@ -646,10 +661,11 @@ function renderLines(){
   board=boardRows(lnSrc,lg);
   const when=r=>{ const g=r.gm; if(g&&g.state==='in')return 'LIVE '+g.detail; if(g)return new Date(g.date).toLocaleString([], {weekday:'short',hour:'numeric',minute:'2-digit'}); return [shortDay(r.date),r.time].filter(Boolean).join(' '); };
   const px=(i,k,main,odds)=>main===''||main==null?'<span class="px none">—</span>':`<button class="px" data-r="${i}" data-k="${k}">${esc(main)}${odds!==''&&odds!=null?`<small>${esc(odds)}</small>`:''}</button>`;
-  const head=`<div class="lines-head"><h2>${lg==='NFL'&&new Set(board.map(r=>r.week)).size<=1?'Week '+(board[0]?.week||curWeek)+' lines':esc(LEAGUES[lg].n)+' lines'}</h2><div class="srcseg" role="tablist">${Object.keys(SRC).map(s=>`<button class="${s===lnSrc?'on':''}" data-src="${s}" ${avail.includes(s)?'':'disabled'}>${SRC[s]}</button>`).join('')}</div></div>`;
+  const head=`<div class="lines-head" data-fold="lines"><h2>${lg==='NFL'&&new Set(board.map(r=>r.week)).size<=1?'Week '+(board[0]?.week||curWeek)+' lines':esc(LEAGUES[lg].n)+' lines'}</h2><div class="srcseg" role="tablist">${Object.keys(SRC).map(s=>`<button class="${s===lnSrc?'on':''}" data-src="${s}" ${avail.includes(s)?'':'disabled'}>${SRC[s]}</button>`).join('')}</div><b class="chev">${chev('lines')}</b></div>`;
   const chips=lgs.length>1?`<div class="lnlg">${lgs.map(l=>`<button class="${l===lg?'on':''}" data-lnlg="${l}">${esc(LEAGUES[l].n)}</button>`).join('')}</div>`:'';
   const note=lnSrc==='comp'&&comp&&comp.updated&&comp.lines&&comp.lines.length?`From king23 · ${new Date(comp.updated).toLocaleString([], {weekday:'short',hour:'numeric',minute:'2-digit'})}`:lnSrc==='espn'?'ESPN’s posted line':lnSrc==='max'?'Posted by Steve':'Posted by Steve (king23 sync not set up)';
   box.className='lines'; box.hidden=false;
+  if(folded('lines')){ box.innerHTML=head.replace(/<div class="srcseg"[\s\S]*?<\/div>/,`<span class="fsum">${esc(SRC[lnSrc])} · ${board.length} game${board.length===1?'':'s'}</span>`); return; }
   box.innerHTML=head+chips+`<p class="lnote">${esc(note)} · ${canEdit()?'tap a price to book it':'tap a price to request it'}</p>`+(board.length?board.map((r,i)=>`<div class="lg"><div class="gm"><span>${esc(r.away)} @ ${esc(r.home)}</span><small>${esc(when(r))}${r.lineId&&canEdit()?` <button class="rmL2" data-ld="${esc(r.lineId)}" aria-label="Remove line">×</button>`:''}</small></div>
     <div class="bd"><span class="tn">${esc(r.away)}</span>${px(i,'aSp',sgn(r.aSp),am(r.aSpO))}${px(i,'o',r.tot!=null&&r.tot!==''?'o'+r.tot:'',am(r.oO))}${px(i,'aML',am(r.aML),'')}
     <span class="tn">${esc(r.home)}</span>${px(i,'hSp',sgn(r.hSp),am(r.hSpO))}${px(i,'u',r.tot!=null&&r.tot!==''?'u'+r.tot:'',am(r.uO))}${px(i,'hML',am(r.hML),'')}</div></div>`).join(''):`<p class="lnote">No ${esc(LEAGUES[lg].n)} lines right now.</p>`);
@@ -1000,7 +1016,7 @@ $('#log').addEventListener('click',async e=>{
     const ok=await commit(ops,`Book ${n} bet${n>1?'s':''}: `+pending.map(p=>`${p.who} ${p.pick} ${p.spread}`).join(', '));
     if(ok){ pending=[]; chat.push({r:'b',t:`Booked ${n} bet${n>1?'s':''}. ✔`}); saveChat(); toast(`Booked ${n}`); } drawLog(); }
 });
-$('#deskHead').onclick=()=>{ $('#deskBody').hidden=!$('#deskBody').hidden; };
+$('#deskHead').onclick=()=>toggleFold('desk');
 const cap=s=>s.replace(/\b\w/g,c=>c.toUpperCase());
 function gamesText(){
   const gs=Object.values(games).filter(g=>g.lg==='NFL'&&g.week===curWeek).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
