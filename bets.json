@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "id": "mvzzbhi4ls6t",
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 8,
+   "matchup": "Bears @ Seahawks",
+   "pick": "Seahawks",
+   "spread": "-3",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": null,
+   "at": 1793667501148
+  },
+  {
    "who": "Al",
    "book": "Max",
    "lg": "NFL",
@@ -492,5 +507,5 @@
    "id": "7_Max_49ers_falcons"
   }
  ],
- "updated": "2026-11-02T01:09:57.775Z"
+ "updated": "2026-11-03T00:58:21.437Z"
 }
