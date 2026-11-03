@@ -12,8 +12,10 @@
    "amount": 44,
    "payout": 40,
    "odds": "11/10",
-   "outcome": null,
-   "at": 1793667501148
+   "outcome": "L",
+   "at": 1793667501148,
+   "gameId": "NFL:401873036",
+   "final": "CHI 34–SEA 17"
   },
   {
    "who": "Al",
@@ -507,5 +509,5 @@
    "id": "7_Max_49ers_falcons"
   }
  ],
- "updated": "2026-11-03T00:58:21.437Z"
+ "updated": "2026-11-03T05:01:58.708Z"
 }
