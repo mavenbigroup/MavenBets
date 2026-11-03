@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T20:08:41.004Z",
+ "updated": "2026-11-03T20:37:19.119Z",
  "book": "Computer",
  "site": "king23.ag",
  "figures": {
@@ -37,7 +37,7 @@
    "date": "2026-11-08",
    "awaySpread": -3,
    "awaySpreadOdds": -115,
-   "total": 52.5,
+   "total": 53,
    "overOdds": -110,
    "awayML": -170,
    "home": "ATL FALCONS",
@@ -151,15 +151,12 @@
    "date": "2026-11-08",
    "awaySpread": 10,
    "awaySpreadOdds": -115,
-   "total": 47,
-   "overOdds": -105,
    "awayML": 390,
    "home": "KAN CHIEFS",
    "homeRot": 464,
    "time": "1:03 PM",
    "homeSpread": -10,
    "homeSpreadOdds": -105,
-   "underOdds": -115,
    "homeML": -505
   },
   {
@@ -323,14 +320,14 @@
    "awaySpread": -13,
    "awaySpreadOdds": -105,
    "total": 51.5,
-   "overOdds": -110,
+   "overOdds": -115,
    "awayML": -560,
    "home": "AKRON",
    "homeRot": 304,
    "time": "7:03 PM",
    "homeSpread": 13,
    "homeSpreadOdds": -115,
-   "underOdds": -110,
+   "underOdds": -105,
    "homeML": 385
   },
   {
@@ -1492,18 +1489,18 @@
    "away": "IPFW",
    "awayRot": 613,
    "date": "2026-11-03",
-   "awaySpread": 10,
+   "awaySpread": 9.5,
    "awaySpreadOdds": -110,
    "total": 153.5,
    "overOdds": -115,
-   "awayML": 365,
+   "awayML": 380,
    "home": "DUQUESNE",
    "homeRot": 614,
    "time": "7:01 PM",
-   "homeSpread": -10,
+   "homeSpread": -9.5,
    "homeSpreadOdds": -110,
    "underOdds": -105,
-   "homeML": -505
+   "homeML": -520
   },
   {
    "lg": "NCAAB",
@@ -1550,13 +1547,13 @@
    "awaySpread": 27,
    "awaySpreadOdds": -115,
    "total": 172,
-   "overOdds": -110,
+   "overOdds": -105,
    "home": "ALABAMA",
    "homeRot": 620,
    "time": "7:31 PM",
    "homeSpread": -27,
    "homeSpreadOdds": -105,
-   "underOdds": -110
+   "underOdds": -115
   },
   {
    "lg": "NCAAB",
@@ -1654,17 +1651,17 @@
    "awayRot": 9,
    "date": "2026-11-03",
    "awaySpread": -1.5,
-   "awaySpreadOdds": 230,
+   "awaySpreadOdds": 240,
    "total": 5.5,
    "overOdds": -120,
-   "awayML": -108,
+   "awayML": -105,
    "home": "WAS CAPITALS",
    "homeRot": 10,
    "time": "7:08 PM",
    "homeSpread": 1.5,
-   "homeSpreadOdds": -270,
+   "homeSpreadOdds": -280,
    "underOdds": 100,
-   "homeML": -112
+   "homeML": -115
   },
   {
    "lg": "NHL",
@@ -1771,14 +1768,14 @@
    "awaySpreadOdds": -240,
    "total": 6.5,
    "overOdds": -120,
-   "awayML": -103,
+   "awayML": -105,
    "home": "PIT PENGUINS",
    "homeRot": 22,
    "time": "7:08 PM",
    "homeSpread": -1.5,
    "homeSpreadOdds": 200,
    "underOdds": 100,
-   "homeML": -117
+   "homeML": -115
   },
   {
    "lg": "NHL",
@@ -1790,14 +1787,14 @@
    "awaySpreadOdds": -175,
    "total": 6,
    "overOdds": -110,
-   "awayML": 140,
+   "awayML": 145,
    "home": "MON CANADIENS",
    "homeRot": 24,
    "time": "7:08 PM",
    "homeSpread": -1.5,
    "homeSpreadOdds": 155,
    "underOdds": -110,
-   "homeML": -160
+   "homeML": -165
   },
   {
    "lg": "NHL",
