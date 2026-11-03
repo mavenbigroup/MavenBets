@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T17:52:34.956Z",
+ "updated": "2026-11-03T17:56:25.230Z",
  "book": "Computer",
  "site": "king23.ag",
  "figures": {
@@ -320,7 +320,7 @@
    "away": "OHIO",
    "awayRot": 303,
    "date": "2026-11-03",
-   "awaySpread": -13.5,
+   "awaySpread": -13,
    "awaySpreadOdds": -105,
    "total": 51,
    "overOdds": -110,
@@ -328,7 +328,7 @@
    "home": "AKRON",
    "homeRot": 304,
    "time": "7:03 PM",
-   "homeSpread": 13.5,
+   "homeSpread": 13,
    "homeSpreadOdds": -115,
    "underOdds": -110,
    "homeML": 385
