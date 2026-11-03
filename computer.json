@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T19:45:38.435Z",
+ "updated": "2026-11-03T20:08:41.004Z",
  "book": "Computer",
  "site": "king23.ag",
  "figures": {
@@ -55,7 +55,7 @@
    "awayRot": 453,
    "date": "2026-11-08",
    "awaySpread": 1,
-   "awaySpreadOdds": 100,
+   "awaySpreadOdds": -105,
    "total": 43,
    "overOdds": -110,
    "awayML": 105,
@@ -63,7 +63,7 @@
    "homeRot": 454,
    "time": "1:03 PM",
    "homeSpread": -1,
-   "homeSpreadOdds": -120,
+   "homeSpreadOdds": -115,
    "underOdds": -110,
    "homeML": -125
   },
@@ -190,14 +190,14 @@
    "awaySpread": 10,
    "awaySpreadOdds": -110,
    "total": 52,
-   "overOdds": -110,
+   "overOdds": -115,
    "awayML": 390,
    "home": "SFO 49ERS",
    "homeRot": 468,
    "time": "4:28 PM",
    "homeSpread": -10,
    "homeSpreadOdds": -110,
-   "underOdds": -110,
+   "underOdds": -105,
    "homeML": -505
   },
   {
@@ -305,14 +305,14 @@
    "awaySpreadOdds": -110,
    "total": 45,
    "overOdds": -115,
-   "awayML": 190,
+   "awayML": 210,
    "home": "MIAMI OHIO",
    "homeRot": 302,
    "time": "8:03 PM",
    "homeSpread": -6,
    "homeSpreadOdds": -110,
    "underOdds": -105,
-   "homeML": -230
+   "homeML": -255
   },
   {
    "lg": "NCAAF",
@@ -322,7 +322,7 @@
    "date": "2026-11-03",
    "awaySpread": -13,
    "awaySpreadOdds": -105,
-   "total": 51,
+   "total": 51.5,
    "overOdds": -110,
    "awayML": -560,
    "home": "AKRON",
@@ -1548,14 +1548,14 @@
    "awayRot": 619,
    "date": "2026-11-03",
    "awaySpread": 27,
-   "awaySpreadOdds": -110,
+   "awaySpreadOdds": -115,
    "total": 172,
    "overOdds": -110,
    "home": "ALABAMA",
    "homeRot": 620,
    "time": "7:31 PM",
    "homeSpread": -27,
-   "homeSpreadOdds": -110,
+   "homeSpreadOdds": -105,
    "underOdds": -110
   },
   {
@@ -1567,13 +1567,13 @@
    "awaySpread": 31.5,
    "awaySpreadOdds": -110,
    "total": 142,
-   "overOdds": -105,
+   "overOdds": -110,
    "home": "VIRGINIA",
    "homeRot": 622,
    "time": "7:31 PM",
    "homeSpread": -31.5,
    "homeSpreadOdds": -110,
-   "underOdds": -115
+   "underOdds": -110
   },
   {
    "lg": "NCAAB",
@@ -1585,14 +1585,14 @@
    "awaySpreadOdds": -110,
    "total": 159,
    "overOdds": -115,
-   "awayML": 430,
+   "awayML": 435,
    "home": "KANSAS STATE",
    "homeRot": 624,
    "time": "8:01 PM",
    "homeSpread": -11.5,
    "homeSpreadOdds": -110,
    "underOdds": -105,
-   "homeML": -680
+   "homeML": -685
   },
   {
    "lg": "NCAAB",
@@ -1621,14 +1621,14 @@
    "awaySpreadOdds": -115,
    "total": 154.5,
    "overOdds": -110,
-   "awayML": 780,
+   "awayML": 830,
    "home": "SAN DIEGO STATE",
    "homeRot": 628,
    "time": "10:01 PM",
    "homeSpread": -15,
    "homeSpreadOdds": -105,
    "underOdds": -110,
-   "homeML": -1805
+   "homeML": -1855
   },
   {
    "lg": "NCAAB",
@@ -1639,13 +1639,13 @@
    "awaySpread": 21,
    "awaySpreadOdds": -115,
    "total": 154,
-   "overOdds": -110,
+   "overOdds": -105,
    "home": "UNLV",
    "homeRot": 630,
    "time": "10:01 PM",
    "homeSpread": -21,
    "homeSpreadOdds": -105,
-   "underOdds": -110
+   "underOdds": -115
   },
   {
    "lg": "NHL",
@@ -1714,14 +1714,14 @@
    "awaySpreadOdds": 160,
    "total": 6.5,
    "overOdds": -130,
-   "awayML": -142,
+   "awayML": -140,
    "home": "TOR MAPLE LEAFS",
    "homeRot": 16,
    "time": "7:08 PM",
    "homeSpread": 1.5,
    "homeSpreadOdds": -190,
    "underOdds": 110,
-   "homeML": 122
+   "homeML": 120
   },
   {
    "lg": "NHL",
@@ -1730,17 +1730,17 @@
    "awayRot": 17,
    "date": "2026-11-03",
    "awaySpread": 1.5,
-   "awaySpreadOdds": -115,
+   "awaySpreadOdds": -110,
    "total": 6,
    "overOdds": -115,
-   "awayML": 217,
+   "awayML": 240,
    "home": "TAM LIGHTNING",
    "homeRot": 18,
    "time": "7:08 PM",
    "homeSpread": -1.5,
-   "homeSpreadOdds": -105,
+   "homeSpreadOdds": -110,
    "underOdds": -105,
-   "homeML": -257
+   "homeML": -280
   },
   {
    "lg": "NHL",
