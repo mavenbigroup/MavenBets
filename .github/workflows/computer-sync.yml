@@ -1,11 +1,15 @@
 name: Computer book sync
 
-# Pulls lines, graded bets and open bets from king23.ag into computer.json.
-# Needs two repository secrets: K23_USER and K23_PASS.
+# Pulls lines, graded bets and open bets from king23.ag into computer.json (read-only).
+# Runs ONLY when the app asks (opening it or tapping Refresh on a booker phone) or when you click Run workflow.
+# Makes one sign-in attempt per run; after a rejected sign-in it stays off until you tick "Try signing in again".
 on:
-  schedule:
-    - cron: '*/30 * * * *'   # every 30 minutes (GitHub may run it a few minutes late)
-  workflow_dispatch:          # "Run workflow" button for a manual pull
+  workflow_dispatch:
+    inputs:
+      retry:
+        description: 'Try signing in again (only after fixing the username/password secrets)'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -27,9 +31,12 @@ jobs:
         env:
           K23_USER: ${{ secrets.K23_USER }}
           K23_PASS: ${{ secrets.K23_PASS }}
+          K23_RETRY: ${{ inputs.retry }}
         run: node computer-sync.mjs
       - name: Save computer.json
+        if: always()
         run: |
+          [ -f computer.json ] || exit 0
           git config user.name "computer-sync"
           git config user.email "computer-sync@users.noreply.github.com"
           git add computer.json
