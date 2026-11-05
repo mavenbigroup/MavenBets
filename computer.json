@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T17:34:10.940Z",
+ "updated": "2026-11-05T17:37:53.609Z",
  "book": "Computer",
  "site": "king23.ag",
  "figures": {
@@ -1437,15 +1437,15 @@
    "date": "2026-11-05",
    "awaySpread": 11,
    "awaySpreadOdds": -110,
-   "total": 143,
-   "overOdds": -110,
+   "total": 143.5,
+   "overOdds": -115,
    "awayML": 455,
    "home": "CHARLOTTE U",
    "homeRot": 650,
    "time": "7:01 PM",
    "homeSpread": -11,
    "homeSpreadOdds": -110,
-   "underOdds": -110,
+   "underOdds": -105,
    "homeML": -755
   },
   {
@@ -1836,17 +1836,17 @@
    "awayRot": 53,
    "date": "2026-11-05",
    "awaySpread": -1.5,
-   "awaySpreadOdds": 200,
+   "awaySpreadOdds": 205,
    "total": 6.5,
    "overOdds": -115,
-   "awayML": -116,
+   "awayML": -113,
    "home": "MON CANADIENS",
    "homeRot": 54,
    "time": "7:08 PM",
    "homeSpread": 1.5,
-   "homeSpreadOdds": -240,
+   "homeSpreadOdds": -245,
    "underOdds": -105,
-   "homeML": -104
+   "homeML": -107
   },
   {
    "lg": "NHL",
