@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-06T01:06:55.999Z",
+ "updated": "2026-11-06T01:12:05.052Z",
  "book": "Computer",
  "site": "king23.ag",
  "figures": {
@@ -294,25 +294,6 @@
    "homeSpreadOdds": -110,
    "underOdds": -110,
    "homeML": 150
-  },
-  {
-   "lg": "NCAAF",
-   "gid": "5715797",
-   "away": "JAMES MADISON",
-   "awayRot": 315,
-   "date": "2026-11-05",
-   "awaySpread": -13.5,
-   "awaySpreadOdds": -110,
-   "total": 59.5,
-   "overOdds": -110,
-   "awayML": -580,
-   "home": "SOUTHERN MISS",
-   "homeRot": 316,
-   "time": "8:13 PM",
-   "homeSpread": 13.5,
-   "homeSpreadOdds": -110,
-   "underOdds": -110,
-   "homeML": 405
   },
   {
    "lg": "NCAAF",
@@ -1346,16 +1327,16 @@
    "date": "2026-11-05",
    "awaySpread": 1,
    "awaySpreadOdds": -105,
-   "total": 222.5,
-   "overOdds": -110,
-   "awayML": 110,
+   "total": 223,
+   "overOdds": -105,
+   "awayML": 105,
    "home": "PHO SUNS",
    "homeRot": 530,
    "time": "9:11 PM",
    "homeSpread": -1,
    "homeSpreadOdds": -115,
-   "underOdds": -110,
-   "homeML": -130
+   "underOdds": -115,
+   "homeML": -125
   },
   {
    "lg": "NBA",
@@ -1364,7 +1345,7 @@
    "awayRot": 531,
    "date": "2026-11-05",
    "awaySpread": 4,
-   "awaySpreadOdds": -110,
+   "awaySpreadOdds": -115,
    "total": 235.5,
    "overOdds": -115,
    "awayML": 150,
@@ -1372,7 +1353,7 @@
    "homeRot": 532,
    "time": "10:11 PM",
    "homeSpread": -4,
-   "homeSpreadOdds": -110,
+   "homeSpreadOdds": -105,
    "underOdds": -105,
    "homeML": -170
   },
@@ -1447,25 +1428,6 @@
    "homeSpread": -31,
    "homeSpreadOdds": -110,
    "underOdds": -105
-  },
-  {
-   "lg": "NHL",
-   "gid": "5718631",
-   "away": "ANA DUCKS",
-   "awayRot": 57,
-   "date": "2026-11-05",
-   "awaySpread": 1.5,
-   "awaySpreadOdds": -145,
-   "total": 7,
-   "overOdds": -105,
-   "awayML": 162,
-   "home": "EDM OILERS",
-   "homeRot": 58,
-   "time": "8:08 PM",
-   "homeSpread": -1.5,
-   "homeSpreadOdds": 125,
-   "underOdds": -115,
-   "homeML": -187
   },
   {
    "lg": "NHL",
