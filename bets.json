@@ -12,8 +12,10 @@
    "payout": 40,
    "odds": "11/10",
    "id": "mw49ymchd7bt0",
-   "outcome": null,
-   "at": 1793927241377
+   "outcome": "W",
+   "at": 1793927241377,
+   "gameId": "NFL:401873037",
+   "final": "JAX 33–BAL 10"
   },
   {
    "id": "k_85191350",
@@ -2752,5 +2754,5 @@
    "id": "7_Max_49ers_falcons"
   }
  ],
- "updated": "2026-11-06T01:07:21.740Z"
+ "updated": "2026-11-06T14:54:18.812Z"
 }
