@@ -1,13 +1,13 @@
 {
- "updated": "2026-11-08T20:19:39.919Z",
+ "updated": "2026-11-08T21:00:47.309Z",
  "book": "Computer",
  "site": "king23.ag",
  "figures": {
-  "balance": -1470,
+  "balance": -1624,
   "available": 17534,
-  "atRisk": 996,
+  "atRisk": 842,
   "lastWeek": 234,
-  "thisWeek": -587
+  "thisWeek": -741
  },
  "lines": [
   {
@@ -20,14 +20,14 @@
    "awaySpreadOdds": -110,
    "total": 52,
    "overOdds": -110,
-   "awayML": 370,
+   "awayML": 390,
    "home": "SFO 49ERS",
    "homeRot": 468,
    "time": "4:28 PM",
    "homeSpread": -9.5,
    "homeSpreadOdds": -110,
    "underOdds": -110,
-   "homeML": -480
+   "homeML": -505
   },
   {
    "lg": "NFL",
@@ -39,14 +39,14 @@
    "awaySpreadOdds": -110,
    "total": 40.5,
    "overOdds": -110,
-   "awayML": -240,
+   "awayML": -235,
    "home": "LA CHARGERS",
    "homeRot": 470,
    "time": "4:08 PM",
    "homeSpread": 5.5,
    "homeSpreadOdds": -110,
    "underOdds": -110,
-   "homeML": 200
+   "homeML": 195
   },
   {
    "lg": "NFL",
@@ -56,7 +56,7 @@
    "date": "2026-11-08",
    "awaySpread": 3,
    "awaySpreadOdds": 105,
-   "total": 44.5,
+   "total": 45,
    "overOdds": -110,
    "awayML": 160,
    "home": "NE PATRIOTS",
@@ -75,7 +75,7 @@
    "date": "2026-11-08",
    "awaySpread": 8.5,
    "awaySpreadOdds": -110,
-   "total": 39.5,
+   "total": 40,
    "overOdds": -110,
    "awayML": 330,
    "home": "SEA SEAHAWKS",
@@ -123,25 +123,6 @@
    "homeSpreadOdds": -110,
    "underOdds": -110,
    "homeML": 155
-  },
-  {
-   "lg": "NBA",
-   "gid": "5722675",
-   "away": "PHI 76ERS",
-   "awayRot": 565,
-   "date": "2026-11-08",
-   "awaySpread": -9,
-   "awaySpreadOdds": -110,
-   "total": 238.5,
-   "overOdds": -115,
-   "awayML": -430,
-   "home": "CHI BULLS",
-   "homeRot": 566,
-   "time": "3:41 PM",
-   "homeSpread": 9,
-   "homeSpreadOdds": -110,
-   "underOdds": -105,
-   "homeML": 330
   },
   {
    "lg": "NBA",
@@ -267,14 +248,14 @@
    "awaySpreadOdds": -110,
    "total": 146,
    "overOdds": -110,
-   "awayML": 100,
+   "awayML": 110,
    "home": "NEVADA",
    "homeRot": 688,
    "time": "4:31 PM",
    "homeSpread": -1,
    "homeSpreadOdds": -110,
    "underOdds": -110,
-   "homeML": -120
+   "homeML": -130
   },
   {
    "lg": "NCAAB",
@@ -284,7 +265,7 @@
    "date": "2026-11-08",
    "awaySpread": -1.5,
    "awaySpreadOdds": -110,
-   "total": 150,
+   "total": 149.5,
    "overOdds": -110,
    "awayML": -130,
    "home": "TEMPLE",
@@ -386,26 +367,7 @@
    "homeSpread": -6,
    "homeSpreadOdds": -110,
    "underOdds": -110,
-   "homeML": -260
-  },
-  {
-   "lg": "NHL",
-   "gid": "5722628",
-   "away": "VGS GOLDEN KNIGHTS",
-   "awayRot": 27,
-   "date": "2026-11-08",
-   "awaySpread": -1.5,
-   "awaySpreadOdds": 225,
-   "total": 6.5,
-   "overOdds": -105,
-   "awayML": -115,
-   "home": "BUF SABRES",
-   "homeRot": 28,
-   "time": "3:38 PM",
-   "homeSpread": 1.5,
-   "homeSpreadOdds": -265,
-   "underOdds": -115,
-   "homeML": -105
+   "homeML": -265
   },
   {
    "lg": "NHL",
@@ -414,17 +376,17 @@
    "awayRot": 29,
    "date": "2026-11-08",
    "awaySpread": -1.5,
-   "awaySpreadOdds": 230,
+   "awaySpreadOdds": 225,
    "total": 5.5,
    "overOdds": -120,
-   "awayML": -120,
+   "awayML": -115,
    "home": "CAL FLAMES",
    "homeRot": 30,
    "time": "7:08 PM",
    "homeSpread": 1.5,
-   "homeSpreadOdds": -270,
+   "homeSpreadOdds": -265,
    "underOdds": 100,
-   "homeML": 100
+   "homeML": -105
   },
   {
    "lg": "NHL",
@@ -433,7 +395,7 @@
    "awayRot": 31,
    "date": "2026-11-08",
    "awaySpread": -1.5,
-   "awaySpreadOdds": 165,
+   "awaySpreadOdds": 170,
    "total": 6.5,
    "overOdds": 100,
    "awayML": -145,
@@ -441,7 +403,7 @@
    "homeRot": 32,
    "time": "6:08 PM",
    "homeSpread": 1.5,
-   "homeSpreadOdds": -195,
+   "homeSpreadOdds": -200,
    "underOdds": -120,
    "homeML": 125
   },
@@ -452,16 +414,16 @@
    "awayRot": 33,
    "date": "2026-11-08",
    "awaySpread": -1.5,
-   "awaySpreadOdds": 160,
-   "total": 6,
-   "overOdds": -125,
+   "awaySpreadOdds": 165,
+   "total": 6.5,
+   "overOdds": 100,
    "awayML": -155,
    "home": "TOR MAPLE LEAFS",
    "homeRot": 34,
    "time": "7:08 PM",
    "homeSpread": 1.5,
-   "homeSpreadOdds": -190,
-   "underOdds": 105,
+   "homeSpreadOdds": -185,
+   "underOdds": -120,
    "homeML": 135
   },
   {
@@ -504,25 +466,6 @@
    "away": "PIT STEELERS - RSW",
    "home": "PIT STEELERS - RSW",
    "desc": "PITTSBURGH STEELERS - REGULAR SEASON WINS (TEAMS MUST PLAY 17 GAMES FOR ACTION) · [110353] TOTAL o8½+110 · (PIT STEELERS - RSW vrs PIT STEELERS - RSW)"
-  },
-  {
-   "tkt": "86569152",
-   "lg": "NFL",
-   "sport": "NFL",
-   "date": "2026-11-08",
-   "time": "01:03 PM",
-   "risk": 154,
-   "win": 140,
-   "result": null,
-   "type": "straight",
-   "rot": 456,
-   "score": null,
-   "kind": "side",
-   "team": "MIA DOLPHINS",
-   "pick": "MIA DOLPHINS",
-   "spread": "+6.5",
-   "odds": "-110",
-   "desc": "[456] MIA DOLPHINS +6½-110"
   },
   {
    "tkt": "86569153",
@@ -583,6 +526,27 @@
   }
  ],
  "tickets": [
+  {
+   "tkt": "86569152",
+   "lg": "NFL",
+   "sport": "NFL",
+   "date": "2026-11-08",
+   "time": "01:03 PM",
+   "placed": "2026-11-08",
+   "risk": 154,
+   "win": 140,
+   "net": -154,
+   "result": "L",
+   "type": "straight",
+   "rot": 456,
+   "score": "19-9",
+   "kind": "side",
+   "team": "MIA DOLPHINS",
+   "pick": "MIA DOLPHINS",
+   "spread": "+6.5",
+   "odds": "-110",
+   "desc": "[456] MIA DOLPHINS +6½-110"
+  },
   {
    "tkt": "86544852",
    "lg": "NCAAF",
