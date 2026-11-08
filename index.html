@@ -423,7 +423,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 <button class="upd" id="updBar" hidden>New version available — tap to update</button>
 
 <script>
-const APP_V='2026.11.03-14';
+const APP_V='2026.11.07-1';
 const KEY='anolik-football-book-v1';
 // People live in the book file so admins can add or hide them; these are the starting five
 const DEFAULT_PEOPLE=[{id:'Al',name:'Al',admin:true,aka:''},{id:'Steve',name:'Steve',admin:true,aka:'Dad, Pop'},{id:'Dan',name:'Danny',aka:'D, Dan'},{id:'J',name:'John',aka:'J'},{id:'Mich',name:'Michael',aka:'Mike, M'}];
@@ -562,7 +562,7 @@ function watchComputer(){
   syncWatch=setInterval(async()=>{
     await loadComputer();
     if(comp&&comp.loginFailed&&new Date(comp.loginFailed)>=since-30e3){ clearInterval(syncWatch); syncWatch=null; render(); toast('king23 rejected the sign-in — sync switched off. Check the username/password secrets.'); }
-    else if(comp&&comp.updated&&new Date(comp.updated)>=since-30e3){ clearInterval(syncWatch); syncWatch=null; render(); toast('Computer lines updated ✔'); }
+    else if(comp&&comp.updated&&new Date(comp.updated)>=since-30e3){ clearInterval(syncWatch); syncWatch=null; await autoBook(); render(); toast('Computer lines updated ✔'); }
     else if(Date.now()>until){ clearInterval(syncWatch); syncWatch=null; }
   },15000);
 }
@@ -893,7 +893,7 @@ function sideOf(b){ if(marketOf(b)==='tot')return /^o/i.test(b.pick)?'Over':'Und
   return a&&tokens(a,lg).some(w=>tk.includes(w))?a:h&&tokens(h,lg).some(w=>tk.includes(w))?h:b.pick; }
 function positions(book){
   const groups={};
-  for(const b of bets){ if(b.book!==book||outcomeOf(b))continue;
+  for(const b of bets){ if(b.book!==book||outcomeOf(b)||b.tkt)continue;
     const m=marketOf(b), key=[lgOf(b),b.week,b.date||'',mkey(b.matchup),m].join('|');
     const g=groups[key]=groups[key]||{key,lg:lgOf(b),week:b.week,date:b.date,matchup:b.matchup,market:m,sides:{},bets:[]};
     const s=sideOf(b), sd=g.sides[s]=g.sides[s]||{name:s,win:0,risk:0,bets:[],lines:{}};
@@ -949,6 +949,22 @@ function watchPlacements(){ clearInterval(k23Watch); const until=Date.now()+4*60
 /* ---------- Computer (king23) account: figures, weekly check against the book, tickets to add ---------- */
 const tktLg=t=>LG.includes(t.lg)?t.lg:'NFL';
 const tktWeek=t=>dateWeek(t.date||t.placed);
+// Every king23 ticket goes into the ledger as Steve's: new ones are added, open ones get king23's grade when they settle.
+let autoBooking=false;
+async function autoBook(){
+  if(!canEdit()||!comp||autoBooking)return; autoBooking=true;
+  try{
+    const have=new Map(bets.filter(b=>b.tkt).map(b=>[b.tkt,b])), ops=[];
+    for(const t of [...(comp.tickets||[]),...(comp.open||[])]){
+      if(!t.tkt||!LG.includes(t.lg))continue;                       // futures/specials stay in the Computer section
+      const b=have.get(t.tkt);
+      if(!b){ ops.push({t:'put',bet:tktBet(t,'Steve')}); continue; }
+      if(t.result&&b.outcome!==(t.result==='X'?'P':t.result))ops.push({t:'patch',id:b.id,patch:{outcome:t.result==='X'?'P':t.result,manual:true,final:t.score||b.final}});
+    }
+    if(ops.length&&await commit(ops,`king23: ${ops.filter(o=>o.t==='put').length} new, ${ops.filter(o=>o.t==='patch').length} graded`)){
+      const n=ops.filter(o=>o.t==='put').length, g=ops.length-n; toast([n?`${n} king23 bet${n===1?'':'s'} added for Steve`:'',g?`${g} graded`:''].filter(Boolean).join(' · ')); }
+  }finally{ autoBooking=false; }
+}
 function tktBet(t,who){ const lg=tktLg(t), side=t.kind==='side'||t.kind==='ml';
   const pick=side?k23Name(t.team,lg):t.pick, match=t.kind==='total'&&t.away?`${k23Name(t.away,lg)} @ ${k23Name(t.home,lg)}`:side?k23Name(t.team,lg):(t.desc||t.pick);
   return {id:'k_'+t.tkt,who,book:'Computer',lg,date:lg==='NFL'?undefined:t.date,week:tktWeek(t),matchup:match,pick,spread:t.kind==='ml'?'':(t.spread==='PK'?'':t.spread||''),
@@ -1255,7 +1271,7 @@ function daysToFetch(){ // non-NFL: the game day of every open bet and of this w
 let scoreTimer=null;
 async function refreshScores(manual,opened){
   if(store==='gh')await pull();
-  await loadComputer();
+  await loadComputer(); await autoBook();
   try{
     await fetchNFL(0);
     // ESPN keeps last week as "current" until Wednesday: once every game in it is over, move on to next week
