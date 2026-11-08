@@ -108,9 +108,11 @@
    "amount": 173,
    "payout": 150,
    "odds": "-115",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "86544847",
-   "at": 1794107433863
+   "at": 1794107433863,
+   "manual": true,
+   "final": "42-7"
   },
   {
    "id": "k_86544846",
@@ -163,11 +165,12 @@
    "amount": 50,
    "payout": 50,
    "odds": "+100",
-   "outcome": "L",
+   "outcome": "P",
    "tkt": "86544214",
    "at": 1794107433863,
    "gameId": "NCAAF:401856739",
-   "final": "OU 23–FLA 7"
+   "final": "24-31",
+   "manual": true
   },
   {
    "id": "k_86544213",
@@ -3055,5 +3058,5 @@
    "id": "7_Max_49ers_falcons"
   }
  ],
- "updated": "2026-11-08T14:36:04.358Z"
+ "updated": "2026-11-08T14:40:27.494Z"
 }
