@@ -1,6 +1,22 @@
 {
  "bets": [
   {
+   "id": "k_86571092",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 9,
+   "matchup": "Broncos",
+   "pick": "Broncos",
+   "spread": "-3",
+   "amount": 352,
+   "payout": 320,
+   "odds": "-110",
+   "outcome": null,
+   "tkt": "86571092",
+   "at": 1794166870997
+  },
+  {
    "id": "k_86569610",
    "who": "Steve",
    "book": "Computer",
@@ -3320,5 +3336,5 @@
    "id": "9_Max_colts_cowboys"
   }
  ],
- "updated": "2026-11-08T18:04:39.266Z"
+ "updated": "2026-11-08T19:41:11.265Z"
 }
