@@ -423,7 +423,7 @@ button.lc{cursor:pointer}button.lc:hover{border-color:var(--gold)}
 <button class="upd" id="updBar" hidden>New version available — tap to update</button>
 
 <script>
-const APP_V='2026.11.07-1';
+const APP_V='2026.11.08-1';
 const KEY='anolik-football-book-v1';
 // People live in the book file so admins can add or hide them; these are the starting five
 const DEFAULT_PEOPLE=[{id:'Al',name:'Al',admin:true,aka:''},{id:'Steve',name:'Steve',admin:true,aka:'Dad, Pop'},{id:'Dan',name:'Danny',aka:'D, Dan'},{id:'J',name:'John',aka:'J'},{id:'Mich',name:'Michael',aka:'Mike, M'}];
@@ -1365,7 +1365,8 @@ league = "NFL" unless clearly another sport: "NCAAF" (college football — schoo
 Picks: for a side, pick = team or school as said (e.g. "Pittsburgh", "Ohio State", "Lakers"); spread = signed number like "-3" or "+2.5"; a moneyline (common in MLB/NHL) has spread "" and its American odds in odds; run line/puck line is spread "-1.5"/"+1.5". For totals, pick = "Over" or "Under" and spread = the total (e.g. "40.5").
 matchup = "Away @ Home": NFL/NBA/MLB/NHL use nicknames (e.g. "Seahawks @ Broncos", "Celtics @ Knicks"); college uses school names (e.g. "Michigan @ Ohio State"). Use the NFL schedule below when it applies.
 date = the game date "YYYY-MM-DD" for every non-NFL bet or line (today unless they say another day; "tonight" = today, "tomorrow" = the next day). NFL uses week instead.
-Steve may also post LINES — what a book is offering, not a bet (e.g. "Max has Steelers minus 3, total 44", "computer: Bills -6.5 at 115, over/under 47", or a screenshot of a board). Put those in "lines": team = the team the spread number belongs to (usually the favorite, e.g. "Steelers" with spread "-3"), odds = spread odds (default "11/10"), total and totalOdds for the over/under; leave a field "" if not given. One line per game per book. If Steve says a book "has the ESPN lines"/"same as ESPN" (for one game or all of them), post that book's lines using the ESPN numbers in the schedule below. If a BET leaves out the spread or total, fill it from the ESPN line below and say "used the ESPN line" in reply. A message can contain bets, lines, or both; never turn a line into a bet unless someone is named as betting it.
+Steve may also post LINES — what a book is offering, not a bet (e.g. "Max has Steelers minus 3, total 44", "computer: Bills -6.5 at 115, over/under 47", or a screenshot of a board). Put those in "lines": team = the team the spread number belongs to (usually the favorite, e.g. "Steelers" with spread "-3"), odds = spread odds (default "11/10"), total and totalOdds for the over/under; leave a field "" if not given. One line per game per book.
+HANDWRITTEN LINE SHEETS (Max's sheet: printed team names with numbers written next to them): for each game, the small number (under 25) written next to a team is THAT team's spread as the favorite (team = that team, spread = "-" + number); the big number (over 25) next to the other team is the total. A trailing dash or minus sign after a number means one HALF point: "3-" = 3.5, "42-" = 42.5, "9-" = 9.5; a number with no dash is a whole number ("52" = 52, "3" = 3). Skip a game with no numbers written. Printed rotation numbers (117, 118…) and kickoff times (930, 100, 425) are NOT lines — ignore them. Lines from a sheet go to book "Max" unless Steve says otherwise; odds "11/10". If Steve says a book "has the ESPN lines"/"same as ESPN" (for one game or all of them), post that book's lines using the ESPN numbers in the schedule below. If a BET leaves out the spread or total, fill it from the ESPN line below and say "used the ESPN line" in reply. A message can contain bets, lines, or both; never turn a line into a bet unless someone is named as betting it.
 week = NFL week of that game (current NFL week is ${curWeek||dateWeek()}); for other sports leave week 0. NFL weeks by Sunday date: ${Array.from({length:Math.min(18,(curWeek||dateWeek())+1)},(_,i)=>`wk ${i+1} = Sun ${new Date(new Date('2026-09-13T12:00:00').getTime()+i*6048e5).toLocaleDateString('en-US',{month:'numeric',day:'numeric'})}`).join(', ')} (Thursday/Monday games belong to the same week as that Sunday).
 Catching up on past weeks is normal: when Steve dictates or photographs older bets, give each bet its real week/date. If his sheet or message clearly marks a bet as won, lost or pushed (W, L, P, circled W/L, "won", "lost"), put it in "result" as "W", "L" or "P"; otherwise leave result "".
 ${nImg?'The attached image(s) may be a sportsbook slip, a text message, or a handwritten sheet: extract every bet you can read; skip anything illegible and say so in reply.\n':''}If something essential is missing or ambiguous (who, which game, amount), ask in "reply" and leave that bet out.
@@ -1386,13 +1387,20 @@ async function shrink(file){ // phone screenshots are big: scale to ≤1600px JP
   const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.85)); return blob;
 }
 const blobB64=b=>new Promise(r=>{ const fr=new FileReader(); fr.onload=()=>r(String(fr.result).split(',')[1]); fr.readAsDataURL(b); });
-function parseJSON(t){ const s=String(t||''); const a=s.indexOf('{'), z=s.lastIndexOf('}'); if(a<0||z<a)throw {code:'invalid_json'}; return JSON.parse(s.slice(a,z+1)); }
+function parseJSON(t){
+  const s=String(t||'').replace(/```(?:json)?/gi,''); const a=s.indexOf('{'), z=s.lastIndexOf('}'); if(a<0)throw {code:'invalid_json'};
+  try{ return JSON.parse(s.slice(a,z+1)); }catch(e){}
+  // a reply cut off mid-list: keep every complete item and close the brackets
+  let body=s.slice(a); for(let cut=body.length;cut>1;cut=body.lastIndexOf('}',cut-1)){ const head=body.slice(0,cut+1);
+    let open=[],str=false,esc_=false; for(const ch of head){ if(str){ if(esc_)esc_=false; else if(ch==='\\')esc_=true; else if(ch==='"')str=false; continue; } if(ch==='"')str=true; else if(ch==='{'||ch==='[')open.push(ch); else if(ch==='}'||ch===']')open.pop(); }
+    if(str)continue; const close=open.reverse().map(c=>c==='{'?'}':']').join(''); try{ return JSON.parse(head+close); }catch(e){} if(cut<0)break; }
+  throw {code:'invalid_json'}; }
 async function askAI(prompt,blobs){
   if(claudeSample) return claudeSample.json(prompt,{images:blobs.length?blobs:undefined,modelTier:blobs.length?'default':'quick',cache:false});
   const content=[]; for(const b of blobs)content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:await blobB64(b)}});
   content.push({type:'text',text:prompt});
   const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':cfg.aiKey,'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({model:blobs.length?MODEL_IMAGE:MODEL_TEXT,max_tokens:2000,messages:[{role:'user',content}]})});
+    body:JSON.stringify({model:blobs.length?MODEL_IMAGE:MODEL_TEXT,max_tokens:8000,messages:[{role:'user',content}]})});
   if(!res.ok){ const code=res.status===401?'bad_key':res.status===429?'rate_limited':res.status===400?'bad_request':'upstream_error'; let msg=''; try{ msg=(await res.json()).error.message; }catch(e){} throw {code,message:msg}; }
   const j=await res.json(); return parseJSON((j.content||[]).map(c=>c.text||'').join(''));
 }
