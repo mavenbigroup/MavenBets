@@ -1,6 +1,38 @@
 {
  "bets": [
   {
+   "id": "k_86581933",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 9,
+   "matchup": "Cardinals",
+   "pick": "Cardinals",
+   "spread": "+8.5",
+   "amount": 297,
+   "payout": 270,
+   "odds": "-110",
+   "outcome": null,
+   "tkt": "86581933",
+   "at": 1794173547133
+  },
+  {
+   "id": "k_86581932",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 9,
+   "matchup": "49ers",
+   "pick": "49ers",
+   "spread": "-9",
+   "amount": 308,
+   "payout": 280,
+   "odds": "-110",
+   "outcome": null,
+   "tkt": "86581932",
+   "at": 1794173547133
+  },
+  {
    "id": "mw8c6n34jqnp",
    "who": "Al",
    "book": "Max",
@@ -3359,5 +3391,5 @@
    "id": "9_Max_colts_cowboys"
   }
  ],
- "updated": "2026-11-08T21:20:39.904Z"
+ "updated": "2026-11-08T21:32:27.392Z"
 }
