@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-08T19:40:37.069Z",
+ "updated": "2026-11-08T20:19:39.919Z",
  "book": "Computer",
  "site": "king23.ag",
  "figures": {
@@ -65,7 +65,7 @@
    "homeSpread": -3,
    "homeSpreadOdds": -125,
    "underOdds": -110,
-   "homeML": -180
+   "homeML": -185
   },
   {
    "lg": "NFL",
@@ -130,18 +130,18 @@
    "away": "PHI 76ERS",
    "awayRot": 565,
    "date": "2026-11-08",
-   "awaySpread": -10,
+   "awaySpread": -9,
    "awaySpreadOdds": -110,
-   "total": 237.5,
-   "overOdds": -105,
-   "awayML": -475,
+   "total": 238.5,
+   "overOdds": -115,
+   "awayML": -430,
    "home": "CHI BULLS",
    "homeRot": 566,
    "time": "3:41 PM",
-   "homeSpread": 10,
+   "homeSpread": 9,
    "homeSpreadOdds": -110,
-   "underOdds": -115,
-   "homeML": 360
+   "underOdds": -105,
+   "homeML": 330
   },
   {
    "lg": "NBA",
@@ -208,15 +208,15 @@
    "date": "2026-11-08",
    "awaySpread": -13,
    "awaySpreadOdds": -110,
-   "total": 221.5,
-   "overOdds": -115,
+   "total": 222,
+   "overOdds": -110,
    "awayML": -725,
    "home": "MIL BUCKS",
    "homeRot": 574,
    "time": "8:11 PM",
    "homeSpread": 13,
    "homeSpreadOdds": -110,
-   "underOdds": -105,
+   "underOdds": -110,
    "homeML": 475
   },
   {
@@ -259,44 +259,6 @@
   },
   {
    "lg": "NCAAB",
-   "gid": "5725161",
-   "away": "WESTERN KENTUCKY",
-   "awayRot": 683,
-   "date": "2026-11-08",
-   "awaySpread": -3,
-   "awaySpreadOdds": -110,
-   "total": 164.5,
-   "overOdds": -110,
-   "awayML": -160,
-   "home": "TENNESSEE TECH",
-   "homeRot": 684,
-   "time": "3:01 PM",
-   "homeSpread": 3,
-   "homeSpreadOdds": -110,
-   "underOdds": -110,
-   "homeML": 140
-  },
-  {
-   "lg": "NCAAB",
-   "gid": "5725162",
-   "away": "IDAHO STATE",
-   "awayRot": 685,
-   "date": "2026-11-08",
-   "awaySpread": 6,
-   "awaySpreadOdds": -110,
-   "total": 161.5,
-   "overOdds": -110,
-   "awayML": 210,
-   "home": "AIR FORCE",
-   "homeRot": 686,
-   "time": "3:01 PM",
-   "homeSpread": -6,
-   "homeSpreadOdds": -110,
-   "underOdds": -110,
-   "homeML": -260
-  },
-  {
-   "lg": "NCAAB",
    "gid": "5725163",
    "away": "SAINT MARYS CA",
    "awayRot": 687,
@@ -324,14 +286,14 @@
    "awaySpreadOdds": -110,
    "total": 150,
    "overOdds": -110,
-   "awayML": -125,
+   "awayML": -130,
    "home": "TEMPLE",
    "homeRot": 690,
    "time": "5:01 PM",
    "homeSpread": 1.5,
    "homeSpreadOdds": -110,
    "underOdds": -110,
-   "homeML": 105
+   "homeML": 110
   },
   {
    "lg": "NCAAB",
@@ -436,14 +398,14 @@
    "awaySpreadOdds": 225,
    "total": 6.5,
    "overOdds": -105,
-   "awayML": -110,
+   "awayML": -115,
    "home": "BUF SABRES",
    "homeRot": 28,
    "time": "3:38 PM",
    "homeSpread": 1.5,
    "homeSpreadOdds": -265,
    "underOdds": -115,
-   "homeML": -110
+   "homeML": -105
   },
   {
    "lg": "NHL",
