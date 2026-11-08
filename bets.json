@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "id": "mw80t6o2mz77",
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 9,
+   "matchup": "Lions @ Dolphins",
+   "pick": "Lions",
+   "spread": "-6.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": null,
+   "at": 1794153735938
+  },
+  {
    "id": "mw80s9erb73f",
    "who": "Al",
    "book": "Max",
@@ -3088,5 +3103,5 @@
    "id": "7_Max_49ers_falcons"
   }
  ],
- "updated": "2026-11-08T16:01:44.981Z"
+ "updated": "2026-11-08T16:02:16.533Z"
 }
