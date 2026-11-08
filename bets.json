@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "id": "mw8c6n34jqnp",
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 9,
+   "matchup": "Texans @ Chargers",
+   "pick": "Chargers",
+   "spread": "+5.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": null,
+   "at": 1794172839520
+  },
+  {
    "id": "k_86571092",
    "who": "Steve",
    "book": "Computer",
@@ -3344,5 +3359,5 @@
    "id": "9_Max_colts_cowboys"
   }
  ],
- "updated": "2026-11-08T21:17:41.047Z"
+ "updated": "2026-11-08T21:20:39.904Z"
 }
