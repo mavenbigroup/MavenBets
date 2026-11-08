@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "id": "mw80rq5xqn4v",
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 9,
+   "matchup": "Cowboys @ Colts",
+   "pick": "Colts",
+   "spread": "+4.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": null,
+   "at": 1794153667893
+  },
+  {
    "id": "mw80rolwdybe",
    "who": "Al",
    "book": "Max",
@@ -3073,5 +3088,5 @@
    "id": "7_Max_49ers_falcons"
   }
  ],
- "updated": "2026-11-08T16:01:06.313Z"
+ "updated": "2026-11-08T16:01:08.279Z"
 }
