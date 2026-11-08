@@ -1,6 +1,54 @@
 {
  "bets": [
   {
+   "id": "k_86569610",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 9,
+   "matchup": "Browns",
+   "pick": "Browns",
+   "spread": "+4.5",
+   "amount": 110,
+   "payout": 100,
+   "odds": "-110",
+   "outcome": null,
+   "tkt": "86569610",
+   "at": 1794159800242
+  },
+  {
+   "id": "k_86569153",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 9,
+   "matchup": "Cowboys",
+   "pick": "Cowboys",
+   "spread": "-4",
+   "amount": 330,
+   "payout": 300,
+   "odds": "-110",
+   "outcome": null,
+   "tkt": "86569153",
+   "at": 1794159800242
+  },
+  {
+   "id": "k_86569152",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 9,
+   "matchup": "Dolphins",
+   "pick": "Dolphins",
+   "spread": "+6.5",
+   "amount": 154,
+   "payout": 140,
+   "odds": "-110",
+   "outcome": null,
+   "tkt": "86569152",
+   "at": 1794159800242
+  },
+  {
    "id": "mw80t6o2mz77",
    "who": "Al",
    "book": "Max",
@@ -3272,5 +3320,5 @@
    "id": "9_Max_bills_vikings"
   }
  ],
- "updated": "2026-11-08T17:08:22.576754Z"
+ "updated": "2026-11-08T17:43:20.593Z"
 }
