@@ -3167,19 +3167,6 @@
    "book": "Max",
    "lg": "NFL",
    "week": 9,
-   "matchup": "Lions @ Dolphins",
-   "team": "Lions",
-   "spread": "-6.5",
-   "odds": "11/10",
-   "total": "50",
-   "totalOdds": "11/10",
-   "at": 1794157693596,
-   "id": "9_Max_dolphins_lions"
-  },
-  {
-   "book": "Max",
-   "lg": "NFL",
-   "week": 9,
    "matchup": "Rams @ Commanders",
    "team": "Rams",
    "spread": "-4.5",
@@ -3188,32 +3175,6 @@
    "totalOdds": "11/10",
    "at": 1794157693596,
    "id": "9_Max_commanders_rams"
-  },
-  {
-   "book": "Max",
-   "lg": "NFL",
-   "week": 9,
-   "matchup": "Cowboys @ Colts",
-   "team": "Cowboys",
-   "spread": "-4.5",
-   "odds": "11/10",
-   "total": "51.5",
-   "totalOdds": "11/10",
-   "at": 1794157693596,
-   "id": "9_Max_colts_cowboys"
-  },
-  {
-   "book": "Max",
-   "lg": "NFL",
-   "week": 9,
-   "matchup": "Giants @ Eagles",
-   "team": "Giants",
-   "spread": "-3",
-   "odds": "11/10",
-   "total": "37.5",
-   "totalOdds": "11/10",
-   "at": 1794157693596,
-   "id": "9_Max_eagles_giants"
   },
   {
    "book": "Max",
@@ -3318,7 +3279,46 @@
    "totalOdds": "11/10",
    "at": 1794157693596,
    "id": "9_Max_bills_vikings"
+  },
+  {
+   "book": "Max",
+   "lg": "NFL",
+   "week": 9,
+   "matchup": "Lions @ Dolphins",
+   "team": "Lions",
+   "spread": "-6.5",
+   "odds": "11/10",
+   "total": "",
+   "totalOdds": "11/10",
+   "at": 1794160969115,
+   "id": "9_Max_dolphins_lions"
+  },
+  {
+   "book": "Max",
+   "lg": "NFL",
+   "week": 9,
+   "matchup": "Giants @ Eagles",
+   "team": "Eagles",
+   "spread": "+3",
+   "odds": "11/10",
+   "total": "",
+   "totalOdds": "11/10",
+   "at": 1794160969115,
+   "id": "9_Max_eagles_giants"
+  },
+  {
+   "book": "Max",
+   "lg": "NFL",
+   "week": 9,
+   "matchup": "Cowboys @ Colts",
+   "team": "Colts",
+   "spread": "+4.5",
+   "odds": "11/10",
+   "total": "",
+   "totalOdds": "11/10",
+   "at": 1794160969115,
+   "id": "9_Max_colts_cowboys"
   }
  ],
- "updated": "2026-11-08T17:43:20.593Z"
+ "updated": "2026-11-08T18:02:49.410Z"
 }
