@@ -13,9 +13,11 @@
    "amount": 165,
    "payout": 150,
    "odds": "-110",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "86544852",
-   "at": 1794107433863
+   "at": 1794107433863,
+   "gameId": "NCAAF:401864535",
+   "final": "WYO 41–UNLV 35"
   },
   {
    "id": "k_86544851",
@@ -30,9 +32,11 @@
    "amount": 165,
    "payout": 150,
    "odds": "-110",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "86544851",
-   "at": 1794107433863
+   "at": 1794107433863,
+   "gameId": "NCAAF:401860913",
+   "final": "FRES 10–USU 17"
   },
   {
    "id": "k_86544850",
@@ -47,9 +51,11 @@
    "amount": 180,
    "payout": 150,
    "odds": "-120",
-   "outcome": null,
+   "outcome": "P",
    "tkt": "86544850",
-   "at": 1794107433863
+   "at": 1794107433863,
+   "gameId": "NCAAF:401858291",
+   "final": "MIA 24–ND 31"
   },
   {
    "id": "k_86544849",
@@ -64,9 +70,11 @@
    "amount": 165,
    "payout": 150,
    "odds": "-110",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "86544849",
-   "at": 1794107433863
+   "at": 1794107433863,
+   "gameId": "NCAAF:401856856",
+   "final": "WVU 48–TTU 53"
   },
   {
    "id": "k_86544848",
@@ -81,9 +89,11 @@
    "amount": 173,
    "payout": 150,
    "odds": "-115",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "86544848",
-   "at": 1794107433863
+   "at": 1794107433863,
+   "gameId": "NCAAF:401856739",
+   "final": "OU 23–FLA 7"
   },
   {
    "id": "k_86544847",
@@ -115,9 +125,11 @@
    "amount": 173,
    "payout": 150,
    "odds": "-115",
-   "outcome": null,
+   "outcome": "W",
    "tkt": "86544846",
-   "at": 1794107433863
+   "at": 1794107433863,
+   "gameId": "NCAAF:401858513",
+   "final": "IOWA 24–NU 10"
   },
   {
    "id": "k_86544538",
@@ -132,9 +144,11 @@
    "amount": 173,
    "payout": 150,
    "odds": "-115",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "86544538",
-   "at": 1794107433863
+   "at": 1794107433863,
+   "gameId": "NCAAF:401858511",
+   "final": "MSU 15–MICH 6"
   },
   {
    "id": "k_86544214",
@@ -149,9 +163,11 @@
    "amount": 50,
    "payout": 50,
    "odds": "+100",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "86544214",
-   "at": 1794107433863
+   "at": 1794107433863,
+   "gameId": "NCAAF:401856739",
+   "final": "OU 23–FLA 7"
   },
   {
    "id": "k_86544213",
@@ -166,9 +182,11 @@
    "amount": 55,
    "payout": 50,
    "odds": "-110",
-   "outcome": null,
+   "outcome": "W",
    "tkt": "86544213",
-   "at": 1794107433863
+   "at": 1794107433863,
+   "gameId": "NCAAF:401856741",
+   "final": "UGA 42–MISS 7"
   },
   {
    "id": "k_86544212",
@@ -183,9 +201,11 @@
    "amount": 53,
    "payout": 50,
    "odds": "-105",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "86544212",
-   "at": 1794107433863
+   "at": 1794107433863,
+   "gameId": "NCAAF:401858513",
+   "final": "IOWA 24–NU 10"
   },
   {
    "id": "k_86544211",
@@ -200,9 +220,11 @@
    "amount": 55,
    "payout": 50,
    "odds": "-110",
-   "outcome": null,
+   "outcome": "W",
    "tkt": "86544211",
-   "at": 1794107433863
+   "at": 1794107433863,
+   "gameId": "NCAAF:401858287",
+   "final": "LOU 44–GT 17"
   },
   {
    "id": "k_86489608",
@@ -3033,5 +3055,5 @@
    "id": "7_Max_49ers_falcons"
   }
  ],
- "updated": "2026-11-08T03:10:34.127Z"
+ "updated": "2026-11-08T14:36:04.358Z"
 }
