@@ -97,8 +97,10 @@
    "amount": 44,
    "payout": 40,
    "odds": "11/10",
-   "outcome": null,
-   "at": 1794153692835
+   "outcome": "L",
+   "at": 1794153692835,
+   "gameId": "NFL:401873044",
+   "final": "NYG 19–PHI 11"
   },
   {
    "id": "mw80rolwdybe",
@@ -3342,5 +3344,5 @@
    "id": "9_Max_colts_cowboys"
   }
  ],
- "updated": "2026-11-08T21:16:17.243Z"
+ "updated": "2026-11-08T21:17:41.047Z"
 }
