@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "id": "mw80s9erb73f",
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 9,
+   "matchup": "Giants @ Eagles",
+   "pick": "Eagles",
+   "spread": "+3",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": null,
+   "at": 1794153692835
+  },
+  {
    "id": "mw80rq5xqn4v",
    "who": "Al",
    "book": "Max",
@@ -3088,5 +3103,5 @@
    "id": "7_Max_49ers_falcons"
   }
  ],
- "updated": "2026-11-08T16:01:08.279Z"
+ "updated": "2026-11-08T16:01:33.309Z"
 }
