@@ -77,9 +77,11 @@
    "amount": 110,
    "payout": 100,
    "odds": "-110",
-   "outcome": null,
+   "outcome": "W",
    "tkt": "86569610",
-   "at": 1794159800242
+   "at": 1794159800242,
+   "gameId": "NFL:401873039",
+   "final": "CLE 22–NO 23"
   },
   {
    "id": "k_86569153",
@@ -93,9 +95,11 @@
    "amount": 330,
    "payout": 300,
    "odds": "-110",
-   "outcome": null,
+   "outcome": "P",
    "tkt": "86569153",
-   "at": 1794159800242
+   "at": 1794159800242,
+   "gameId": "NFL:401873040",
+   "final": "DAL 27–IND 23"
   },
   {
    "id": "k_86569152",
@@ -161,8 +165,10 @@
    "amount": 44,
    "payout": 40,
    "odds": "11/10",
-   "outcome": null,
-   "at": 1794153665876
+   "outcome": "W",
+   "at": 1794153665876,
+   "gameId": "NFL:401873040",
+   "final": "DAL 27–IND 23"
   },
   {
    "id": "k_86544852",
@@ -3391,5 +3397,5 @@
    "id": "9_Max_colts_cowboys"
   }
  ],
- "updated": "2026-11-08T21:32:27.392Z"
+ "updated": "2026-11-08T21:46:12.388Z"
 }
