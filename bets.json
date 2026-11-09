@@ -12,9 +12,11 @@
    "amount": 297,
    "payout": 270,
    "odds": "-110",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "86581933",
-   "at": 1794173547133
+   "at": 1794173547133,
+   "gameId": "NFL:401873048",
+   "final": "ARI 3–SEA 17"
   },
   {
    "id": "k_86581932",
@@ -28,9 +30,11 @@
    "amount": 308,
    "payout": 280,
    "odds": "-110",
-   "outcome": null,
+   "outcome": "W",
    "tkt": "86581932",
-   "at": 1794173547133
+   "at": 1794173547133,
+   "gameId": "NFL:401873047",
+   "final": "LV 17–SF 38"
   },
   {
    "id": "mw8c6n34jqnp",
@@ -44,8 +48,10 @@
    "amount": 44,
    "payout": 40,
    "odds": "11/10",
-   "outcome": null,
-   "at": 1794172839520
+   "outcome": "L",
+   "at": 1794172839520,
+   "gameId": "NFL:401873046",
+   "final": "HOU 44–LAC 22"
   },
   {
    "id": "k_86571092",
@@ -3397,5 +3403,5 @@
    "id": "9_Max_colts_cowboys"
   }
  ],
- "updated": "2026-11-08T21:46:14.422Z"
+ "updated": "2026-11-09T01:23:40.230Z"
 }
