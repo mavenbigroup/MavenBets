@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 10,
+   "matchup": "Commanders @ Giants",
+   "pick": "Giants",
+   "spread": "-1",
+   "amount": 44,
+   "payout": 40,
+   "odds": "44/40",
+   "id": "mwecln9r1hyq0",
+   "outcome": null,
+   "at": 1794536336655
+  },
+  {
    "id": "k_86651927",
    "who": "Steve",
    "book": "Computer",
@@ -3419,5 +3434,5 @@
    "id": "9_Max_colts_cowboys"
   }
  ],
- "updated": "2026-11-13T02:18:43.781Z"
+ "updated": "2026-11-13T02:18:57.137Z"
 }
