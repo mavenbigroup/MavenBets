@@ -12,8 +12,10 @@
    "payout": 40,
    "odds": "44/40",
    "id": "mwecln9r1hyq0",
-   "outcome": null,
-   "at": 1794536336655
+   "outcome": "L",
+   "at": 1794536336655,
+   "gameId": "NFL:401873052",
+   "final": "WSH 24–NYG 21"
   },
   {
    "id": "k_86651927",
@@ -27,9 +29,11 @@
    "amount": 561,
    "payout": 510,
    "odds": "-110",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "86651927",
-   "at": 1794536323360
+   "at": 1794536323360,
+   "gameId": "NFL:401873052",
+   "final": "WSH 24–NYG 21"
   },
   {
    "id": "k_86581933",
@@ -3434,5 +3438,5 @@
    "id": "9_Max_colts_cowboys"
   }
  ],
- "updated": "2026-11-13T02:18:57.137Z"
+ "updated": "2026-11-13T14:23:58.682Z"
 }
