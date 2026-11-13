@@ -1,6 +1,22 @@
 {
  "bets": [
   {
+   "id": "k_86651927",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 10,
+   "matchup": "Giants",
+   "pick": "Giants",
+   "spread": "-1",
+   "amount": 561,
+   "payout": 510,
+   "odds": "-110",
+   "outcome": null,
+   "tkt": "86651927",
+   "at": 1794536323360
+  },
+  {
    "id": "k_86581933",
    "who": "Steve",
    "book": "Computer",
@@ -3403,5 +3419,5 @@
    "id": "9_Max_colts_cowboys"
   }
  ],
- "updated": "2026-11-09T01:23:40.230Z"
+ "updated": "2026-11-13T02:18:43.781Z"
 }
