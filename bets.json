@@ -1,6 +1,51 @@
 {
  "bets": [
   {
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 10,
+   "matchup": "Vikings @ Packers",
+   "pick": "Vikings",
+   "spread": "+3",
+   "amount": 44,
+   "payout": 40,
+   "odds": "44/40",
+   "id": "mwi5fsa4ugfv2",
+   "outcome": null,
+   "at": 1794766170606
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 10,
+   "matchup": "Chiefs @ Falcons",
+   "pick": "Chiefs",
+   "spread": "-3",
+   "amount": 40,
+   "payout": 40,
+   "odds": "40/40",
+   "id": "mwi5fsa426v51",
+   "outcome": null,
+   "at": 1794766170605
+  },
+  {
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 10,
+   "matchup": "Jaguars @ Titans",
+   "pick": "Titans",
+   "spread": "+10.5",
+   "amount": 40,
+   "payout": 40,
+   "odds": "40/40",
+   "id": "mwi5fsa4adb60",
+   "outcome": null,
+   "at": 1794766170604
+  },
+  {
    "id": "mwi4vhzzipyt",
    "who": "Al",
    "book": "Max",
@@ -3852,5 +3897,5 @@
    "id": "10_Max_chargers_ravens"
   }
  ],
- "updated": "2026-11-15T17:53:44.550Z"
+ "updated": "2026-11-15T18:09:31.025Z"
 }
