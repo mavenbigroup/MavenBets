@@ -31,8 +31,9 @@
    "at": 1794766170605
   },
   {
+   "id": "mwi5fsa4adb60",
    "who": "Al",
-   "book": "Max",
+   "book": "Computer",
    "lg": "NFL",
    "week": 10,
    "matchup": "Jaguars @ Titans",
@@ -41,7 +42,6 @@
    "amount": 40,
    "payout": 40,
    "odds": "40/40",
-   "id": "mwi5fsa4adb60",
    "outcome": null,
    "at": 1794766170604
   },
@@ -3837,5 +3837,5 @@
    "id": "10_Max_chargers_ravens"
   }
  ],
- "updated": "2026-11-15T18:10:22.009Z"
+ "updated": "2026-11-15T18:13:17.378Z"
 }
