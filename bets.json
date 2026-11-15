@@ -46,21 +46,6 @@
    "at": 1794766170604
   },
   {
-   "id": "mwi4v0nzxdx4",
-   "who": "Al",
-   "book": "Max",
-   "lg": "NFL",
-   "week": 10,
-   "matchup": "Chiefs @ Falcons",
-   "pick": "Chiefs",
-   "spread": "-3",
-   "amount": 44,
-   "payout": 40,
-   "odds": "11/10",
-   "outcome": null,
-   "at": 1794765201695
-  },
-  {
    "id": "mwi4ujbckoy1",
    "who": "Al",
    "book": "Max",
@@ -3867,5 +3852,5 @@
    "id": "10_Max_chargers_ravens"
   }
  ],
- "updated": "2026-11-15T18:10:07.160Z"
+ "updated": "2026-11-15T18:10:13.279Z"
 }
