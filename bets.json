@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "id": "mwi4ukhes13p",
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 10,
+   "matchup": "Jaguars @ Titans",
+   "pick": "Titans",
+   "spread": "+10.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": null,
+   "at": 1794765180722
+  },
+  {
    "id": "mwi4ujbckoy1",
    "who": "Al",
    "book": "Max",
@@ -3807,5 +3822,5 @@
    "id": "10_Max_chargers_ravens"
   }
  ],
- "updated": "2026-11-15T17:53:00.178Z"
+ "updated": "2026-11-15T17:53:02.057Z"
 }
