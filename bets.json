@@ -12,8 +12,10 @@
    "payout": 40,
    "odds": "44/40",
    "id": "mwi5fsa4ugfv2",
-   "outcome": null,
-   "at": 1794766170606
+   "outcome": "W",
+   "at": 1794766170606,
+   "gameId": "NFL:401873060",
+   "final": "MIN 30–GB 10"
   },
   {
    "id": "mwi5fsa426v51",
@@ -27,8 +29,10 @@
    "amount": 40,
    "payout": 40,
    "odds": "40/40",
-   "outcome": null,
-   "at": 1794766170605
+   "outcome": "W",
+   "at": 1794766170605,
+   "gameId": "NFL:401873058",
+   "final": "KC 35–ATL 13"
   },
   {
    "id": "mwi5fsa4adb60",
@@ -42,8 +46,10 @@
    "amount": 40,
    "payout": 40,
    "odds": "40/40",
-   "outcome": null,
-   "at": 1794766170604
+   "outcome": "L",
+   "at": 1794766170604,
+   "gameId": "NFL:401873057",
+   "final": "JAX 40–TEN 23"
   },
   {
    "id": "k_86665272",
@@ -3837,5 +3843,5 @@
    "id": "10_Max_chargers_ravens"
   }
  ],
- "updated": "2026-11-15T18:13:54.334Z"
+ "updated": "2026-11-15T21:47:51.597Z"
 }
