@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "id": "mwi4vhzzipyt",
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 10,
+   "matchup": "Vikings @ Packers",
+   "pick": "Vikings",
+   "spread": "+2.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": null,
+   "at": 1794765224159
+  },
+  {
    "id": "mwi4v0nzxdx4",
    "who": "Al",
    "book": "Max",
@@ -3837,5 +3852,5 @@
    "id": "10_Max_chargers_ravens"
   }
  ],
- "updated": "2026-11-15T17:53:22.022Z"
+ "updated": "2026-11-15T17:53:44.550Z"
 }
