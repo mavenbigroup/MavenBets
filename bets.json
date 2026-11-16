@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "who": "Al",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 10,
+   "matchup": "Steelers @ Bengals",
+   "pick": "Pittsburgh",
+   "spread": "+4",
+   "amount": 42,
+   "payout": 40,
+   "odds": "42/40",
+   "id": "mwilb8gfraiu0",
+   "outcome": null,
+   "at": 1794792832143
+  },
+  {
    "id": "k_86753805",
    "who": "Steve",
    "book": "Computer",
@@ -3967,5 +3982,5 @@
    "id": "10_Max_chargers_ravens"
   }
  ],
- "updated": "2026-11-16T01:26:33.377Z"
+ "updated": "2026-11-16T01:33:52.934Z"
 }
