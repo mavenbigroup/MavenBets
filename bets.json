@@ -1,6 +1,22 @@
 {
  "bets": [
   {
+   "id": "k_86753805",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 10,
+   "matchup": "Steelers",
+   "pick": "Steelers",
+   "spread": "+4",
+   "amount": 536,
+   "payout": 510,
+   "odds": "-105",
+   "outcome": null,
+   "tkt": "86753805",
+   "at": 1794792393090
+  },
+  {
    "id": "k_86745046",
    "who": "Steve",
    "book": "Computer",
@@ -3951,5 +3967,5 @@
    "id": "10_Max_chargers_ravens"
   }
  ],
- "updated": "2026-11-16T01:25:59.546Z"
+ "updated": "2026-11-16T01:26:33.377Z"
 }
