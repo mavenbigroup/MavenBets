@@ -12,9 +12,11 @@
    "amount": 53,
    "payout": 50,
    "odds": "-105",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "86745046",
-   "at": 1794779305021
+   "at": 1794779305021,
+   "gameId": "NFL:401873063",
+   "final": "SF 46–DAL 40"
   },
   {
    "id": "k_86744970",
@@ -28,9 +30,11 @@
    "amount": 297,
    "payout": 270,
    "odds": "-110",
-   "outcome": null,
+   "outcome": "W",
    "tkt": "86744970",
-   "at": 1794779305021
+   "at": 1794779305021,
+   "gameId": "NFL:401873063",
+   "final": "SF 46–DAL 40"
   },
   {
    "id": "k_86732502",
@@ -3947,5 +3951,5 @@
    "id": "10_Max_chargers_ravens"
   }
  ],
- "updated": "2026-11-15T21:48:25.302Z"
+ "updated": "2026-11-16T01:25:59.546Z"
 }
