@@ -12,8 +12,10 @@
    "amount": 40,
    "payout": 40,
    "odds": "40/40",
-   "outcome": null,
-   "at": 1794876552110
+   "outcome": "W",
+   "at": 1794876552110,
+   "gameId": "NFL:401873065",
+   "final": "LAC 23–BAL 20"
   },
   {
    "who": "Al",
@@ -4001,5 +4003,5 @@
    "id": "10_Max_chargers_ravens"
   }
  ],
- "updated": "2026-11-17T00:49:34.255Z"
+ "updated": "2026-11-17T09:58:21.114Z"
 }
