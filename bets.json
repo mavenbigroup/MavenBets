@@ -2,6 +2,21 @@
  "bets": [
   {
    "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 10,
+   "matchup": "Chargers @ Ravens",
+   "pick": "Chargers",
+   "spread": "+4.5",
+   "amount": 40,
+   "payout": 40,
+   "odds": "40/40",
+   "id": "mwjz5n72m2am0",
+   "outcome": null,
+   "at": 1794876552110
+  },
+  {
+   "who": "Al",
    "book": "Computer",
    "lg": "NFL",
    "week": 10,
@@ -3986,5 +4001,5 @@
    "id": "10_Max_chargers_ravens"
   }
  ],
- "updated": "2026-11-16T14:32:18.178Z"
+ "updated": "2026-11-17T00:49:12.518Z"
 }
