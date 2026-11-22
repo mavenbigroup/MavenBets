@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "id": "mwrz93738s62",
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 11,
+   "matchup": "Steelers @ Eagles",
+   "pick": "Steelers",
+   "spread": "-3.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "outcome": null,
+   "at": 1795360442224
+  },
+  {
    "id": "mwrz8rlo3it8",
    "who": "Al",
    "book": "Max",
@@ -4185,5 +4200,5 @@
    "id": "10_Max_chargers_ravens"
   }
  ],
- "updated": "2026-11-22T15:13:47.897Z"
+ "updated": "2026-11-22T15:14:02.653Z"
 }
