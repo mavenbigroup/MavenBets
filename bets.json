@@ -12,9 +12,11 @@
    "amount": 53,
    "payout": 50,
    "odds": "-105",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "86886453",
-   "at": 1795370630735
+   "at": 1795370630735,
+   "gameId": "NFL:401873072",
+   "final": "TB 21–DET 31"
   },
   {
    "id": "k_86886326",
@@ -28,9 +30,11 @@
    "amount": 58,
    "payout": 50,
    "odds": "-115",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "86886326",
-   "at": 1795370630735
+   "at": 1795370630735,
+   "gameId": "NFL:401873073",
+   "final": "TEN 30–DAL 51"
   },
   {
    "id": "k_86886069",
@@ -44,9 +48,11 @@
    "amount": 396,
    "payout": 360,
    "odds": "-110",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "86886069",
-   "at": 1795370630735
+   "at": 1795370630735,
+   "gameId": "NFL:401873076",
+   "final": "PIT 16–PHI 19"
   },
   {
    "id": "k_86886068",
@@ -60,9 +66,11 @@
    "amount": 58,
    "payout": 50,
    "odds": "-115",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "86886068",
-   "at": 1795370630735
+   "at": 1795370630735,
+   "gameId": "NFL:401873070",
+   "final": "MIA 9–BUF 26"
   },
   {
    "id": "k_86886067",
@@ -76,9 +84,11 @@
    "amount": 55,
    "payout": 50,
    "odds": "-110",
-   "outcome": null,
+   "outcome": "W",
    "tkt": "86886067",
-   "at": 1795370630735
+   "at": 1795370630735,
+   "gameId": "NFL:401873067",
+   "final": "ARI 7–KC 34"
   },
   {
    "id": "mwrz9rg1qvsp",
@@ -107,8 +117,10 @@
    "amount": 44,
    "payout": 40,
    "odds": "11/10",
-   "outcome": null,
-   "at": 1795360442224
+   "outcome": "L",
+   "at": 1795360442224,
+   "gameId": "NFL:401873076",
+   "final": "PIT 16–PHI 19"
   },
   {
    "id": "mwrz8rlo3it8",
@@ -122,8 +134,10 @@
    "amount": 44,
    "payout": 40,
    "odds": "11/10",
-   "outcome": null,
-   "at": 1795360427196
+   "outcome": "W",
+   "at": 1795360427196,
+   "gameId": "NFL:401873072",
+   "final": "TB 21–DET 31"
   },
   {
    "id": "mwrz7nhh8axa",
@@ -137,8 +151,10 @@
    "amount": 48.4,
    "payout": 44,
    "odds": "11/10",
-   "outcome": null,
-   "at": 1795360375205
+   "outcome": "L",
+   "at": 1795360375205,
+   "gameId": "NFL:401873073",
+   "final": "TEN 30–DAL 51"
   },
   {
    "id": "k_86848784",
@@ -4451,5 +4467,5 @@
    "id": "11_Max_bengals_commanders"
   }
  ],
- "updated": "2026-11-22T18:22:45.868Z"
+ "updated": "2026-11-22T21:34:02.828Z"
 }
