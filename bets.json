@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "id": "mwrz7nhh8axa",
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 11,
+   "matchup": "Titans @ Cowboys",
+   "pick": "Titans",
+   "spread": "+7.5",
+   "amount": 48.4,
+   "payout": 44,
+   "odds": "11/10",
+   "outcome": null,
+   "at": 1795360375205
+  },
+  {
    "id": "k_86848784",
    "who": "Steve",
    "book": "Computer",
@@ -4155,5 +4170,5 @@
    "id": "10_Max_chargers_ravens"
   }
  ],
- "updated": "2026-11-22T15:12:28.511Z"
+ "updated": "2026-11-22T15:12:55.564Z"
 }
