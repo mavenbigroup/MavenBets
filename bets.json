@@ -1,6 +1,86 @@
 {
  "bets": [
   {
+   "id": "k_86886453",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 11,
+   "matchup": "Buccaneers @ Lions",
+   "pick": "Under",
+   "spread": "48.5",
+   "amount": 53,
+   "payout": 50,
+   "odds": "-105",
+   "outcome": null,
+   "tkt": "86886453",
+   "at": 1795370630735
+  },
+  {
+   "id": "k_86886326",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 11,
+   "matchup": "Titans @ Cowboys",
+   "pick": "Under",
+   "spread": "55",
+   "amount": 58,
+   "payout": 50,
+   "odds": "-115",
+   "outcome": null,
+   "tkt": "86886326",
+   "at": 1795370630735
+  },
+  {
+   "id": "k_86886069",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 11,
+   "matchup": "Steelers",
+   "pick": "Steelers",
+   "spread": "-3.5",
+   "amount": 396,
+   "payout": 360,
+   "odds": "-110",
+   "outcome": null,
+   "tkt": "86886069",
+   "at": 1795370630735
+  },
+  {
+   "id": "k_86886068",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 11,
+   "matchup": "Dolphins @ Bills",
+   "pick": "Over",
+   "spread": "45",
+   "amount": 58,
+   "payout": 50,
+   "odds": "-115",
+   "outcome": null,
+   "tkt": "86886068",
+   "at": 1795370630735
+  },
+  {
+   "id": "k_86886067",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 11,
+   "matchup": "Cardinals @ Chiefs",
+   "pick": "Over",
+   "spread": "40.5",
+   "amount": 55,
+   "payout": 50,
+   "odds": "-110",
+   "outcome": null,
+   "tkt": "86886067",
+   "at": 1795370630735
+  },
+  {
    "id": "mwrz9rg1qvsp",
    "who": "Al",
    "book": "Max",
@@ -4215,5 +4295,5 @@
    "id": "10_Max_chargers_ravens"
   }
  ],
- "updated": "2026-11-22T15:14:34.078Z"
+ "updated": "2026-11-22T18:03:51.020Z"
 }
