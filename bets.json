@@ -1,6 +1,22 @@
 {
  "bets": [
   {
+   "id": "k_86900155",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 11,
+   "matchup": "Jets @ Chargers",
+   "pick": "Under",
+   "spread": "43.5",
+   "amount": 35,
+   "payout": 30,
+   "odds": "-115",
+   "outcome": null,
+   "tkt": "86900155",
+   "at": 1795457736298
+  },
+  {
    "id": "k_86886453",
    "who": "Steve",
    "book": "Computer",
@@ -4467,5 +4483,5 @@
    "id": "11_Max_bengals_commanders"
   }
  ],
- "updated": "2026-11-22T21:34:02.828Z"
+ "updated": "2026-11-23T18:15:37.582Z"
 }
