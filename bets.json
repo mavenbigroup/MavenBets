@@ -42,8 +42,10 @@
    "payout": 40,
    "odds": "40/40",
    "id": "mwxw5pg8ndl30",
-   "outcome": null,
-   "at": 1795718042648
+   "outcome": "L",
+   "at": 1795718042648,
+   "gameId": "NFL:401873081",
+   "final": "CHI 39–DET 35"
   },
   {
    "id": "k_86925886",
@@ -4550,5 +4552,5 @@
    "id": "11_Max_bengals_commanders"
   }
  ],
- "updated": "2026-11-26T20:19:22.160Z"
+ "updated": "2026-11-26T21:41:05.646Z"
 }
