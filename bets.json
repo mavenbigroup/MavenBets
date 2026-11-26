@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "id": "mwxzwnps7jou",
+   "who": "Al",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 12,
+   "matchup": "Chiefs @ Bills",
+   "pick": "Bills",
+   "spread": "-3",
+   "amount": 60,
+   "payout": 60,
+   "odds": "+100",
+   "outcome": null,
+   "at": 1795724338960
+  },
+  {
    "who": "Al",
    "book": "Max",
    "lg": "NFL",
@@ -4520,5 +4535,5 @@
    "id": "11_Max_bengals_commanders"
   }
  ],
- "updated": "2026-11-26T18:34:02.964Z"
+ "updated": "2026-11-26T20:18:59.404Z"
 }
