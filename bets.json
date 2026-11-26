@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "id": "mwxzx5fnhnl8",
+   "who": "Al",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 12,
+   "matchup": "Eagles @ Cowboys",
+   "pick": "Eagles",
+   "spread": "+9",
+   "amount": 46,
+   "payout": 40,
+   "odds": "-115",
+   "outcome": null,
+   "at": 1795724361923
+  },
+  {
    "id": "mwxzwnps7jou",
    "who": "Al",
    "book": "Computer",
@@ -4535,5 +4550,5 @@
    "id": "11_Max_bengals_commanders"
   }
  ],
- "updated": "2026-11-26T20:18:59.404Z"
+ "updated": "2026-11-26T20:19:22.160Z"
 }
