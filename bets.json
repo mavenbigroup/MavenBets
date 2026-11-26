@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 12,
+   "matchup": "Bears @ Lions",
+   "pick": "Lions",
+   "spread": "+1",
+   "amount": 40,
+   "payout": 40,
+   "odds": "40/40",
+   "id": "mwxw5pg8ndl30",
+   "outcome": null,
+   "at": 1795718042648
+  },
+  {
    "id": "k_86925886",
    "who": "Steve",
    "book": "Computer",
@@ -4505,5 +4520,5 @@
    "id": "11_Max_bengals_commanders"
   }
  ],
- "updated": "2026-11-26T17:41:32.084Z"
+ "updated": "2026-11-26T18:34:02.964Z"
 }
