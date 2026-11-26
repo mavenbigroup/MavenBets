@@ -1,6 +1,38 @@
 {
  "bets": [
   {
+   "id": "k_86987747",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 12,
+   "matchup": "Eagles @ Cowboys",
+   "pick": "Under",
+   "spread": "49.5",
+   "amount": 52,
+   "payout": 50,
+   "odds": "-103",
+   "outcome": null,
+   "tkt": "86987747",
+   "at": 1795729298723
+  },
+  {
+   "id": "k_86987746",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 12,
+   "matchup": "Cowboys",
+   "pick": "Cowboys",
+   "spread": "-9",
+   "amount": 143,
+   "payout": 130,
+   "odds": "-110",
+   "outcome": null,
+   "tkt": "86987746",
+   "at": 1795729298723
+  },
+  {
    "id": "mwxzx5fnhnl8",
    "who": "Al",
    "book": "Computer",
@@ -4552,5 +4584,5 @@
    "id": "11_Max_bengals_commanders"
   }
  ],
- "updated": "2026-11-26T21:41:05.646Z"
+ "updated": "2026-11-26T21:41:38.995Z"
 }
