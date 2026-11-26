@@ -1,6 +1,24 @@
 {
  "bets": [
   {
+   "id": "k_86925886",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 11,
+   "matchup": "Bengals",
+   "pick": "Bengals",
+   "spread": "-6.5",
+   "amount": 165,
+   "payout": 150,
+   "odds": "-110",
+   "outcome": "L",
+   "manual": true,
+   "tkt": "86925886",
+   "final": "20-22",
+   "at": 1795714891518
+  },
+  {
    "id": "k_86900155",
    "who": "Steve",
    "book": "Computer",
@@ -4487,5 +4505,5 @@
    "id": "11_Max_bengals_commanders"
   }
  ],
- "updated": "2026-11-23T18:15:41.882Z"
+ "updated": "2026-11-26T17:41:32.084Z"
 }
