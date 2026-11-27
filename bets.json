@@ -1,6 +1,41 @@
 {
  "bets": [
   {
+   "id": "k_87011978",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 12,
+   "matchup": "Broncos",
+   "pick": "Broncos",
+   "spread": "-4.5",
+   "amount": 66,
+   "payout": 60,
+   "odds": "-110",
+   "outcome": null,
+   "tkt": "87011978",
+   "at": 1795814723867
+  },
+  {
+   "id": "k_87004943",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NCAAF",
+   "date": "2026-11-27",
+   "week": 12,
+   "matchup": "Iowa",
+   "pick": "Iowa",
+   "spread": "-3.5",
+   "amount": 210,
+   "payout": 200,
+   "odds": "-105",
+   "outcome": "W",
+   "manual": true,
+   "tkt": "87004943",
+   "final": "7-31",
+   "at": 1795814723867
+  },
+  {
    "id": "k_86994199",
    "who": "Steve",
    "book": "Computer",
@@ -4629,5 +4664,5 @@
    "id": "11_Max_bengals_commanders"
   }
  ],
- "updated": "2026-11-27T21:24:50.476Z"
+ "updated": "2026-11-27T21:25:24.173Z"
 }
