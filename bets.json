@@ -12,9 +12,11 @@
    "amount": 52,
    "payout": 50,
    "odds": "-103",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "86987747",
-   "at": 1795729298723
+   "at": 1795729298723,
+   "gameId": "NFL:401873080",
+   "final": "PHI 39–DAL 38"
   },
   {
    "id": "k_86987746",
@@ -28,9 +30,11 @@
    "amount": 143,
    "payout": 130,
    "odds": "-110",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "86987746",
-   "at": 1795729298723
+   "at": 1795729298723,
+   "gameId": "NFL:401873080",
+   "final": "PHI 39–DAL 38"
   },
   {
    "id": "mwxzx5fnhnl8",
@@ -44,8 +48,10 @@
    "amount": 46,
    "payout": 40,
    "odds": "-115",
-   "outcome": null,
-   "at": 1795724361923
+   "outcome": "W",
+   "at": 1795724361923,
+   "gameId": "NFL:401873080",
+   "final": "PHI 39–DAL 38"
   },
   {
    "id": "mwxzwnps7jou",
@@ -4584,5 +4590,5 @@
    "id": "11_Max_bengals_commanders"
   }
  ],
- "updated": "2026-11-26T21:41:38.995Z"
+ "updated": "2026-11-27T01:35:25.467Z"
 }
