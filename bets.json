@@ -1,6 +1,39 @@
 {
  "bets": [
   {
+   "id": "k_86994199",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NFL",
+   "week": 12,
+   "matchup": "Bills",
+   "pick": "Bills",
+   "spread": "-3",
+   "amount": 378,
+   "payout": 360,
+   "odds": "-105",
+   "outcome": null,
+   "tkt": "86994199",
+   "at": 1795743377893
+  },
+  {
+   "id": "k_86993265",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NCAAF",
+   "date": "2026-11-26",
+   "week": 12,
+   "matchup": "Texas Tech",
+   "pick": "Texas Tech",
+   "spread": "-14",
+   "amount": 158,
+   "payout": 150,
+   "odds": "-105",
+   "outcome": null,
+   "tkt": "86993265",
+   "at": 1795743377893
+  },
+  {
    "id": "k_86987747",
    "who": "Steve",
    "book": "Computer",
@@ -4590,5 +4623,5 @@
    "id": "11_Max_bengals_commanders"
   }
  ],
- "updated": "2026-11-27T01:35:25.467Z"
+ "updated": "2026-11-27T01:36:18.311Z"
 }
