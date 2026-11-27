@@ -12,9 +12,11 @@
    "amount": 378,
    "payout": 360,
    "odds": "-105",
-   "outcome": null,
+   "outcome": "P",
    "tkt": "86994199",
-   "at": 1795743377893
+   "at": 1795743377893,
+   "gameId": "NFL:401873082",
+   "final": "KC 10–BUF 13"
   },
   {
    "id": "k_86993265",
@@ -29,9 +31,11 @@
    "amount": 158,
    "payout": 150,
    "odds": "-105",
-   "outcome": null,
+   "outcome": "W",
    "tkt": "86993265",
-   "at": 1795743377893
+   "at": 1795743377893,
+   "gameId": "NCAAF:401856879",
+   "final": "TCU 27–TTU 48"
   },
   {
    "id": "k_86987747",
@@ -98,8 +102,10 @@
    "amount": 60,
    "payout": 60,
    "odds": "+100",
-   "outcome": null,
-   "at": 1795724338960
+   "outcome": "P",
+   "at": 1795724338960,
+   "gameId": "NFL:401873082",
+   "final": "KC 10–BUF 13"
   },
   {
    "who": "Al",
@@ -4623,5 +4629,5 @@
    "id": "11_Max_bengals_commanders"
   }
  ],
- "updated": "2026-11-27T01:36:18.311Z"
+ "updated": "2026-11-27T21:24:50.476Z"
 }
