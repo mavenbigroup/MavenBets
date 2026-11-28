@@ -1,6 +1,57 @@
 {
  "bets": [
   {
+   "id": "k_87021683",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NCAAF",
+   "date": "2026-11-27",
+   "week": 12,
+   "matchup": "Utah",
+   "pick": "Utah",
+   "spread": "-25.5",
+   "amount": 158,
+   "payout": 150,
+   "odds": "-105",
+   "outcome": null,
+   "tkt": "87021683",
+   "at": 1795827563243
+  },
+  {
+   "id": "k_87021682",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NCAAF",
+   "date": "2026-11-27",
+   "week": 12,
+   "matchup": "Wisconsin",
+   "pick": "Wisconsin",
+   "spread": "-8",
+   "amount": 158,
+   "payout": 150,
+   "odds": "-105",
+   "outcome": null,
+   "tkt": "87021682",
+   "at": 1795827563243
+  },
+  {
+   "id": "k_87021681",
+   "who": "Steve",
+   "book": "Computer",
+   "lg": "NCAAF",
+   "date": "2026-11-27",
+   "week": 12,
+   "matchup": "Texas",
+   "pick": "Texas",
+   "spread": "-10",
+   "amount": 158,
+   "payout": 150,
+   "odds": "-105",
+   "outcome": null,
+   "tkt": "87021681",
+   "at": 1795827563243
+  },
+  {
    "who": "Al",
    "book": "Max",
    "lg": "NFL",
@@ -4683,5 +4734,5 @@
    "id": "11_Max_bengals_commanders"
   }
  ],
- "updated": "2026-11-28T00:58:16.314Z"
+ "updated": "2026-11-28T00:59:23.539Z"
 }
