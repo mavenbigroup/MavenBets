@@ -1,6 +1,21 @@
 {
  "bets": [
   {
+   "who": "Al",
+   "book": "Max",
+   "lg": "NFL",
+   "week": 12,
+   "matchup": "Broncos @ Steelers",
+   "pick": "Steelers",
+   "spread": "+4.5",
+   "amount": 44,
+   "payout": 40,
+   "odds": "11/10",
+   "id": "mwzonivgjx4t0",
+   "outcome": null,
+   "at": 1795826369355
+  },
+  {
    "id": "k_87011978",
    "who": "Steve",
    "book": "Computer",
@@ -4666,5 +4681,5 @@
    "id": "11_Max_bengals_commanders"
   }
  ],
- "updated": "2026-11-28T00:13:20.393Z"
+ "updated": "2026-11-28T00:39:29.979Z"
 }
