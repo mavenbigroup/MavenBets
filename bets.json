@@ -12,9 +12,11 @@
    "amount": 66,
    "payout": 60,
    "odds": "-110",
-   "outcome": null,
+   "outcome": "L",
    "tkt": "87011978",
-   "at": 1795814723867
+   "at": 1795814723867,
+   "gameId": "NFL:401873083",
+   "final": "DEN 5–PIT 27"
   },
   {
    "id": "k_87004943",
@@ -4664,5 +4666,5 @@
    "id": "11_Max_bengals_commanders"
   }
  ],
- "updated": "2026-11-27T21:25:24.173Z"
+ "updated": "2026-11-28T00:13:20.393Z"
 }
